@@ -1,229 +1,416 @@
+"""
+Data Loader Module
+
+This module provides complete implementations for loading EDF and XML files
+for sleep stage classification.
+"""
+
 import numpy as np
 import mne
-# TODO: Students may need additional imports:
-import xml.etree.ElementTree as ET  # For XML parsing
-import os  # For file handling
-from pathlib import Path  # For path operations
+import os
+from pathlib import Path
+
+# Handle both package import and standalone execution
+try:
+    from .xml_parser import parse_xml_annotations, create_epoch_labels
+except ImportError:
+    from xml_parser import parse_xml_annotations, create_epoch_labels
 
 
-def load_training_data(edf_file_path, xml_file_path):
+def load_training_data(edf_file_path, xml_file_path, epoch_length=30):
     """
-    STUDENT IMPLEMENTATION AREA: Load EDF and XML files.
+    Load EDF and XML files for training.
 
-    This function currently returns DUMMY DATA for jumpstart testing.
-    Students must implement actual EDF/XML loading:
-
-    1. Load EDF file using MNE (see read_edf function below)
-    2. Load XML annotations (sleep stage labels)
-    3. Extract relevant channels (EEG, EOG, EMG)
-    4. Segment into 30-second epochs
-    5. Handle different sampling rates
-    6. Match epochs with sleep stage labels
+    This function loads a complete EDF recording with XML annotations,
+    extracts relevant channels (EEG, EOG, EMG), segments into epochs,
+    and returns data with corresponding labels.
 
     Args:
-        edf_file_path (str): Path to the EDF file.
-        xml_file_path (str): Path to the XML annotation file.
+        edf_file_path (str): Path to the EDF file
+        xml_file_path (str): Path to the XML annotation file
+        epoch_length (float): Epoch duration in seconds (default 30)
 
     Returns:
-        tuple: A tuple containing:
-            - eeg_data (np.ndarray): Shape (n_epochs, n_samples) - EEG data
-            - labels (np.ndarray): Shape (n_epochs,) - Sleep stage labels (0-4)
+        tuple: (multi_channel_data, labels, channel_info) where:
+            - multi_channel_data (dict): Containing 'eeg', 'eog', 'emg' arrays
+                - 'eeg': np.ndarray, shape (n_epochs, n_eeg_channels, samples_per_epoch)
+                - 'eog': np.ndarray, shape (n_epochs, n_eog_channels, samples_per_epoch)
+                - 'emg': np.ndarray, shape (n_epochs, n_emg_channels, samples_per_epoch)
+            - labels (np.ndarray): Shape (n_epochs,), integer labels 0-4
+            - channel_info (dict): Metadata about channels and sampling rates
+
+    Example:
+        >>> data, labels, info = load_training_data('R1.edf', 'R1.xml')
+        >>> print(f"Loaded {labels.shape[0]} epochs")
+        >>> print(f"EEG shape: {data['eeg'].shape}")
     """
-    
     print(f"Loading training data from {edf_file_path} and {xml_file_path}...")
 
-    # TODO: Students must implement actual file loading:
-    # raw = mne.io.read_raw_edf(edf_file_path, preload=True)
-    # annotations = parse_xml_annotations(xml_file_path)
-    # eeg_channels = raw.pick_channels(['EEG1', 'EEG2', ...])  # Select relevant channels
-    # epochs = create_30_second_epochs(eeg_channels)
-    # labels = map_annotations_to_epochs(annotations, epochs)
+    # Validate files exist
+    if not os.path.exists(edf_file_path):
+        raise FileNotFoundError(f"EDF file not found: {edf_file_path}")
+    if not os.path.exists(xml_file_path):
+        raise FileNotFoundError(f"XML file not found: {xml_file_path}")
 
-    # DUMMY DATA for jumpstart testing - students must replace this:
-    print("WARNING: Using dummy data! Students must implement actual EDF/XML loading.")
-    # Realistic size for jumpstart: 2 hours = 2 * 60 * 2 = 240 epochs
-    # Real studies are 6-8 hours (720-960 epochs) but 240 is good for development
-    n_epochs = 240  # 2 hours of sleep recording for development/testing
+    # Load EDF file
+    raw = mne.io.read_raw_edf(edf_file_path, preload=True, verbose=False)
 
-    # NOTE FOR STUDENTS: This study has specific multi-channel setup with ACTUAL sampling rates:
-    # - 2 EEG channels (C3-A2, C4-A1) at 125 Hz
-    # - 2 EOG channels (EOG(L), EOG(R)) at 50 Hz
-    # - 1 EMG channel at 125 Hz
-    # - ECG at 125 Hz
-    # - Other signals: Respiration (10 Hz), SpO2/HR (1 Hz), etc.
-    # Students must identify channels by name and handle different sampling rates
+    # Get recording duration
+    recording_duration = raw.times[-1]  # Duration in seconds
 
-    # Calculate samples per epoch for each signal type
-    eeg_samples = 30 * 125  # 30 seconds at 125 Hz = 3750 samples
-    eog_samples = 30 * 50   # 30 seconds at 50 Hz = 1500 samples
-    emg_samples = 30 * 125  # 30 seconds at 125 Hz = 3750 samples
+    # Parse XML annotations
+    parsed_xml = parse_xml_annotations(xml_file_path)
+    stages = parsed_xml['stages']
 
-    # Generate realistic dummy multi-channel data with CORRECT sampling rates
-    multi_channel_data = {
-        'eeg': np.random.randn(n_epochs, 2, eeg_samples),  # 2 EEG channels at 125 Hz
-        'eog': np.random.randn(n_epochs, 2, eog_samples),  # 2 EOG channels at 50 Hz
-        'emg': np.random.randn(n_epochs, 1, emg_samples),  # 1 EMG channel at 125 Hz
-    }
+    # Create epoch labels
+    n_epochs = int(recording_duration / epoch_length)
+    labels = create_epoch_labels(stages, recording_duration, epoch_length)
 
-    channel_info = {
-        'eeg_names': ['C3-A2', 'C4-A1'],
-        'eeg_fs': 125,  # Actual sampling rate from study
-        'eog_names': ['EOG(L)', 'EOG(R)'],
-        'eog_fs': 50,   # Actual sampling rate from study
-        'emg_names': ['EMG'],
-        'emg_fs': 125,  # Actual sampling rate from study
-        'epoch_length': 30
-    }
+    # Identify channels by name patterns
+    channel_names = raw.ch_names
 
-    print(f"Multi-channel structure:")
-    print(f"  EEG: {multi_channel_data['eeg'].shape[1]} channels, {multi_channel_data['eeg'].shape[2]} samples/epoch")
-    print(f"  EOG: {multi_channel_data['eog'].shape[1]} channels, {multi_channel_data['eog'].shape[2]} samples/epoch")
-    print(f"  EMG: {multi_channel_data['emg'].shape[1]} channels, {multi_channel_data['emg'].shape[2]} samples/epoch")
+    # EOG channels (check first to avoid conflicts)
+    eog_channels = [ch for ch in channel_names if 'EOG' in ch.upper()]
 
-    # Generate realistic sleep stage distribution (not uniform)
-    # Typical distribution: More N2, less N1 and REM, some Wake
-    stage_probs = [0.05, 0.05, 0.50, 0.25, 0.15]  # Wake, N1, N2, N3, REM
-    labels = np.random.choice(5, size=n_epochs, p=stage_probs)
+    # EMG channels (check before EEG to avoid conflicts)
+    emg_channels = [ch for ch in channel_names if 'EMG' in ch.upper() or 'CHIN' in ch.upper()]
 
-    print(f"Generated dummy sleep data: {n_epochs} epochs ({n_epochs/120:.1f} hours)")
-    unique, counts = np.unique(labels, return_counts=True)
-    stage_names = ['Wake', 'N1', 'N2', 'N3', 'REM']
-    for stage, count in zip(unique, counts):
-        print(f"  {stage_names[stage]}: {count} epochs ({count/n_epochs*100:.1f}%)")
+    # EEG channels - match specific patterns, exclude already identified channels
+    eeg_candidates = []
+    for ch in channel_names:
+        ch_upper = ch.upper()
+        # Match EEG with specific patterns, but exclude SaO2, SpO2, etc.
+        if 'EEG' in ch_upper and 'SAO' not in ch_upper and 'SPO' not in ch_upper:
+            eeg_candidates.append(ch)
+        # Match C3, C4 (central), F3, F4 (frontal), O1, O2 (occipital), etc.
+        elif any(pattern in ch_upper for pattern in ['C3', 'C4', 'F3', 'F4', 'O1-', 'O2-', 'CZ', 'FZ', 'PZ']):
+            eeg_candidates.append(ch)
+
+    # Remove duplicates and exclude EOG/EMG channels
+    eeg_channels = [ch for ch in eeg_candidates
+                    if ch not in eog_channels and ch not in emg_channels]
+
+    print(f"Identified channels:")
+    print(f"  EEG: {eeg_channels}")
+    print(f"  EOG: {eog_channels}")
+    print(f"  EMG: {emg_channels}")
+
+    # Extract data for each signal type
+    multi_channel_data = {}
+    channel_info = {'epoch_length': epoch_length}
+
+    # Extract EEG data
+    if eeg_channels:
+        eeg_raw = raw.copy().pick_channels(eeg_channels)
+        eeg_data, eeg_fs = _extract_epochs(eeg_raw, epoch_length, n_epochs)
+        multi_channel_data['eeg'] = eeg_data
+        channel_info['eeg_names'] = eeg_channels
+        channel_info['eeg_fs'] = eeg_fs
+        print(f"  EEG: {eeg_data.shape[1]} channels, {eeg_data.shape[2]} samples/epoch, {eeg_fs} Hz")
+
+    # Extract EOG data
+    if eog_channels:
+        eog_raw = raw.copy().pick_channels(eog_channels)
+        eog_data, eog_fs = _extract_epochs(eog_raw, epoch_length, n_epochs)
+        multi_channel_data['eog'] = eog_data
+        channel_info['eog_names'] = eog_channels
+        channel_info['eog_fs'] = eog_fs
+        print(f"  EOG: {eog_data.shape[1]} channels, {eog_data.shape[2]} samples/epoch, {eog_fs} Hz")
+
+    # Extract EMG data
+    if emg_channels:
+        emg_raw = raw.copy().pick_channels(emg_channels)
+        emg_data, emg_fs = _extract_epochs(emg_raw, epoch_length, n_epochs)
+        multi_channel_data['emg'] = emg_data
+        channel_info['emg_names'] = emg_channels
+        channel_info['emg_fs'] = emg_fs
+        print(f"  EMG: {emg_data.shape[1]} channels, {emg_data.shape[2]} samples/epoch, {emg_fs} Hz")
+
+    # Print label distribution
+    print(f"\nLoaded {n_epochs} epochs ({n_epochs*epoch_length/3600:.2f} hours)")
+    _print_label_distribution(labels)
+
+    # Trim labels to match data (in case of rounding issues)
+    labels = labels[:n_epochs]
 
     return multi_channel_data, labels, channel_info
 
-def load_holdout_data(edf_file_path):
-    """
-    STUDENT IMPLEMENTATION AREA: Load holdout EDF files (no labels).
 
-    Similar to load_training_data but without XML annotations.
-    Students must implement actual EDF loading for competition data.
+def load_holdout_data(edf_file_path, epoch_length=30):
+    """
+    Load holdout EDF file (no labels) for inference.
 
     Args:
-        edf_file_path (str): Path to the EDF file.
+        edf_file_path (str): Path to the EDF file
+        epoch_length (float): Epoch duration in seconds (default 30)
 
     Returns:
-        tuple: (eeg_data, record_info) where:
-            - eeg_data (np.ndarray): Shape (n_epochs, n_samples)
-            - record_info (dict): Metadata needed for submission (record_id, epoch_count, etc.)
+        tuple: (multi_channel_data, record_info) where:
+            - multi_channel_data (dict): Same structure as load_training_data
+            - record_info (dict): Metadata including record_id, n_epochs, channels
+
+    Example:
+        >>> data, info = load_holdout_data('H1.edf')
+        >>> print(f"Record ID: {info['record_id']}")
+        >>> print(f"Epochs: {info['n_epochs']}")
     """
     print(f"Loading holdout data from {edf_file_path}...")
 
-    # TODO: Students must implement:
-    # raw = mne.io.read_raw_edf(edf_file_path, preload=True)
-    # eeg_channels = raw.pick_channels(['EEG1', 'EEG2', ...])
-    # epochs = create_30_second_epochs(eeg_channels)
-    # record_info = extract_record_metadata(edf_file_path)
+    # Validate file exists
+    if not os.path.exists(edf_file_path):
+        raise FileNotFoundError(f"EDF file not found: {edf_file_path}")
 
-    # DUMMY DATA for jumpstart testing - students must replace:
-    print("WARNING: Using dummy data! Students must implement actual EDF loading.")
-    n_epochs = 240  # 2 hours for development (real studies: 720-960 epochs)
+    # Extract record ID from filename
+    record_id = Path(edf_file_path).stem
 
-    # Calculate samples per epoch with CORRECT sampling rates
-    eeg_samples = 30 * 125  # 30 seconds at 125 Hz = 3750 samples
-    eog_samples = 30 * 50   # 30 seconds at 50 Hz = 1500 samples
-    emg_samples = 30 * 125  # 30 seconds at 125 Hz = 3750 samples
+    # Load EDF file
+    raw = mne.io.read_raw_edf(edf_file_path, preload=True, verbose=False)
 
-    # Multi-channel holdout data with CORRECT sampling rates
-    multi_channel_data = {
-        'eeg': np.random.randn(n_epochs, 2, eeg_samples),  # 2 EEG channels at 125 Hz
-        'eog': np.random.randn(n_epochs, 2, eog_samples),  # 2 EOG channels at 50 Hz
-        'emg': np.random.randn(n_epochs, 1, emg_samples),  # 1 EMG channel at 125 Hz
-    }
+    # Get recording duration
+    recording_duration = raw.times[-1]
+    n_epochs = int(recording_duration / epoch_length)
 
+    # Identify channels (same as training)
+    channel_names = raw.ch_names
+
+    # EOG channels (check first to avoid conflicts)
+    eog_channels = [ch for ch in channel_names if 'EOG' in ch.upper()]
+
+    # EMG channels (check before EEG to avoid conflicts)
+    emg_channels = [ch for ch in channel_names if 'EMG' in ch.upper() or 'CHIN' in ch.upper()]
+
+    # EEG channels - match specific patterns, exclude already identified channels
+    eeg_candidates = []
+    for ch in channel_names:
+        ch_upper = ch.upper()
+        # Match EEG with specific patterns, but exclude SaO2, SpO2, etc.
+        if 'EEG' in ch_upper and 'SAO' not in ch_upper and 'SPO' not in ch_upper:
+            eeg_candidates.append(ch)
+        # Match C3, C4 (central), F3, F4 (frontal), O1, O2 (occipital), etc.
+        elif any(pattern in ch_upper for pattern in ['C3', 'C4', 'F3', 'F4', 'O1-', 'O2-', 'CZ', 'FZ', 'PZ']):
+            eeg_candidates.append(ch)
+
+    # Remove duplicates and exclude EOG/EMG channels
+    eeg_channels = [ch for ch in eeg_candidates
+                    if ch not in eog_channels and ch not in emg_channels]
+
+    print(f"Identified channels:")
+    print(f"  EEG: {eeg_channels}")
+    print(f"  EOG: {eog_channels}")
+    print(f"  EMG: {emg_channels}")
+
+    # Extract data for each signal type
+    multi_channel_data = {}
+    sampling_rates = {}
+
+    if eeg_channels:
+        eeg_raw = raw.copy().pick_channels(eeg_channels)
+        eeg_data, eeg_fs = _extract_epochs(eeg_raw, epoch_length, n_epochs)
+        multi_channel_data['eeg'] = eeg_data
+        sampling_rates['eeg'] = eeg_fs
+        print(f"  EEG: {eeg_data.shape[1]} channels, {eeg_data.shape[2]} samples/epoch, {eeg_fs} Hz")
+
+    if eog_channels:
+        eog_raw = raw.copy().pick_channels(eog_channels)
+        eog_data, eog_fs = _extract_epochs(eog_raw, epoch_length, n_epochs)
+        multi_channel_data['eog'] = eog_data
+        sampling_rates['eog'] = eog_fs
+        print(f"  EOG: {eog_data.shape[1]} channels, {eog_data.shape[2]} samples/epoch, {eog_fs} Hz")
+
+    if emg_channels:
+        emg_raw = raw.copy().pick_channels(emg_channels)
+        emg_data, emg_fs = _extract_epochs(emg_raw, epoch_length, n_epochs)
+        multi_channel_data['emg'] = emg_data
+        sampling_rates['emg'] = emg_fs
+        print(f"  EMG: {emg_data.shape[1]} channels, {emg_data.shape[2]} samples/epoch, {emg_fs} Hz")
+
+    # Create record info
     record_info = {
-        'record_id': 1,
+        'record_id': record_id,
         'n_epochs': n_epochs,
-        'channels': ['C3-A2', 'C4-A1', 'EOG(L)', 'EOG(R)', 'EMG'],
-        'sampling_rates': {'eeg': 125, 'eog': 50, 'emg': 125}
+        'channels': eeg_channels + eog_channels + emg_channels,
+        'sampling_rates': sampling_rates,
+        'epoch_length': epoch_length
     }
-    print(f"Generated dummy multi-channel holdout data: {n_epochs} epochs ({n_epochs/120:.1f} hours)")
+
+    print(f"Loaded {n_epochs} epochs ({n_epochs*epoch_length/3600:.2f} hours)")
 
     return multi_channel_data, record_info
 
 
-def read_edf(file_path):
+def _extract_epochs(raw, epoch_length, n_epochs):
     """
-    EXAMPLE: Read an EDF file using the MNE library.
-
-    This is a basic example. Students should expand this to:
-    - Handle different EDF variants
-    - Validate channel names and sampling rates
-    - Handle missing or corrupted data
-    - Extract specific time ranges
+    Extract fixed-length epochs from continuous MNE Raw data.
 
     Args:
-        file_path (str): The path to the EDF file.
+        raw (mne.io.Raw): MNE Raw object
+        epoch_length (float): Epoch duration in seconds
+        n_epochs (int): Number of epochs to extract
 
     Returns:
-        mne.io.Raw: The raw EDF data.
+        tuple: (epochs_array, sampling_rate) where:
+            - epochs_array: np.ndarray, shape (n_epochs, n_channels, samples_per_epoch)
+            - sampling_rate: float, sampling frequency in Hz
     """
-    # TODO: Students should add error handling and validation
-    try:
-        raw = mne.io.read_raw_edf(file_path, preload=True, verbose=False)
-        # TODO: Add channel validation, sampling rate checks, etc.
-        return raw
-    except Exception as e:
-        print(f"Error reading EDF file {file_path}: {e}")
-        raise
+    # Get data and sampling rate
+    data = raw.get_data()  # Shape: (n_channels, n_samples)
+    fs = raw.info['sfreq']
+    n_channels = data.shape[0]
+
+    # Calculate samples per epoch
+    samples_per_epoch = int(epoch_length * fs)
+
+    # Calculate total samples needed
+    total_samples_needed = n_epochs * samples_per_epoch
+
+    # Trim or pad data if necessary
+    if data.shape[1] > total_samples_needed:
+        data = data[:, :total_samples_needed]
+    elif data.shape[1] < total_samples_needed:
+        # Pad with zeros if needed
+        padding = total_samples_needed - data.shape[1]
+        data = np.pad(data, ((0, 0), (0, padding)), mode='constant')
+
+    # Reshape into epochs: (n_epochs, n_channels, samples_per_epoch)
+    epochs = data.reshape(n_channels, n_epochs, samples_per_epoch)
+    epochs = np.transpose(epochs, (1, 0, 2))  # (n_epochs, n_channels, samples)
+
+    return epochs, fs
 
 
-def parse_xml_annotations(xml_file_path):
+def _print_label_distribution(labels):
+    """Print sleep stage distribution."""
+    unique, counts = np.unique(labels, return_counts=True)
+    stage_names = ['Wake', 'N1', 'N2', 'N3', 'REM']
+
+    print("Sleep stage distribution:")
+    for stage, count in zip(unique, counts):
+        if stage < len(stage_names):
+            pct = (count / len(labels)) * 100
+            print(f"  {stage_names[stage]}: {count} epochs ({pct:.1f}%)")
+
+
+def load_all_training_data(training_dir, epoch_length=30):
     """
-    TODO: STUDENT IMPLEMENTATION - Parse XML annotation files.
-
-    Students must implement XML parsing for sleep stage annotations.
-    The XML format contains sleep stage labels for each epoch.
+    Load all training recordings from a directory.
 
     Args:
-        xml_file_path (str): Path to XML annotation file.
+        training_dir (str): Path to directory containing EDF and XML files
+        epoch_length (float): Epoch duration in seconds (default 30)
 
     Returns:
-        list: Sleep stage annotations with timestamps.
+        tuple: (all_data, all_labels, all_record_ids, channel_info) where:
+            - all_data (dict): Combined multi-channel data from all recordings
+            - all_labels (np.ndarray): Concatenated labels
+            - all_record_ids (np.ndarray): Record ID for each epoch
+            - channel_info (dict): Channel information (same across recordings)
+
+    Example:
+        >>> data, labels, record_ids, info = load_all_training_data('data/training/')
+        >>> print(f"Total epochs: {len(labels)}")
+        >>> print(f"Unique recordings: {len(np.unique(record_ids))}")
     """
-    # TODO: Students must implement XML parsing
-    # Suggested approach:
-    # import xml.etree.ElementTree as ET
-    # tree = ET.parse(xml_file_path)
-    # root = tree.getroot()
-    # annotations = extract_sleep_stages(root)
+    from glob import glob
 
-    raise NotImplementedError("Students must implement XML annotation parsing")
+    print(f"Loading all training data from {training_dir}...")
+
+    # Find all EDF files
+    edf_files = sorted(glob(os.path.join(training_dir, '*.edf')))
+
+    if not edf_files:
+        raise FileNotFoundError(f"No EDF files found in {training_dir}")
+
+    print(f"Found {len(edf_files)} recordings")
+
+    # Initialize lists to store data from all recordings
+    all_eeg = []
+    all_eog = []
+    all_emg = []
+    all_labels = []
+    all_record_ids = []
+    channel_info = None
+
+    # Load each recording
+    for edf_file in edf_files:
+        # Get corresponding XML file
+        xml_file = edf_file.replace('.edf', '.xml')
+
+        if not os.path.exists(xml_file):
+            print(f"  WARNING: Skipping {edf_file} - no corresponding XML file")
+            continue
+
+        # Extract record ID from filename
+        record_id = Path(edf_file).stem
+
+        print(f"\nLoading {record_id}...")
+
+        try:
+            # Load this recording
+            multi_channel_data, labels, info = load_training_data(
+                edf_file, xml_file, epoch_length
+            )
+
+            # Store channel info from first recording
+            if channel_info is None:
+                channel_info = info
+
+            # Append data
+            if 'eeg' in multi_channel_data:
+                all_eeg.append(multi_channel_data['eeg'])
+            if 'eog' in multi_channel_data:
+                all_eog.append(multi_channel_data['eog'])
+            if 'emg' in multi_channel_data:
+                all_emg.append(multi_channel_data['emg'])
+
+            all_labels.append(labels)
+
+            # Track record ID for each epoch
+            all_record_ids.extend([record_id] * len(labels))
+
+        except Exception as e:
+            print(f"  ERROR loading {record_id}: {e}")
+            continue
+
+    # Concatenate all recordings
+    combined_data = {}
+
+    if all_eeg:
+        combined_data['eeg'] = np.concatenate(all_eeg, axis=0)
+        print(f"\nCombined EEG shape: {combined_data['eeg'].shape}")
+
+    if all_eog:
+        combined_data['eog'] = np.concatenate(all_eog, axis=0)
+        print(f"Combined EOG shape: {combined_data['eog'].shape}")
+
+    if all_emg:
+        combined_data['emg'] = np.concatenate(all_emg, axis=0)
+        print(f"Combined EMG shape: {combined_data['emg'].shape}")
+
+    combined_labels = np.concatenate(all_labels, axis=0)
+    combined_record_ids = np.array(all_record_ids)
+
+    print(f"\nTotal loaded: {len(combined_labels)} epochs from {len(edf_files)} recordings")
+    _print_label_distribution(combined_labels)
+
+    return combined_data, combined_labels, combined_record_ids, channel_info
 
 
-def create_30_second_epochs(raw_data):
-    """
-    TODO: STUDENT IMPLEMENTATION - Segment continuous data into 30-second epochs.
+if __name__ == '__main__':
+    # Example usage
+    import sys
 
-    Important considerations for students:
-    1. Handle different sampling rates for different signal types (ACTUAL rates for this study):
-       - EEG (C3-A2, C4-A1): 125 Hz
-       - EOG (Left, Right): 50 Hz
-       - EMG: 125 Hz
-       - ECG: 125 Hz
-       - Respiration (Thor/Abdo): 10 Hz
-       - SpO2/Heart Rate: 1 Hz
+    if len(sys.argv) > 2:
+        edf_file = sys.argv[1]
+        xml_file = sys.argv[2]
 
-    2. Options for handling multiple sampling rates:
-       - Resample all signals to common rate (e.g., 100 Hz)
-       - Keep original rates and extract features separately
-       - Downsample high-rate signals, upsample low-rate signals
+        print(f"Loading {edf_file} and {xml_file}")
+        data, labels, info = load_training_data(edf_file, xml_file)
 
-    3. Epoch creation steps:
-       - Determine epoch length in samples for each signal type
-       - Handle overlapping vs non-overlapping epochs
-       - Deal with incomplete final epochs
-       - Maintain temporal alignment across signal types
+        print(f"\nSummary:")
+        print(f"  Total epochs: {labels.shape[0]}")
+        for signal_type in data.keys():
+            print(f"  {signal_type.upper()} shape: {data[signal_type].shape}")
 
-    Args:
-        raw_data: MNE Raw object containing multiple channels at different rates.
-
-    Returns:
-        dict: Multi-channel epochs with actual channel counts:
-            {'eeg': np.ndarray (n_epochs, 2, samples_per_epoch),  # 2 EEG channels
-             'eog': np.ndarray (n_epochs, 2, samples_per_epoch),  # 2 EOG channels
-             'emg': np.ndarray (n_epochs, 1, samples_per_epoch)}  # 1 EMG channel
-    """
-    # TODO: Students must implement epoch creation with multi-rate handling
-    raise NotImplementedError("Students must implement epoch segmentation with multi-rate support")
+    else:
+        print("Usage: python data_loader.py <edf_file> <xml_file>")
+        print("Example: python data_loader.py data/training/R1.edf data/training/R1.xml")

@@ -27,10 +27,10 @@ def main():
     print(f"--- Sleep Scoring Pipeline - Iteration {config.CURRENT_ITERATION} ---")
 
     # 1. Load Data
-    # Example uses R1.edf and R1.xml - students should adapt for their dataset
+    # Example uses R1.edf and R1.xml from training directory
     print("\n=== STEP 1: DATA LOADING ===")
-    edf_file = os.path.join(config.SAMPLE_DIR, "R1.edf")  # Example EDF file
-    xml_file = os.path.join(config.SAMPLE_DIR, "R1.xml")  # Corresponding annotation file
+    edf_file = os.path.join(config.TRAINING_DIR, "R1.edf")  # Example EDF file
+    xml_file = os.path.join(config.TRAINING_DIR, "R1.xml")  # Corresponding annotation file
 
     # Handle both new multi-channel format and old single-channel format for compatibility
     try:
