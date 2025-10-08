@@ -1,0 +1,112 @@
+
+    
+=== PROCESSING LOG ===
+--- Sleep Scoring Pipeline - Iteration 1 ---
+
+=== STEP 1: DATA LOADING ===
+Loading training data from ../data/sample/R1.edf and ../data/sample/R1.xml...
+WARNING: Using dummy data! Students must implement actual EDF/XML loading.
+Multi-channel structure:
+  EEG: 2 channels, 3750 samples/epoch
+  EOG: 2 channels, 1500 samples/epoch
+  EMG: 1 channels, 3750 samples/epoch
+Generated dummy sleep data: 240 epochs (2.0 hours)
+  Wake: 10 epochs (4.2%)
+  N1: 13 epochs (5.4%)
+  N2: 116 epochs (48.3%)
+  N3: 64 epochs (26.7%)
+  REM: 37 epochs (15.4%)
+Multi-channel data loaded:
+  EEG: (240, 2, 3750)
+  EOG: (240, 2, 1500)
+  EMG: (240, 1, 3750)
+Labels shape: (240,)
+Using EEG channel 1 for pipeline: (240, 3750)
+
+=== STEP 2: PREPROCESSING ===
+Loading data from cache: cache/preprocessed_data_iter1.joblib
+Loaded preprocessed data from cache
+
+=== STEP 3: FEATURE EXTRACTION ===
+Loading data from cache: cache/features_iter1.joblib
+Loaded features from cache
+
+=== STEP 4: FEATURE SELECTION ===
+Selecting features for iteration 1...
+Input features shape: (240, 3)
+Early iteration - using all available features
+Selected features shape: (240, 3)
+Selected features shape: (240, 3)
+
+=== STEP 5: CLASSIFICATION ===
+Training knn classifier...
+Features shape: (240, 3), Labels shape: (240,)
+Using stratified train/test split to maintain class balance
+Training set: 192 samples, Test set: 48 samples
+Using k-NN with k=5
+Training model...
+Overall accuracy: 0.417
+
+======================================================================
+SLEEP STAGE CLASSIFICATION PERFORMANCE METRICS
+======================================================================
+Overall Accuracy: 0.417
+Macro F1-Score: 0.152
+Weighted F1-Score: 0.325
+
+Confusion Matrix:
+      Wake  N1  N2  N3  REM
+Wake     0   0   2   0    0
+N1       0   0   3   0    0
+N2       0   0  18   5    0
+N3       0   0  11   2    0
+REM      0   0   6   1    0
+
+Per-Class Performance Metrics:
+----------------------------------------------------------------------
+Stage    Accuracy   Sensitivity  Specificity  F1-Score  
+----------------------------------------------------------------------
+Wake     0.000      0.000        1.000        0.000     
+N1       0.000      0.000        1.000        0.000     
+N2       0.783      0.783        0.120        0.571     
+N3       0.154      0.154        0.829        0.190     
+REM      0.000      0.000        1.000        0.000     
+----------------------------------------------------------------------
+
+Class Distribution in Test Set:
+Wake: 2 samples (4.2%)
+N1: 3 samples (6.2%)
+N2: 23 samples (47.9%)
+N3: 13 samples (27.1%)
+REM: 7 samples (14.6%)
+
+Notes for Sleep Scoring:
+- Sensitivity = Recall = True Positive Rate (correctly identified stages)
+- Specificity = True Negative Rate (correctly rejected stages)
+- Sleep stage imbalance is natural (more N2, less N1/REM)
+- Consider Cohen's kappa for chance-corrected agreement
+- Clinical focus: High sensitivity for REM and N3 stages
+
+TODO: Students should add Cohen's kappa and ROC-AUC metrics
+Trained knn classifier
+
+=== STEP 6: VISUALIZATION ===
+Visualizing results...
+
+=== STEP 7: PROCESSING LOG & REPORT GENERATION ===
+
+
+
+    # Sleep Scoring Report - Iteration 1
+
+    ## Model
+    KNeighborsClassifier
+
+    ## Performance
+    Accuracy: ...
+    Kappa: ...
+    F1-score: ...
+
+    ## Notes
+    This is a dummy report. Implement full report generation.
+    
