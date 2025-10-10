@@ -10,14 +10,7 @@ from src.utils import save_cache, load_cache
 import os
 import sys
 import io
-<<<<<<< Updated upstream
 
-#test
-#test2
-#test3
-=======
-
->>>>>>> Stashed changes
 
 def main():
     # Create a string buffer
@@ -36,26 +29,44 @@ def main():
     # 1. Load Data
     # Example uses R1.edf and R1.xml from training directory
     print("\n=== STEP 1: DATA LOADING ===")
-    edf_file = os.path.join(config.TRAINING_DIR, "R1.edf")  # Example EDF file
-    xml_file = os.path.join(config.TRAINING_DIR, "R1.xml")  # Corresponding annotation file
 
-    # Handle both new multi-channel format and old single-channel format for compatibility
-    try:
-        multi_channel_data, labels, channel_info = load_training_data(edf_file, xml_file)
-        print(f"Multi-channel data loaded:")
-        print(f"  EEG: {multi_channel_data['eeg'].shape}")
-        print(f"  EOG: {multi_channel_data['eog'].shape}")
-        print(f"  EMG: {multi_channel_data['emg'].shape}")
-        print(f"Labels shape: {labels.shape}")
+    #Loading all data
+    from pathlib import Path
+    training_dir = Path(config.TRAINING_DIR)
+    all_eeg_data = []
+    all_labels = []
+    for edf_file in training_dir.glob("R*.edf"):
+        xml_file = edf_file.with_suffix(".xml")
+
+        try:
+            multi_channel_data, labels, channel_info = load_training_data(edf_file, xml_file)
+            print(f"Multi-channel data loaded:")
+            print(f"  EEG: {multi_channel_data['eeg'].shape}")
+            print(f"  EOG: {multi_channel_data['eog'].shape}")
+            print(f"  EMG: {multi_channel_data['emg'].shape}")
+            print(f"Labels shape: {labels.shape}")
 
         # For pipeline compatibility, use EEG data as primary signal
-        eeg_data = multi_channel_data['eeg'][:, 0, :]  # Use first EEG channel for now
-        print(f"Using EEG channel 1 for pipeline: {eeg_data.shape}")
+            eeg_data = multi_channel_data['eeg'][:, 0, :]  # Use first EEG channel for now
+            #print(f"Using EEG channel 1 for pipeline: {eeg_data.shape}")
+            all_eeg_data.append(eeg_data)
+            all_labels.append(labels)
 
-    except (ValueError, TypeError):
+        except (ValueError, TypeError):
         # Fallback to old format if multi-channel not implemented
-        eeg_data, labels = load_training_data(edf_file, xml_file)
-        print(f"Single-channel data loaded: {eeg_data.shape}, Labels: {labels.shape}")
+            eeg_data, labels = load_training_data(edf_file, xml_file)
+            print(f"Single-channel data loaded: {eeg_data.shape}, Labels: {labels.shape}")
+
+    import numpy as np
+    eeg_data = np.concatenate(all_eeg_data, axis = 0)
+    labels = np.concatenate(all_labels, axis=0)
+    #edf_file = os.path.join(config.TRAINING_DIR, "R1.edf")  # Example EDF file
+    #xml_file = os.path.join(config.TRAINING_DIR, "R1.xml")  # Corresponding annotation file
+    #edf_file = "C:/Users/姚宜萱/OneDrive - KTH/Signal processing/CM2013/data/training/R1.edf"
+    #xml_file = "C:/Users/姚宜萱/OneDrive - KTH/Signal processing/CM2013/data/training/R1.xml"
+    
+    # Handle both new multi-channel format and old single-channel format for compatibility
+
 
     # 2. Preprocessing
     print("\n=== STEP 2: PREPROCESSING ===")
