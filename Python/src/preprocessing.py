@@ -1,4 +1,4 @@
-from scipy.signal import butter, lfilter
+from scipy.signal import butter, lfilter, filtfilt
 import numpy as np
 
 def lowpass_filter(data, cutoff, fs, order=5):
@@ -29,6 +29,13 @@ def lowpass_filter(data, cutoff, fs, order=5):
     normal_cutoff = cutoff / nyquist
     b, a = butter(order, normal_cutoff, btype='low', analog=False)
     y = lfilter(b, a, data)
+    return y
+
+def highpass_filter(data, cutoff, fs, order=5): #Highpass filter add by Sherry
+    nyquist = 0.5 *fs
+    normal_cutoff = cutoff/nyquist
+    b,a =butter(order, normal_cutoff, btype="high", analog=False)
+    y = filtfilt(b,a,data)
     return y
 
 def preprocess(data, config):
@@ -75,6 +82,7 @@ def preprocess_multi_channel(multi_channel_data, config):
             signal = eeg_data[epoch, ch, :]
             # Apply EEG-specific preprocessing
             filtered_signal = lowpass_filter(signal, config.LOW_PASS_FILTER_FREQ, eeg_fs)
+            filtered_signal=highpass_filter(filtered_signal, config.HIGH_PASS_FILTER_FREQ, eeg_fs) #Highpass filter add by Sherry
             # TODO: Students should add bandpass filter, artifact removal
             preprocessed_eeg[epoch, ch, :] = filtered_signal
 
@@ -131,6 +139,8 @@ def preprocess_single_channel(data, config):
         # EXAMPLE: Very basic low-pass filter (students should expand)
         fs = 125  # Actual EEG sampling rate: 125 Hz (TODO: Get from data/config)
         preprocessed_data = lowpass_filter(data, config.LOW_PASS_FILTER_FREQ, fs)
+        preprocessed_data = highpass_filter(data, config.HIGH_PASS_FILTER_FREQ, fs) #Highpass filter add by Sherry
+
 
     elif config.CURRENT_ITERATION == 2:
         print("TODO: Implement enhanced preprocessing for iteration 2")
