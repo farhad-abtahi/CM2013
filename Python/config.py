@@ -24,6 +24,7 @@ if not os.path.exists(CACHE_DIR):
 
 # -- Preprocessing --
 LOW_PASS_FILTER_FREQ = 40  # Hz
+HIGH_PASS_FILTER_FREQ=0.5 ##Highpass filter frequency add by Sherry
 
 # -- Feature Extraction --
 # (Add feature-specific parameters here)
