@@ -112,6 +112,7 @@ def preprocess_multi_channel(multi_channel_data, config):
             filtered_signal = lowpass_filter(signal, config.LOW_PASS_FILTER_FREQ, eeg_fs)
             filtered_signal = highpass_filter(filtered_signal, config.HIGH_PASS_FILTER_FREQ, eeg_fs) #Highpass filter add by Sherry
             filtered_signal = notch_filter(filtered_signal, to_be_removed, eeg_fs, q_factor, no_harmonics) #new
+            filtered_signal = bandpass_filter(filtered_signal, config.HIGH_PASS_FILTER_FREQ, config.LOW_PASS_FILTER_FREQ, eeg_fs, order = 4)# Bandpass filter add by Shuxuan
             # TODO: Students should add bandpass filter, artifact removal
             preprocessed_eeg[epoch, ch, :] = filtered_signal
 
@@ -169,7 +170,7 @@ def preprocess_single_channel(data, config):
         fs = 125  # Actual EEG sampling rate: 125 Hz (TODO: Get from data/config)
         preprocessed_data = lowpass_filter(data, config.LOW_PASS_FILTER_FREQ, fs)
         preprocessed_data = highpass_filter(data, config.HIGH_PASS_FILTER_FREQ, fs) #Highpass filter add by Sherry
-
+        
 
     elif config.CURRENT_ITERATION == 2:
         print("TODO: Implement enhanced preprocessing for iteration 2")
