@@ -1,4 +1,5 @@
 import numpy as np
+import scipy
 
 def extract_time_domain_features(epoch):
     """
