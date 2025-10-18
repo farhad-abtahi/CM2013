@@ -1,4 +1,4 @@
-from scipy.signal import butter, lfilter
+from scipy.signal import butter, lfilter, filtfilt, iirnotch
 import numpy as np
 
 def lowpass_filter(data, cutoff, fs, order=5):
@@ -30,6 +30,38 @@ def lowpass_filter(data, cutoff, fs, order=5):
     b, a = butter(order, normal_cutoff, btype='low', analog=False)
     y = lfilter(b, a, data)
     return y
+
+def highpass_filter(data, cutoff, fs, order=5): #Highpass filter add by Sherry
+    nyquist = 0.5 *fs
+    normal_cutoff = cutoff/nyquist
+    b,a =butter(order, normal_cutoff, btype="high", analog=False)
+    y = filtfilt(b,a,data)
+    return y
+
+def bandpass_filter(data, lowcut , highcut, fs, order):# Bandpass filter add by Shuxuan
+    nyquist = 0.5 * fs
+    normal_lowcut = lowcut / nyquist
+    normal_highcut = highcut/nyquist
+    b, a = butter(order, [normal_lowcut, normal_highcut], btype='band', analog=False)
+    y = filtfilt(b, a, data)
+    return y
+
+def notch_filter(data, to_be_removed, fs, q_factor, no_harmonics): # Notch filter added by Zuzanna
+    nyquist_criterion = fs/2.0
+    filtered = data.copy()  #start from original signal
+
+    #going through base freq and its harmonics
+    for h in range(1, no_harmonics + 1):
+        notch_freq = h * to_be_removed
+
+        if notch_freq >= nyquist_criterion:
+            print("{notch_freq} skipped")
+            continue
+
+        b, a = iirnotch(w0=notch_freq, Q=q_factor, fs=fs)
+        filtered = lfilter(b, a, filtered)
+
+    return filtered
 
 def preprocess(data, config):
     """
@@ -68,6 +100,9 @@ def preprocess_multi_channel(multi_channel_data, config):
     # Process EEG channels (2 channels)
     eeg_data = multi_channel_data['eeg']
     eeg_fs = 125  # Actual sampling rate: 125 Hz (TODO: Get from channel_info)
+    to_be_removed = 50 #for notch filter; can be 60
+    q_factor = 30 #for notch filter; the higher its value, the narrower notch; typical range for EEG: 30-50
+    no_harmonics = 2 #for notch filter
     preprocessed_eeg = np.zeros_like(eeg_data)
 
     for ch in range(eeg_data.shape[1]):
@@ -75,6 +110,9 @@ def preprocess_multi_channel(multi_channel_data, config):
             signal = eeg_data[epoch, ch, :]
             # Apply EEG-specific preprocessing
             filtered_signal = lowpass_filter(signal, config.LOW_PASS_FILTER_FREQ, eeg_fs)
+            filtered_signal = highpass_filter(filtered_signal, config.HIGH_PASS_FILTER_FREQ, eeg_fs) #Highpass filter add by Sherry
+            filtered_signal = notch_filter(filtered_signal, to_be_removed, eeg_fs, q_factor, no_harmonics) #new
+            filtered_signal = bandpass_filter(filtered_signal, config.HIGH_PASS_FILTER_FREQ, config.LOW_PASS_FILTER_FREQ, eeg_fs, order = 4)# Bandpass filter add by Shuxuan
             # TODO: Students should add bandpass filter, artifact removal
             preprocessed_eeg[epoch, ch, :] = filtered_signal
 
@@ -131,6 +169,8 @@ def preprocess_single_channel(data, config):
         # EXAMPLE: Very basic low-pass filter (students should expand)
         fs = 125  # Actual EEG sampling rate: 125 Hz (TODO: Get from data/config)
         preprocessed_data = lowpass_filter(data, config.LOW_PASS_FILTER_FREQ, fs)
+        preprocessed_data = highpass_filter(data, config.HIGH_PASS_FILTER_FREQ, fs) #Highpass filter add by Sherry
+        
 
     elif config.CURRENT_ITERATION == 2:
         print("TODO: Implement enhanced preprocessing for iteration 2")

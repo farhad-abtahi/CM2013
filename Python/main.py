@@ -12,6 +12,7 @@ import sys
 import io
 
 
+
 def main():
     # Create a string buffer
     stdout_buffer = io.StringIO()

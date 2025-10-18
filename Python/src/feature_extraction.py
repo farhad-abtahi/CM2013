@@ -1,4 +1,7 @@
 import numpy as np
+import scipy
+from mne_features.univariate import compute_hjorth_complexity
+
 
 def extract_time_domain_features(epoch):
     """
@@ -21,6 +24,19 @@ def extract_time_domain_features(epoch):
         'mean': np.mean(epoch),
         'median': np.median(epoch),
         'std': np.std(epoch),
+        'variance': np.var(epoch),
+        'rms':np.sqrt(np.mean(epoch**2)),
+        'min':np.min(epoch),
+        'max': np.max(epoch),
+        'range': np.max(epoch) - np.min(epoch),
+        'skewness': scipy.stats.skew(epoch),
+        'kurtosis': scipy.stats.kurtosis(epoch),
+        'zero_crossings': np.sum(np.diff(np.sign(epoch)) != 0),
+        'hjorth_activity': np.var(epoch),
+        'hjorth_mobility': np.sqrt(np.var(np.diff(epoch)) / np.var(epoch)),
+        'hjorth_complexity': compute_hjorth_complexity(epoch),
+        'total_energy': np.sum(epoch**2),
+        'mean_power': np.mean(epoch**2)
     }
 
     # TODO: Students must implement remaining time-domain features:
@@ -112,7 +128,7 @@ def extract_multi_channel_features(multi_channel_data, config):
     features = np.array(all_features)
 
     if config.CURRENT_ITERATION == 1:
-        expected = 2 * 3  # 2 EEG channels × 3 features each
+        expected = 2 * 16  # 2 EEG channels × 3 features each
         print(f"Multi-channel Iteration 1: {features.shape[1]} features (target: {expected}+)")
         print("Students must implement remaining 13 time-domain features per EEG channel!")
     elif config.CURRENT_ITERATION >= 3:
@@ -135,8 +151,9 @@ def extract_single_channel_features(data, config):
             all_features.append(list(features.values()))
         features = np.array(all_features)
 
-        print(f"WARNING: Only {features.shape[1]} features extracted, target is 16 for iteration 1")
-        print("Students must implement the remaining time-domain features!")
+        print(f"{features.shape[1]} features extracted")
+        #print(f"WARNING: Only {features.shape[1]} features extracted, target is 16 for iteration 1")
+        #print("Students must implement the remaining time-domain features!")
 
     elif config.CURRENT_ITERATION == 2:
         # TODO: Students must implement frequency-domain features
