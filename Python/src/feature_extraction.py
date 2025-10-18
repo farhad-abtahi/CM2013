@@ -128,7 +128,7 @@ def extract_multi_channel_features(multi_channel_data, config):
     features = np.array(all_features)
 
     if config.CURRENT_ITERATION == 1:
-        expected = 2 * 3  # 2 EEG channels × 3 features each
+        expected = 2 * 16  # 2 EEG channels × 3 features each
         print(f"Multi-channel Iteration 1: {features.shape[1]} features (target: {expected}+)")
         print("Students must implement remaining 13 time-domain features per EEG channel!")
     elif config.CURRENT_ITERATION >= 3:
