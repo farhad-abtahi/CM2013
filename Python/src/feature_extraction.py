@@ -1,5 +1,7 @@
 import numpy as np
 import scipy
+from mne_features.univariate import compute_hjorth_complexity
+
 
 def extract_time_domain_features(epoch):
     """
@@ -32,7 +34,7 @@ def extract_time_domain_features(epoch):
         'zero_crossings': np.sum(np.diff(np.sign(epoch)) != 0),
         'hjorth_activity': np.var(epoch),
         'hjorth_mobility': np.sqrt(np.var(np.diff(epoch)) / np.var(epoch)),
-        'hjorth_complexity': hjorth_complexity(epoch),
+        'hjorth_complexity': compute_hjorth_complexity(epoch),
         'total_energy': np.sum(epoch**2),
         'mean_power': np.mean(epoch**2)
     }
