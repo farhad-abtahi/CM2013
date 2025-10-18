@@ -38,6 +38,14 @@ def highpass_filter(data, cutoff, fs, order=5): #Highpass filter add by Sherry
     y = filtfilt(b,a,data)
     return y
 
+def bandpass_filter(data, lowcut , highcut, fs, order):# Bandpass filter add by Shuxuan
+    nyquist = 0.5 * fs
+    normal_lowcut = lowcut / nyquist
+    normal_highcut = highcut/nyquist
+    b, a = butter(order, [normal_lowcut, normal_highcut], btype='band', analog=False)
+    y = filtfilt(b, a, data)
+    return y
+
 def preprocess(data, config):
     """
     STUDENT IMPLEMENTATION AREA: Preprocess data based on current iteration.
