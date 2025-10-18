@@ -151,8 +151,9 @@ def extract_single_channel_features(data, config):
             all_features.append(list(features.values()))
         features = np.array(all_features)
 
-        print(f"WARNING: Only {features.shape[1]} features extracted, target is 16 for iteration 1")
-        print("Students must implement the remaining time-domain features!")
+        print(f"{features.shape[1]} features extracted")
+        #print(f"WARNING: Only {features.shape[1]} features extracted, target is 16 for iteration 1")
+        #print("Students must implement the remaining time-domain features!")
 
     elif config.CURRENT_ITERATION == 2:
         # TODO: Students must implement frequency-domain features
