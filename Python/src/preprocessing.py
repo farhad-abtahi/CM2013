@@ -168,10 +168,11 @@ def preprocess_single_channel(data, config):
     if config.CURRENT_ITERATION == 1:
         # EXAMPLE: Very basic low-pass filter (students should expand)
         fs = 125  # Actual EEG sampling rate: 125 Hz (TODO: Get from data/config)
-        preprocessed_data = lowpass_filter(data, config.LOW_PASS_FILTER_FREQ, fs)
-        preprocessed_data = highpass_filter(data, config.HIGH_PASS_FILTER_FREQ, fs) #Highpass filter add by Sherry
-        
-
+        #changed by Shuxuan
+        #preprocessed_data = lowpass_filter(data, config.LOW_PASS_FILTER_FREQ, fs)
+        #preprocessed_data = highpass_filter(data, config.HIGH_PASS_FILTER_FREQ, fs) #Highpass filter add by Sherry
+        preprocessed_data = notch_filter(data, to_be_removed = 50, fs = 125, q_factor = 30, no_harmonics = 2)
+        preprocessed_data = bandpass_filter(preprocessed_data, config.HIGH_PASS_FILTER_FREQ, config.LOW_PASS_FILTER_FREQ, fs = 125, order=4)
     elif config.CURRENT_ITERATION == 2:
         print("TODO: Implement enhanced preprocessing for iteration 2")
         preprocessed_data = data  # Placeholder
