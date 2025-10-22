@@ -314,6 +314,7 @@ def visualize_fft(signal, fs, ax=None, title="FFT of Signal"):# add by Shuxuan
     ax.set_xlabel("Frequency (Hz)")
     ax.set_ylabel("Magnitude")
     ax.grid(True, alpha=0.4)
+    plt.savefig(f"{title}")
     plt.show()
 
 def visualize_signal(signal, fs, ax=None, title="Time-domain Signal"):# add by Shuxuan
@@ -328,4 +329,5 @@ def visualize_signal(signal, fs, ax=None, title="Time-domain Signal"):# add by S
     ax.set_xlabel("Time (s)")
     ax.set_ylabel("Amplitude (µV)")
     ax.grid(True, alpha=0.4)
+    plt.savefig(f"{title}")
     plt.show()
