@@ -140,7 +140,7 @@ def plot_sample_epoch(edf_path, epoch_idx=0, epoch_duration=30):
         # Save figure explicitly before showing
         output_path = f"epoch{epoch_idx}_signals.png"
         plt.savefig(output_path, dpi=100, facecolor='white', edgecolor='black', bbox_inches='tight')
-        print(f"\n✓ Saved to {output_path}")
+        print(f"\nSaved to {output_path}")
 
         plt.show()
 
