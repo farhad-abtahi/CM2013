@@ -54,9 +54,9 @@ def train_classifier(features, labels, config):
     # TODO: Students should address class imbalance in sleep data:
     # - Sleep stages are not equally distributed
     # - Consider SMOTE, class weights, or other techniques
-    # from imblearn.over_sampling import SMOTE
-    # smote = SMOTE(random_state=42)
-    # X_train, y_train = smote.fit_resample(X_train, y_train)
+    from imblearn.over_sampling import SMOTE
+    smote = SMOTE(random_state=42)
+    X_train, y_train = smote.fit_resample(X_train, y_train)
 
     # Select classifier based on iteration (using config parameters)
     if config.CURRENT_ITERATION == 1:

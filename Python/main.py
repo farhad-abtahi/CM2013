@@ -5,6 +5,10 @@ from src.feature_extraction import extract_features
 from src.feature_selection import select_features
 from src.classification import train_classifier
 from src.visualization import visualize_results
+from src.visualization import plot_hypnogram
+from src.visualization import plot_sample_epoch
+from src.visualization import visualize_fft
+from src.visualization import visualize_signal
 from src.report import generate_report
 from src.utils import save_cache, load_cache
 import os
@@ -67,8 +71,9 @@ def main():
     #xml_file = "C:/Users/姚宜萱/OneDrive - KTH/Signal processing/CM2013/data/training/R1.xml"
     
     # Handle both new multi-channel format and old single-channel format for compatibility
-
-
+    plot_hypnogram(xml_file)
+    plot_sample_epoch(edf_file, epoch_idx=0)
+    
     # 2. Preprocessing
     print("\n=== STEP 2: PREPROCESSING ===")
     preprocessed_data = None
@@ -84,6 +89,16 @@ def main():
         if config.USE_CACHE:
             save_cache(preprocessed_data, cache_filename_preprocess, config.CACHE_DIR)
             print("Saved preprocessed data to cache")
+    
+    raw_signal = eeg_data[0,:]
+    visualize_signal(raw_signal if isinstance(raw_signal, np.ndarray) else raw_signal, 
+                 fs=125, title="Raw EEG Signal (Time Domain)")
+    visualize_fft(raw_signal if isinstance(raw_signal, np.ndarray) else raw_signal, 
+              fs=125, title="Raw EEG Signal FFT")
+    visualize_signal(preprocessed_data[0] if isinstance(preprocessed_data, np.ndarray) 
+                 else preprocessed_data['eeg'][0,0,:], fs=125, title="Filtered EEG Signal (Time Domain)")
+    visualize_fft(preprocessed_data[0] if isinstance(preprocessed_data, np.ndarray) 
+              else preprocessed_data['eeg'][0,0,:], fs=125, title="Filtered EEG Signal FFT")
 
     # 3. Feature Extraction
     print("\n=== STEP 3: FEATURE EXTRACTION ===")

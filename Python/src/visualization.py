@@ -140,7 +140,7 @@ def plot_sample_epoch(edf_path, epoch_idx=0, epoch_duration=30):
         # Save figure explicitly before showing
         output_path = f"epoch{epoch_idx}_signals.png"
         plt.savefig(output_path, dpi=100, facecolor='white', edgecolor='black', bbox_inches='tight')
-        print(f"\n✓ Saved to {output_path}")
+        print(f"\nSaved to {output_path}")
 
         plt.show()
 
@@ -299,3 +299,35 @@ def visualize_results(model, features, labels, config):
     class_names = ['Wake', 'N1', 'N2', 'N3', 'REM']
     y_pred = model.predict(features)
     plot_confusion_matrix(labels, y_pred, class_names)
+
+def visualize_fft(signal, fs, ax=None, title="FFT of Signal"):# add by Shuxuan
+    n = len(signal)
+    freq = np.fft.fftfreq(n, d=1/fs)
+    fft_values = np.fft.fft(signal)
+    magnitude = np.abs(fft_values)[:n // 2]
+
+    if ax is None:
+        fig, ax = plt.subplots(figsize=(10, 5))
+
+    ax.plot(freq[:n // 2], magnitude, color='royalblue', linewidth=1.5)
+    ax.set_title(title, fontsize=12, fontweight='bold')
+    ax.set_xlabel("Frequency (Hz)")
+    ax.set_ylabel("Magnitude")
+    ax.grid(True, alpha=0.4)
+    plt.savefig(f"{title}")
+    plt.show()
+
+def visualize_signal(signal, fs, ax=None, title="Time-domain Signal"):# add by Shuxuan
+    n = len(signal)
+    t = np.arange(n) / fs 
+
+    if ax is None:
+        fig, ax = plt.subplots(figsize=(10, 5))
+
+    ax.plot(t, signal, color='darkorange', linewidth=1.5)
+    ax.set_title(title, fontsize=12, fontweight='bold')
+    ax.set_xlabel("Time (s)")
+    ax.set_ylabel("Amplitude (µV)")
+    ax.grid(True, alpha=0.4)
+    plt.savefig(f"{title}")
+    plt.show()

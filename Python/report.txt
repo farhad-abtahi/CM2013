@@ -245,16 +245,48 @@ Multi-channel data loaded:
   EMG: (1085, 1, 3750)
 Labels shape: (1085,)
 
+Sleep Stage Statistics:
+======================================================================
+Total sleep stage events: 201
+Total duration: 9.04 hours
+Total epochs: 1085
+
+Stage distribution:
+  Wake: 29 events, 382 epochs (35.2%)
+  N1: 21 events, 38 epochs (3.5%)
+  N2: 80 events, 298 epochs (27.5%)
+  N3: 64 events, 236 epochs (21.8%)
+  REM: 7 events, 131 epochs (12.1%)
+
+Plotting Epoch 0 (Time: 0-30s)
+======================================================================
+  SaO2: 3750 samples, range=[85673421.3, 106693164.7]
+  H.R.: 3750 samples, range=[61980975.3, 76729737.4]
+  EEG(sec): 3750 samples, range=[-72.1, 96.6]
+  ECG: 3750 samples, range=[-730.4, 318.6]
+  EMG: 3750 samples, range=[-31.0, 31.2]
+  EOG(L): 3750 samples, range=[-128.3, 132.1]
+  EOG(R): 3750 samples, range=[-125.8, 131.8]
+  EEG: 3750 samples, range=[-56.4, 104.4]
+  THOR RES: 3750 samples, range=[-1001901.4, 995700.6]
+  ABDO RES: 3750 samples, range=[-740352.0, 1068650.2]
+  POSITION: 3750 samples, range=[-280881.6, 151359.9]
+  LIGHT: 3750 samples, range=[926319.6, 1138509.9]
+  NEW AIR: 3750 samples, range=[-33.5, 23.6]
+  OX stat: 3750 samples, range=[-659194.3, 2739812.5]
+
+Saved to epoch0_signals.png
+
 === STEP 2: PREPROCESSING ===
 Preprocessing data for iteration 1...
 Processing single-channel data (backward compatibility)
+{notch_freq} skipped
 Preprocessed data shape: (10293, 3750)
 
 === STEP 3: FEATURE EXTRACTION ===
 Extracting features for iteration 1...
 Processing single-channel data (backward compatibility)
-WARNING: Only 16 features extracted, target is 16 for iteration 1
-Students must implement the remaining time-domain features!
+16 features extracted
 Extracted features shape: (10293, 16)
 
 === STEP 4: FEATURE SELECTION ===
@@ -271,32 +303,32 @@ Using stratified train/test split to maintain class balance
 Training set: 8234 samples, Test set: 2059 samples
 Using k-NN with k=5
 Training model...
-Overall accuracy: 0.633
+Overall accuracy: 0.546
 
 ======================================================================
 SLEEP STAGE CLASSIFICATION PERFORMANCE METRICS
 ======================================================================
-Overall Accuracy: 0.633
-Macro F1-Score: 0.451
-Weighted F1-Score: 0.610
+Overall Accuracy: 0.546
+Macro F1-Score: 0.460
+Weighted F1-Score: 0.579
 
 Confusion Matrix:
-      Wake  N1   N2   N3  REM
-Wake   540   4  125    5   21
-N1      35   2   15    1    2
-N2     107   8  526   81   40
-N3       8   0  101  213    2
-REM     73   4  113   10   23
+      Wake   N1   N2   N3  REM
+Wake   435  122   53    8   77
+N1      16   12   10    1   16
+N2      62   86  342  111  161
+N3       2    5   51  259    7
+REM     32   40   56   19   76
 
 Per-Class Performance Metrics:
 ----------------------------------------------------------------------
 Stage    Accuracy   Sensitivity  Specificity  F1-Score  
 ----------------------------------------------------------------------
-Wake     0.777      0.777        0.837        0.741     
-N1       0.036      0.036        0.992        0.055     
-N2       0.690      0.690        0.727        0.641     
-N3       0.657      0.657        0.944        0.672     
-REM      0.103      0.103        0.965        0.148     
+Wake     0.626      0.626        0.918        0.700     
+N1       0.218      0.218        0.874        0.075     
+N2       0.449      0.449        0.869        0.537     
+N3       0.799      0.799        0.920        0.717     
+REM      0.341      0.341        0.858        0.271     
 ----------------------------------------------------------------------
 
 Class Distribution in Test Set:
