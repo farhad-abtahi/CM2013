@@ -2,9 +2,11 @@ import numpy as np
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split #I think this is only for iteration 1
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 from sklearn.metrics import precision_score, recall_score, f1_score
+from sklearn.metrics import cohen_kappa_score
+from imblearn.over_sampling import SMOTE
 import pandas as pd
 
 def train_classifier(features, labels, config):
@@ -54,15 +56,20 @@ def train_classifier(features, labels, config):
     # TODO: Students should address class imbalance in sleep data:
     # - Sleep stages are not equally distributed
     # - Consider SMOTE, class weights, or other techniques
-    from imblearn.over_sampling import SMOTE
+    print(f"Original training distribution: {np.unique(y_train, return_counts=True)[1]}") #add by Sherry
+    print("Applying SMOTE to address class imbalance") #add by Sherry
     smote = SMOTE(random_state=42)
     X_train, y_train = smote.fit_resample(X_train, y_train)
+
+    print(f"Resampled training distribution: {np.unique(y_train, return_counts=True)[1]}")
 
     # Select classifier based on iteration (using config parameters)
     if config.CURRENT_ITERATION == 1:
         # Iteration 1: Simple k-NN
-        model = KNeighborsClassifier(n_neighbors=config.KNN_N_NEIGHBORS)
-        print(f"Using k-NN with k={config.KNN_N_NEIGHBORS}")
+    
+        model_weights = getattr(config, 'KNN_WEIGHTS', 'uniform') #add by Sherry (Can be change in config)
+        model = KNeighborsClassifier(n_neighbors=config.KNN_N_NEIGHBORS, weights=model_weights)
+        print(f"Using k-NN with k={config.KNN_N_NEIGHBORS} and weights ='{model_weights}")
 
     elif config.CURRENT_ITERATION == 2:
         # Iteration 2: SVM
@@ -106,7 +113,7 @@ def train_classifier(features, labels, config):
     # - ROC-AUC for each class
     # - Cross-validation scores
     # - Feature importance analysis
-    print("\nTODO: Students should add Cohen's kappa and ROC-AUC metrics")
+    #print("\nTODO: Students should add Cohen's kappa and ROC-AUC metrics")
 
     return model
 
@@ -130,10 +137,12 @@ def print_performance_metrics(y_true, y_pred):
     overall_accuracy = accuracy_score(y_true, y_pred)
     macro_f1 = f1_score(y_true, y_pred, average='macro')
     weighted_f1 = f1_score(y_true, y_pred, average='weighted')
+    kappa=cohen_kappa_score(y_true,y_pred) #add by Sherry
 
     print(f"Overall Accuracy: {overall_accuracy:.3f}")
     print(f"Macro F1-Score: {macro_f1:.3f}")
     print(f"Weighted F1-Score: {weighted_f1:.3f}")
+    print(f"Cohen's Kappa: {kappa:.3f}") #add by Sherry
 
     # Confusion Matrix
     print("\nConfusion Matrix:")

@@ -301,34 +301,39 @@ Training knn classifier...
 Features shape: (10293, 16), Labels shape: (10293,)
 Using stratified train/test split to maintain class balance
 Training set: 8234 samples, Test set: 2059 samples
-Using k-NN with k=5
+Original training distribution: [2779  220 3046 1294  895]
+Applying SMOTE to address class imbalance
+Resampled training distribution: [3046 3046 3046 3046 3046]
+Using k-NN with k=5 and weights ='distance
 Training model...
-Overall accuracy: 0.546
+Overall accuracy: 0.536
+Cohen's Kappa: 0.393
 
 ======================================================================
 SLEEP STAGE CLASSIFICATION PERFORMANCE METRICS
 ======================================================================
-Overall Accuracy: 0.546
-Macro F1-Score: 0.460
-Weighted F1-Score: 0.579
+Overall Accuracy: 0.536
+Macro F1-Score: 0.452
+Weighted F1-Score: 0.568
+Cohen's Kappa: 0.393
 
 Confusion Matrix:
       Wake   N1   N2   N3  REM
-Wake   435  122   53    8   77
-N1      16   12   10    1   16
-N2      62   86  342  111  161
-N3       2    5   51  259    7
-REM     32   40   56   19   76
+Wake   426  112   61    8   88
+N1      17   12   10    1   15
+N2      68   69  339  112  174
+N3       2    5   51  251   15
+REM     24   37   68   18   76
 
 Per-Class Performance Metrics:
 ----------------------------------------------------------------------
 Stage    Accuracy   Sensitivity  Specificity  F1-Score  
 ----------------------------------------------------------------------
-Wake     0.626      0.626        0.918        0.700     
-N1       0.218      0.218        0.874        0.075     
-N2       0.449      0.449        0.869        0.537     
-N3       0.799      0.799        0.920        0.717     
-REM      0.341      0.341        0.858        0.271     
+Wake     0.613      0.613        0.919        0.692     
+N1       0.218      0.218        0.889        0.083     
+N2       0.445      0.445        0.854        0.525     
+N3       0.775      0.775        0.920        0.703     
+REM      0.341      0.341        0.841        0.257     
 ----------------------------------------------------------------------
 
 Class Distribution in Test Set:
@@ -344,8 +349,6 @@ Notes for Sleep Scoring:
 - Sleep stage imbalance is natural (more N2, less N1/REM)
 - Consider Cohen's kappa for chance-corrected agreement
 - Clinical focus: High sensitivity for REM and N3 stages
-
-TODO: Students should add Cohen's kappa and ROC-AUC metrics
 Trained knn classifier
 
 === STEP 6: VISUALIZATION ===
