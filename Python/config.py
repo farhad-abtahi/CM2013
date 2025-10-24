@@ -35,7 +35,7 @@ if CURRENT_ITERATION == 1:
     # Iteration 1: Basic pipeline with k-NN
     CLASSIFIER_TYPE = 'knn'
     KNN_N_NEIGHBORS = 5
-    KNN_WEIGHTS = 'distance'
+    KNN_WEIGHTS = 'distance' #add by Sherry
 elif CURRENT_ITERATION == 2:
     # Iteration 2: Enhanced EEG processing with SVM
     CLASSIFIER_TYPE = 'svm'
