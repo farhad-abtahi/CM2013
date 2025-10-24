@@ -40,8 +40,10 @@ def main():
     training_dir = Path(config.TRAINING_DIR)
     all_eeg_data = []
     all_labels = []
+    all_record_ids=[] #add by Sherry for classification(Strategy B)
     for edf_file in training_dir.glob("R*.edf"):
         xml_file = edf_file.with_suffix(".xml")
+        record_id=edf_file.stem #add by Sherry for classification(Strategy B)
 
         try:
             multi_channel_data, labels, channel_info = load_training_data(edf_file, xml_file)
@@ -56,6 +58,7 @@ def main():
             #print(f"Using EEG channel 1 for pipeline: {eeg_data.shape}")
             all_eeg_data.append(eeg_data)
             all_labels.append(labels)
+            all_record_ids.extend([record_id] * len(labels))#add by Sherry for classification(Strategy B)
 
         except (ValueError, TypeError):
         # Fallback to old format if multi-channel not implemented
@@ -65,6 +68,7 @@ def main():
     import numpy as np
     eeg_data = np.concatenate(all_eeg_data, axis = 0)
     labels = np.concatenate(all_labels, axis=0)
+    all_record_ids = np.array(all_record_ids) #add by Sherry for classification(Strategy B)
     #edf_file = os.path.join(config.TRAINING_DIR, "R1.edf")  # Example EDF file
     #xml_file = os.path.join(config.TRAINING_DIR, "R1.xml")  # Corresponding annotation file
     #edf_file = "C:/Users/姚宜萱/OneDrive - KTH/Signal processing/CM2013/data/training/R1.edf"
@@ -126,7 +130,7 @@ def main():
     # 5. Classification
     print("\n=== STEP 5: CLASSIFICATION ===")
     if selected_features.shape[1] > 0:
-        model = train_classifier(selected_features, labels, config)
+        model = train_classifier(selected_features, labels, all_record_ids, config) #modify by Sherry for classification(Strategy B)
         print(f"Trained {config.CLASSIFIER_TYPE} classifier")
     else:
         print("⚠️  WARNING: Cannot train classifier - no features available!")

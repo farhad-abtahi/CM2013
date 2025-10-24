@@ -2,13 +2,16 @@ import numpy as np
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.model_selection import train_test_split #I think this is only for iteration 1
+from sklearn.model_selection import train_test_split #I think this is only for iteration 1 (Strategy A)
+from sklearn.model_selection import LeaveOneGroupOut
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 from sklearn.metrics import precision_score, recall_score, f1_score
 from sklearn.metrics import cohen_kappa_score
 from imblearn.over_sampling import SMOTE
 import pandas as pd
 
+'''
+#This is strategy A
 def train_classifier(features, labels, config):
     """
     STUDENT IMPLEMENTATION AREA: Train classifier based on iteration.
@@ -32,6 +35,7 @@ def train_classifier(features, labels, config):
     print(f"Training {config.CLASSIFIER_TYPE} classifier...")
     print(f"Features shape: {features.shape}, Labels shape: {labels.shape}")
 
+    
     # Basic validation
     if features.shape[0] == 0 or features.shape[1] == 0:
         raise ValueError("No features available for training!")
@@ -59,7 +63,7 @@ def train_classifier(features, labels, config):
     print(f"Original training distribution: {np.unique(y_train, return_counts=True)[1]}") #add by Sherry
     print("Applying SMOTE to address class imbalance") #add by Sherry
     smote = SMOTE(random_state=42)
-    X_train, y_train = smote.fit_resample(X_train, y_train)
+    X_train_resampled, y_train_resampled = smote.fit_resample(X_train, y_train)
 
     print(f"Resampled training distribution: {np.unique(y_train, return_counts=True)[1]}")
 
@@ -98,7 +102,7 @@ def train_classifier(features, labels, config):
 
     # Train the model
     print("Training model...")
-    model.fit(X_train, y_train)
+    model.fit(X_train_resampled, y_train_resampled)
 
     # Comprehensive evaluation with detailed performance metrics
     y_pred = model.predict(X_test)
@@ -116,6 +120,163 @@ def train_classifier(features, labels, config):
     #print("\nTODO: Students should add Cohen's kappa and ROC-AUC metrics")
 
     return model
+'''
+
+#This one is LOSO (Strategy B)
+def train_classifier(features, labels, groups, config):
+    print(f"Training {config.CLASSIFIER_TYPE} classifier...")
+    print(f"Features shape: {features.shape}, Labels shape: {labels.shape}, Groups shape: {groups.shape}")
+    logo=LeaveOneGroupOut()
+    n_splits=logo.get_n_splits(features,labels,groups)
+    print(f"LOSO cross-validation with {n_splits} folds")
+
+    loso_results =[]
+    all_y_test = []
+    all_y_pred = []
+
+    for fold_idx, (train_idx, test_idx) in enumerate(logo.split(features, labels, groups)):
+        X_train, X_test = features[train_idx], features[test_idx]
+        y_train, y_test = labels[train_idx], labels[test_idx]
+        # Which subject is held out in this fold?
+        test_subject = np.unique(groups[test_idx])[0]
+        print(f"Fold {fold_idx+1}/10: Training on 9 subjects, testing on {test_subject}")
+
+        #Deal with data imbalance
+        safe_k_neighbors = min(5, len(y_train[y_train==1])-1) 
+        if safe_k_neighbors < 1:
+             safe_k_neighbors = 1
+             
+        smote = SMOTE(random_state=42, k_neighbors=safe_k_neighbors)
+        try:
+            X_train_resampled, y_train_resampled = smote.fit_resample(X_train, y_train)
+            print(f"  Resampled fold training distribution: {np.unique(y_train_resampled, return_counts=True)[1]}")
+        except ValueError as e:
+            print(f"  SMOTE failed for fold {fold_idx+1}: {e}. Using original data.")
+            X_train_resampled, y_train_resampled = X_train, y_train
+
+        if config.CURRENT_ITERATION ==1:
+            model_weights = getattr(config, 'KNN_WEIGHTS', 'uniform') #(Can be change in config)
+            model = KNeighborsClassifier(n_neighbors=config.KNN_N_NEIGHBORS, weights=model_weights)
+            print(f"Using k-NN with k={config.KNN_N_NEIGHBORS} and weights ='{model_weights}")
+        
+        elif config.CURRENT_ITERATION == 2:
+        # Iteration 2: SVM
+        # TODO: Students should tune hyperparameters (C, kernel, gamma)
+            model = SVC(
+                C=getattr(config, 'SVM_C', 1.0),
+                kernel=getattr(config, 'SVM_KERNEL', 'rbf'),
+                random_state=42
+            )
+            print(f"Using SVM with C={model.C}, kernel={model.kernel}")
+
+        elif config.CURRENT_ITERATION >= 3:
+            # Iteration 3+: Random Forest
+            # TODO: Students should tune hyperparameters (n_estimators, max_depth, etc.)
+            model = RandomForestClassifier(
+                n_estimators=getattr(config, 'RF_N_ESTIMATORS', 100),
+                max_depth=getattr(config, 'RF_MAX_DEPTH', None),
+                min_samples_split=getattr(config, 'RF_MIN_SAMPLES_SPLIT', 2),
+                random_state=42,
+                n_jobs=-1  # Use all available cores
+            )
+            print(f"Using Random Forest with {model.n_estimators} trees")
+
+        else:
+            raise ValueError(f"Invalid iteration: {config.CURRENT_ITERATION}")
+        
+
+        # Train classifier on 9 subjects
+        model.fit(X_train_resampled, y_train_resampled)
+
+        # Predict on held-out subject
+        y_pred = model.predict(X_test)
+
+        # Calculate metrics for this subject
+        accuracy = accuracy_score(y_test, y_pred)
+        kappa = cohen_kappa_score(y_test, y_pred)
+
+        # Per-class F1 scores
+        f1_per_class = f1_score(y_test, y_pred, average=None)
+        f1_macro = f1_score(y_test, y_pred, average='macro')
+
+        loso_results.append({
+            'subject': test_subject,
+            'accuracy': accuracy,
+            'kappa': kappa,
+            'f1_macro': f1_macro
+        })
+
+        print(f"  {test_subject}: Accuracy={accuracy:.1%}, Kappa={kappa:.3f}, F1-macro={f1_macro:.3f}")
+        all_y_test.extend(y_test)
+        all_y_pred.extend(y_pred)
+
+    # Report mean ± std across all 10 subjects
+    mean_acc = np.mean([r['accuracy'] for r in loso_results])
+    std_acc = np.std([r['accuracy'] for r in loso_results])
+    mean_kappa = np.mean([r['kappa'] for r in loso_results])
+    std_kappa = np.std([r['kappa'] for r in loso_results])
+
+    print("\n" + "="*60)
+    print(f"LOSO Cross-Validation Results (10 subjects):")
+    print(f"  Accuracy = {mean_acc:.1%} ± {std_acc:.1%}")
+    print(f"  Kappa    = {mean_kappa:.3f} ± {std_kappa:.3f}")
+    print("="*60)
+
+    # Show per-subject variability
+    print("\nPer-Subject Performance:")
+    for r in sorted(loso_results, key=lambda x: x['accuracy'], reverse=True):
+        print(f"  {r['subject']}: {r['accuracy']:.1%} (kappa={r['kappa']:.3f})")
+    
+    #Confusion matrix
+    print("\n" + "="*60)
+    print("AGGREGATED PERFORMANCE METRICS (Across all LOSO folds)")
+    print("="*60)
+    print_performance_metrics(all_y_test, all_y_pred)
+
+    #Final model for unknown data in the future
+    print("\n" + "="*60)
+    print(f"Training final {config.CLASSIFIER_TYPE} model on ALL training data...")
+    
+    # SMOTE (All data)
+    n_minority_samples = np.sum(labels == 1)
+    safe_k_neighbors = min(5, n_minority_samples - 1)
+    if safe_k_neighbors < 1: safe_k_neighbors = 1
+        
+    smote_final = SMOTE(random_state=42, k_neighbors=safe_k_neighbors)
+    try:
+        features_resampled, labels_resampled = smote_final.fit_resample(features, labels)
+        print(f"Resampled full dataset distribution: {np.unique(labels_resampled, return_counts=True)[1]}")
+    except ValueError as e:
+        print(f"  Final SMOTE failed: {e}. Using original data.")
+        features_resampled, labels_resampled = features, labels
+
+    if config.CURRENT_ITERATION == 1:
+        model_weights = getattr(config, 'KNN_WEIGHTS', 'uniform')
+        final_model = KNeighborsClassifier(n_neighbors=config.KNN_N_NEIGHBORS, weights=model_weights, n_jobs=-1)
+    
+    elif config.CURRENT_ITERATION == 2:
+        final_model = SVC(
+            C=getattr(config, 'SVM_C', 1.0),
+            kernel=getattr(config, 'SVM_KERNEL', 'rbf'),
+            random_state=42
+        )
+    
+    elif config.CURRENT_ITERATION >= 3:
+        final_model = RandomForestClassifier(
+            n_estimators=getattr(config, 'RF_N_ESTIMATORS', 100),
+            max_depth=getattr(config, 'RF_MAX_DEPTH', None),
+            min_samples_split=getattr(config, 'RF_MIN_SAMPLES_SPLIT', 2),
+            random_state=42,
+            n_jobs=-1
+        )
+    else:
+        raise ValueError(f"Invalid iteration: {config.CURRENT_ITERATION}")
+    
+    #Train with all data
+    final_model.fit(features_resampled, labels_resampled)
+    print("Final model training complete.")
+
+    return final_model
 
 
 def print_performance_metrics(y_true, y_pred):
@@ -124,6 +285,8 @@ def print_performance_metrics(y_true, y_pred):
 
     Includes accuracy, sensitivity (recall), specificity, and F1-score for each sleep stage.
     """
+    y_true = np.array(y_true) # add by Sherry
+    y_pred = np.array(y_pred) # add by Sherry
 
     # Sleep stage labels and names (0=Wake, 1=N1, 2=N2, 3=N3, 4=REM)
     stage_names = ['Wake', 'N1', 'N2', 'N3', 'REM']
