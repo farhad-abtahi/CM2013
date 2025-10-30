@@ -137,7 +137,7 @@ def train_classifier(features, labels, groups, config):
     for fold_idx, (train_idx, test_idx) in enumerate(logo.split(features, labels, groups)):
         X_train, X_test = features[train_idx], features[test_idx]
         y_train, y_test = labels[train_idx], labels[test_idx]
-        # Which subject is held out in this fold?
+        # Held out in this fold
         test_subject = np.unique(groups[test_idx])[0]
         print(f"Fold {fold_idx+1}/10: Training on 9 subjects, testing on {test_subject}")
 

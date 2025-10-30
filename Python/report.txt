@@ -4,7 +4,11 @@
 --- Sleep Scoring Pipeline - Iteration 1 ---
 
 === STEP 1: DATA LOADING ===
-Loading training data from ..\data\training\R1.edf and ..\data\training\R1.xml...
+Loading all training data from ../data/training/...
+Found 10 recordings
+
+Loading R1...
+Loading training data from ../data/training\R1.edf and ../data/training\R1.xml...
 Identified channels:
   EEG: ['EEG(sec)', 'EEG']
   EOG: ['EOG(L)', 'EOG(R)']
@@ -23,12 +27,9 @@ Sleep stage distribution:
   N2: 457 epochs (42.2%)
   N3: 145 epochs (13.4%)
   REM: 102 epochs (9.4%)
-Multi-channel data loaded:
-  EEG: (1083, 2, 3750)
-  EOG: (1083, 2, 3750)
-  EMG: (1083, 1, 3750)
-Labels shape: (1083,)
-Loading training data from ..\data\training\R10.edf and ..\data\training\R10.xml...
+
+Loading R10...
+Loading training data from ../data/training\R10.edf and ../data/training\R10.xml...
 Identified channels:
   EEG: ['EEG(sec)', 'EEG']
   EOG: ['EOG(L)', 'EOG(R)']
@@ -47,12 +48,9 @@ Sleep stage distribution:
   N2: 491 epochs (45.3%)
   N3: 163 epochs (15.0%)
   REM: 168 epochs (15.5%)
-Multi-channel data loaded:
-  EEG: (1083, 2, 3750)
-  EOG: (1083, 2, 3750)
-  EMG: (1083, 1, 3750)
-Labels shape: (1083,)
-Loading training data from ..\data\training\R2.edf and ..\data\training\R2.xml...
+
+Loading R2...
+Loading training data from ../data/training\R2.edf and ../data/training\R2.xml...
 Identified channels:
   EEG: ['EEG(sec)', 'EEG']
   EOG: ['EOG(L)', 'EOG(R)']
@@ -71,12 +69,9 @@ Sleep stage distribution:
   N2: 238 epochs (22.1%)
   N3: 61 epochs (5.7%)
   REM: 61 epochs (5.7%)
-Multi-channel data loaded:
-  EEG: (1078, 2, 3750)
-  EOG: (1078, 2, 3750)
-  EMG: (1078, 1, 3750)
-Labels shape: (1078,)
-Loading training data from ..\data\training\R3.edf and ..\data\training\R3.xml...
+
+Loading R3...
+Loading training data from ../data/training\R3.edf and ../data/training\R3.xml...
 Identified channels:
   EEG: ['EEG(sec)', 'EEG']
   EOG: ['EOG(L)', 'EOG(R)']
@@ -95,12 +90,9 @@ Sleep stage distribution:
   N2: 289 epochs (27.6%)
   N3: 307 epochs (29.3%)
   REM: 86 epochs (8.2%)
-Multi-channel data loaded:
-  EEG: (1048, 2, 3750)
-  EOG: (1048, 2, 3750)
-  EMG: (1048, 1, 3750)
-Labels shape: (1048,)
-Loading training data from ..\data\training\R4.edf and ..\data\training\R4.xml...
+
+Loading R4...
+Loading training data from ../data/training\R4.edf and ../data/training\R4.xml...
 Identified channels:
   EEG: ['EEG(sec)', 'EEG']
   EOG: ['EOG(L)', 'EOG(R)']
@@ -119,12 +111,9 @@ Sleep stage distribution:
   N2: 177 epochs (20.2%)
   N3: 315 epochs (36.0%)
   REM: 92 epochs (10.5%)
-Multi-channel data loaded:
-  EEG: (874, 2, 3750)
-  EOG: (874, 2, 3750)
-  EMG: (874, 1, 3750)
-Labels shape: (874,)
-Loading training data from ..\data\training\R5.edf and ..\data\training\R5.xml...
+
+Loading R5...
+Loading training data from ../data/training\R5.edf and ../data/training\R5.xml...
 Identified channels:
   EEG: ['EEG(sec)', 'EEG']
   EOG: ['EOG(L)', 'EOG(R)']
@@ -143,12 +132,9 @@ Sleep stage distribution:
   N2: 508 epochs (46.9%)
   N3: 99 epochs (9.1%)
   REM: 91 epochs (8.4%)
-Multi-channel data loaded:
-  EEG: (1083, 2, 3750)
-  EOG: (1083, 2, 3750)
-  EMG: (1083, 1, 3750)
-Labels shape: (1083,)
-Loading training data from ..\data\training\R6.edf and ..\data\training\R6.xml...
+
+Loading R6...
+Loading training data from ../data/training\R6.edf and ../data/training\R6.xml...
 Identified channels:
   EEG: ['EEG(sec)', 'EEG']
   EOG: ['EOG(L)', 'EOG(R)']
@@ -167,12 +153,9 @@ Sleep stage distribution:
   N2: 529 epochs (48.8%)
   N3: 39 epochs (3.6%)
   REM: 158 epochs (14.6%)
-Multi-channel data loaded:
-  EEG: (1083, 2, 3750)
-  EOG: (1083, 2, 3750)
-  EMG: (1083, 1, 3750)
-Labels shape: (1083,)
-Loading training data from ..\data\training\R7.edf and ..\data\training\R7.xml...
+
+Loading R7...
+Loading training data from ../data/training\R7.edf and ../data/training\R7.xml...
 Identified channels:
   EEG: ['EEG(sec)', 'EEG']
   EOG: ['EOG(L)', 'EOG(R)']
@@ -191,12 +174,9 @@ Sleep stage distribution:
   N2: 459 epochs (49.9%)
   N3: 40 epochs (4.4%)
   REM: 148 epochs (16.1%)
-Multi-channel data loaded:
-  EEG: (918, 2, 3750)
-  EOG: (918, 2, 3750)
-  EMG: (918, 1, 3750)
-Labels shape: (918,)
-Loading training data from ..\data\training\R8.edf and ..\data\training\R8.xml...
+
+Loading R8...
+Loading training data from ../data/training\R8.edf and ../data/training\R8.xml...
 Identified channels:
   EEG: ['EEG(sec)', 'EEG']
   EOG: ['EOG(L)', 'EOG(R)']
@@ -215,12 +195,9 @@ Sleep stage distribution:
   N2: 362 epochs (37.7%)
   N3: 213 epochs (22.2%)
   REM: 81 epochs (8.4%)
-Multi-channel data loaded:
-  EEG: (958, 2, 3750)
-  EOG: (958, 2, 3750)
-  EMG: (958, 1, 3750)
-Labels shape: (958,)
-Loading training data from ..\data\training\R9.edf and ..\data\training\R9.xml...
+
+Loading R9...
+Loading training data from ../data/training\R9.edf and ../data/training\R9.xml...
 Identified channels:
   EEG: ['EEG(sec)', 'EEG']
   EOG: ['EOG(L)', 'EOG(R)']
@@ -239,125 +216,127 @@ Sleep stage distribution:
   N2: 298 epochs (27.4%)
   N3: 236 epochs (21.7%)
   REM: 131 epochs (12.1%)
-Multi-channel data loaded:
-  EEG: (1085, 2, 3750)
-  EOG: (1085, 2, 3750)
-  EMG: (1085, 1, 3750)
-Labels shape: (1085,)
+
+Combined EEG shape: (10293, 2, 3750)
+Combined EOG shape: (10293, 2, 3750)
+Combined EMG shape: (10293, 1, 3750)
+
+Total loaded: 10293 epochs from 10 recordings
+Sleep stage distribution:
+  Wake: 3474 epochs (33.8%)
+  N1: 275 epochs (2.7%)
+  N2: 3808 epochs (37.0%)
+  N3: 1618 epochs (15.7%)
+  REM: 1118 epochs (10.9%)
+Total data loaded: 10293 epochs from 10 recordings
+Multi-channel data structure:
+  EEG: (10293, 2, 3750)
+  EOG: (10293, 2, 3750)
+  EMG: (10293, 1, 3750)
+Plotting hypnogram and sample epoch for R1 (example)...
 
 Sleep Stage Statistics:
 ======================================================================
-Total sleep stage events: 201
-Total duration: 9.04 hours
-Total epochs: 1085
+Total sleep stage events: 181
+Total duration: 9.03 hours
+Total epochs: 1083
 
 Stage distribution:
-  Wake: 29 events, 382 epochs (35.2%)
-  N1: 21 events, 38 epochs (3.5%)
-  N2: 80 events, 298 epochs (27.5%)
-  N3: 64 events, 236 epochs (21.8%)
-  REM: 7 events, 131 epochs (12.1%)
+  Wake: 48 events, 332 epochs (30.7%)
+  N1: 29 events, 47 epochs (4.3%)
+  N2: 68 events, 457 epochs (42.2%)
+  N3: 29 events, 145 epochs (13.4%)
+  REM: 7 events, 102 epochs (9.4%)
 
 Plotting Epoch 0 (Time: 0-30s)
 ======================================================================
-  SaO2: 3750 samples, range=[85673421.3, 106693164.7]
-  H.R.: 3750 samples, range=[61980975.3, 76729737.4]
-  EEG(sec): 3750 samples, range=[-72.1, 96.6]
-  ECG: 3750 samples, range=[-730.4, 318.6]
+  EEG(sec): 3750 samples, range=[-124.0, 125.0]
+  ECG: 3750 samples, range=[-328.4, 514.7]
   EMG: 3750 samples, range=[-31.0, 31.2]
-  EOG(L): 3750 samples, range=[-128.3, 132.1]
-  EOG(R): 3750 samples, range=[-125.8, 131.8]
-  EEG: 3750 samples, range=[-56.4, 104.4]
-  THOR RES: 3750 samples, range=[-1001901.4, 995700.6]
-  ABDO RES: 3750 samples, range=[-740352.0, 1068650.2]
-  POSITION: 3750 samples, range=[-280881.6, 151359.9]
-  LIGHT: 3750 samples, range=[926319.6, 1138509.9]
-  NEW AIR: 3750 samples, range=[-33.5, 23.6]
-  OX stat: 3750 samples, range=[-659194.3, 2739812.5]
+  EOG(L): 3750 samples, range=[-130.2, 135.3]
+  EOG(R): 3750 samples, range=[-130.0, 130.6]
+  EEG: 3750 samples, range=[-124.0, 112.2]
 
 Saved to epoch0_signals.png
 
 === STEP 2: PREPROCESSING ===
 Preprocessing data for iteration 1...
-Processing single-channel data (backward compatibility)
-{notch_freq} skipped
-Preprocessed data shape: (10293, 3750)
+Processing multi-channel data (EEG + EOG + EMG)
+Iteration 1: Processing EEG channels only
+Preprocessed data shape: (10293, 2, 3750)
 
 === STEP 3: FEATURE EXTRACTION ===
 Extracting features for iteration 1...
-Processing single-channel data (backward compatibility)
-16 features extracted
-Extracted features shape: (10293, 16)
+Processing multi-channel data (EEG + EOG + EMG)
+Multi-channel Iteration 1: 32 features (target: 32+)
+Students must implement remaining 13 time-domain features per EEG channel!
+Extracted features shape: (10293, 32)
 
 === STEP 4: FEATURE SELECTION ===
-Selecting features for iteration 1...
-Input features shape: (10293, 16)
-Early iteration - using all available features
-Selected features shape: (10293, 16)
-Selected features shape: (10293, 16)
+Selected features shape: (10293, 32)
 
 === STEP 5: CLASSIFICATION ===
 Training knn classifier...
-Features shape: (10293, 16), Labels shape: (10293,), Groups shape: (10293,)
+Features shape: (10293, 32), Labels shape: (10293,), Groups shape: (10293,)
 LOSO cross-validation with 10 folds
 Fold 1/10: Training on 9 subjects, testing on R1
   Resampled fold training distribution: [3351 3351 3351 3351 3351]
 Using k-NN with k=5 and weights ='distance
-  R1: Accuracy=53.4%, Kappa=0.390, F1-macro=0.453
+  R1: Accuracy=51.0%, Kappa=0.358, F1-macro=0.448
 Fold 2/10: Training on 9 subjects, testing on R10
   Resampled fold training distribution: [3317 3317 3317 3317 3317]
 Using k-NN with k=5 and weights ='distance
-  R10: Accuracy=35.6%, Kappa=0.188, F1-macro=0.305
+  R10: Accuracy=37.6%, Kappa=0.212, F1-macro=0.332
 Fold 3/10: Training on 9 subjects, testing on R2
   Resampled fold training distribution: [3570 3570 3570 3570 3570]
 Using k-NN with k=5 and weights ='distance
-  R2: Accuracy=66.8%, Kappa=0.447, F1-macro=0.438
+  R2: Accuracy=53.3%, Kappa=0.321, F1-macro=0.406
 Fold 4/10: Training on 9 subjects, testing on R3
   Resampled fold training distribution: [3519 3519 3519 3519 3519]
 Using k-NN with k=5 and weights ='distance
-  R3: Accuracy=52.9%, Kappa=0.401, F1-macro=0.450
+  R3: Accuracy=59.6%, Kappa=0.480, F1-macro=0.490
 Fold 5/10: Training on 9 subjects, testing on R4
   Resampled fold training distribution: [3631 3631 3631 3631 3631]
 Using k-NN with k=5 and weights ='distance
-  R4: Accuracy=43.2%, Kappa=0.288, F1-macro=0.341
+  R4: Accuracy=53.2%, Kappa=0.384, F1-macro=0.397
 Fold 6/10: Training on 9 subjects, testing on R5
   Resampled fold training distribution: [3300 3300 3300 3300 3300]
 Using k-NN with k=5 and weights ='distance
-  R5: Accuracy=47.0%, Kappa=0.318, F1-macro=0.426
+  R5: Accuracy=47.4%, Kappa=0.328, F1-macro=0.434
 Fold 7/10: Training on 9 subjects, testing on R6
   Resampled fold training distribution: [3279 3279 3279 3279 3279]
 Using k-NN with k=5 and weights ='distance
-  R6: Accuracy=41.8%, Kappa=0.224, F1-macro=0.332
+  R6: Accuracy=39.3%, Kappa=0.214, F1-macro=0.330
 Fold 8/10: Training on 9 subjects, testing on R7
   Resampled fold training distribution: [3349 3349 3349 3349 3349]
 Using k-NN with k=5 and weights ='distance
-  R7: Accuracy=40.7%, Kappa=0.179, F1-macro=0.327
+  R7: Accuracy=45.0%, Kappa=0.226, F1-macro=0.367
 Fold 9/10: Training on 9 subjects, testing on R8
   Resampled fold training distribution: [3446 3446 3446 3446 3446]
 Using k-NN with k=5 and weights ='distance
-  R8: Accuracy=56.5%, Kappa=0.439, F1-macro=0.477
+  R8: Accuracy=53.4%, Kappa=0.413, F1-macro=0.440
 Fold 10/10: Training on 9 subjects, testing on R9
   Resampled fold training distribution: [3510 3510 3510 3510 3510]
 Using k-NN with k=5 and weights ='distance
-  R9: Accuracy=44.3%, Kappa=0.275, F1-macro=0.354
+  R9: Accuracy=46.4%, Kappa=0.302, F1-macro=0.370
 
 ============================================================
 LOSO Cross-Validation Results (10 subjects):
-  Accuracy = 48.2% กำ 8.7%
-  Kappa    = 0.315 กำ 0.096
+  Accuracy = 48.6% กำ 6.5%
+  Kappa    = 0.324 กำ 0.085
 ============================================================
 
 Per-Subject Performance:
-  R2: 66.8% (kappa=0.447)
-  R8: 56.5% (kappa=0.439)
-  R1: 53.4% (kappa=0.390)
-  R3: 52.9% (kappa=0.401)
-  R5: 47.0% (kappa=0.318)
-  R9: 44.3% (kappa=0.275)
-  R4: 43.2% (kappa=0.288)
-  R6: 41.8% (kappa=0.224)
-  R7: 40.7% (kappa=0.179)
-  R10: 35.6% (kappa=0.188)
+  R3: 59.6% (kappa=0.480)
+  R8: 53.4% (kappa=0.413)
+  R2: 53.3% (kappa=0.321)
+  R4: 53.2% (kappa=0.384)
+  R1: 51.0% (kappa=0.358)
+  R5: 47.4% (kappa=0.328)
+  R9: 46.4% (kappa=0.302)
+  R7: 45.0% (kappa=0.226)
+  R6: 39.3% (kappa=0.214)
+  R10: 37.6% (kappa=0.212)
 
 ============================================================
 AGGREGATED PERFORMANCE METRICS (Across all LOSO folds)
@@ -366,28 +345,28 @@ AGGREGATED PERFORMANCE METRICS (Across all LOSO folds)
 ======================================================================
 SLEEP STAGE CLASSIFICATION PERFORMANCE METRICS
 ======================================================================
-Overall Accuracy: 0.483
-Macro F1-Score: 0.410
-Weighted F1-Score: 0.521
-Cohen's Kappa: 0.329
+Overall Accuracy: 0.485
+Macro F1-Score: 0.415
+Weighted F1-Score: 0.520
+Cohen's Kappa: 0.337
 
 Confusion Matrix:
       Wake   N1    N2    N3  REM
-Wake  1840  649   387    63  535
-N1      69   66    57     8   75
-N2     321  392  1638   600  857
-N3      16   31   319  1117  135
-REM    152  193   357   103  313
+Wake  1925  776   306    54  413
+N1      87   70    51     0   67
+N2     315  460  1413   651  969
+N3       9    2   258  1290   59
+REM    171  213   359    82  293
 
 Per-Class Performance Metrics:
 ----------------------------------------------------------------------
 Stage    Accuracy   Sensitivity  Specificity  F1-Score  
 ----------------------------------------------------------------------
-Wake     0.530      0.530        0.918        0.627     
-N1       0.240      0.240        0.874        0.082     
-N2       0.430      0.430        0.827        0.499     
-N3       0.690      0.690        0.911        0.637     
-REM      0.280      0.280        0.825        0.206     
+Wake     0.554      0.554        0.915        0.644     
+N1       0.255      0.255        0.855        0.078     
+N2       0.371      0.371        0.850        0.456     
+N3       0.797      0.797        0.909        0.698     
+REM      0.262      0.262        0.836        0.201     
 ----------------------------------------------------------------------
 
 Class Distribution in Test Set:
@@ -414,6 +393,253 @@ Trained knn classifier
 Visualizing results...
 
 === STEP 7: PROCESSING LOG & REPORT GENERATION ===
+
+=== STEP 8: HOLDOUT PREDICTION ===
+Found 11 holdout files for prediction.
+
+Processing holdout file: H09.edf...
+Loading holdout data from ../data/holdout\H09.edf...
+Identified channels:
+  EEG: ['EEG-C1', 'EEG-C2']
+  EOG: ['EOG-L', 'EOG-R']
+  EMG: ['EMG-Chin']
+NOTE: pick_channels() is a legacy function. New code should use inst.pick(...).
+  EEG: 2 channels, 3750 samples/epoch, 125.0 Hz
+NOTE: pick_channels() is a legacy function. New code should use inst.pick(...).
+  EOG: 2 channels, 3750 samples/epoch, 125.0 Hz
+NOTE: pick_channels() is a legacy function. New code should use inst.pick(...).
+  EMG: 1 channels, 3750 samples/epoch, 125.0 Hz
+Loaded 1049 epochs (8.74 hours)
+Preprocessing data for iteration 1...
+Processing multi-channel data (EEG + EOG + EMG)
+Iteration 1: Processing EEG channels only
+Extracting features for iteration 1...
+Processing multi-channel data (EEG + EOG + EMG)
+Multi-channel Iteration 1: 32 features (target: 32+)
+Students must implement remaining 13 time-domain features per EEG channel!
+  Predicting 1049 epochs for H09...
+
+Processing holdout file: H1.edf...
+Loading holdout data from ../data/holdout\H1.edf...
+Identified channels:
+  EEG: ['EEG(sec)', 'EEG']
+  EOG: ['EOG(L)', 'EOG(R)']
+  EMG: ['EMG']
+NOTE: pick_channels() is a legacy function. New code should use inst.pick(...).
+  EEG: 2 channels, 3750 samples/epoch, 125.0 Hz
+NOTE: pick_channels() is a legacy function. New code should use inst.pick(...).
+  EOG: 2 channels, 3750 samples/epoch, 125.0 Hz
+NOTE: pick_channels() is a legacy function. New code should use inst.pick(...).
+  EMG: 1 channels, 3750 samples/epoch, 125.0 Hz
+Loaded 1018 epochs (8.48 hours)
+Preprocessing data for iteration 1...
+Processing multi-channel data (EEG + EOG + EMG)
+Iteration 1: Processing EEG channels only
+Extracting features for iteration 1...
+Processing multi-channel data (EEG + EOG + EMG)
+Multi-channel Iteration 1: 32 features (target: 32+)
+Students must implement remaining 13 time-domain features per EEG channel!
+  Predicting 1018 epochs for H1...
+
+Processing holdout file: H10.edf...
+Loading holdout data from ../data/holdout\H10.edf...
+Identified channels:
+  EEG: ['EEG(sec)', 'EEG']
+  EOG: ['EOG(L)', 'EOG(R)']
+  EMG: ['EMG']
+NOTE: pick_channels() is a legacy function. New code should use inst.pick(...).
+  EEG: 2 channels, 3750 samples/epoch, 125.0 Hz
+NOTE: pick_channels() is a legacy function. New code should use inst.pick(...).
+  EOG: 2 channels, 3750 samples/epoch, 125.0 Hz
+NOTE: pick_channels() is a legacy function. New code should use inst.pick(...).
+  EMG: 1 channels, 3750 samples/epoch, 125.0 Hz
+Loaded 1066 epochs (8.88 hours)
+Preprocessing data for iteration 1...
+Processing multi-channel data (EEG + EOG + EMG)
+Iteration 1: Processing EEG channels only
+Extracting features for iteration 1...
+Processing multi-channel data (EEG + EOG + EMG)
+Multi-channel Iteration 1: 32 features (target: 32+)
+Students must implement remaining 13 time-domain features per EEG channel!
+  Predicting 1066 epochs for H10...
+
+Processing holdout file: H2.edf...
+Loading holdout data from ../data/holdout\H2.edf...
+Identified channels:
+  EEG: ['EEG(sec)', 'EEG']
+  EOG: ['EOG(L)', 'EOG(R)']
+  EMG: ['EMG']
+NOTE: pick_channels() is a legacy function. New code should use inst.pick(...).
+  EEG: 2 channels, 3750 samples/epoch, 125.0 Hz
+NOTE: pick_channels() is a legacy function. New code should use inst.pick(...).
+  EOG: 2 channels, 3750 samples/epoch, 125.0 Hz
+NOTE: pick_channels() is a legacy function. New code should use inst.pick(...).
+  EMG: 1 channels, 3750 samples/epoch, 125.0 Hz
+Loaded 1016 epochs (8.47 hours)
+Preprocessing data for iteration 1...
+Processing multi-channel data (EEG + EOG + EMG)
+Iteration 1: Processing EEG channels only
+Extracting features for iteration 1...
+Processing multi-channel data (EEG + EOG + EMG)
+Multi-channel Iteration 1: 32 features (target: 32+)
+Students must implement remaining 13 time-domain features per EEG channel!
+  Predicting 1016 epochs for H2...
+
+Processing holdout file: H3.edf...
+Loading holdout data from ../data/holdout\H3.edf...
+Identified channels:
+  EEG: ['EEG(sec)', 'EEG']
+  EOG: ['EOG(L)', 'EOG(R)']
+  EMG: ['EMG']
+NOTE: pick_channels() is a legacy function. New code should use inst.pick(...).
+  EEG: 2 channels, 3750 samples/epoch, 125.0 Hz
+NOTE: pick_channels() is a legacy function. New code should use inst.pick(...).
+  EOG: 2 channels, 3750 samples/epoch, 125.0 Hz
+NOTE: pick_channels() is a legacy function. New code should use inst.pick(...).
+  EMG: 1 channels, 3750 samples/epoch, 125.0 Hz
+Loaded 1066 epochs (8.88 hours)
+Preprocessing data for iteration 1...
+Processing multi-channel data (EEG + EOG + EMG)
+Iteration 1: Processing EEG channels only
+Extracting features for iteration 1...
+Processing multi-channel data (EEG + EOG + EMG)
+Multi-channel Iteration 1: 32 features (target: 32+)
+Students must implement remaining 13 time-domain features per EEG channel!
+  Predicting 1066 epochs for H3...
+
+Processing holdout file: H4.edf...
+Loading holdout data from ../data/holdout\H4.edf...
+Identified channels:
+  EEG: ['EEG(sec)', 'EEG']
+  EOG: ['EOG(L)', 'EOG(R)']
+  EMG: ['EMG']
+NOTE: pick_channels() is a legacy function. New code should use inst.pick(...).
+  EEG: 2 channels, 3750 samples/epoch, 125.0 Hz
+NOTE: pick_channels() is a legacy function. New code should use inst.pick(...).
+  EOG: 2 channels, 3750 samples/epoch, 125.0 Hz
+NOTE: pick_channels() is a legacy function. New code should use inst.pick(...).
+  EMG: 1 channels, 3750 samples/epoch, 125.0 Hz
+Loaded 1068 epochs (8.90 hours)
+Preprocessing data for iteration 1...
+Processing multi-channel data (EEG + EOG + EMG)
+Iteration 1: Processing EEG channels only
+Extracting features for iteration 1...
+Processing multi-channel data (EEG + EOG + EMG)
+Multi-channel Iteration 1: 32 features (target: 32+)
+Students must implement remaining 13 time-domain features per EEG channel!
+  Predicting 1068 epochs for H4...
+
+Processing holdout file: H5.edf...
+Loading holdout data from ../data/holdout\H5.edf...
+Identified channels:
+  EEG: ['EEG(sec)', 'EEG']
+  EOG: ['EOG(L)', 'EOG(R)']
+  EMG: ['EMG']
+NOTE: pick_channels() is a legacy function. New code should use inst.pick(...).
+  EEG: 2 channels, 3750 samples/epoch, 125.0 Hz
+NOTE: pick_channels() is a legacy function. New code should use inst.pick(...).
+  EOG: 2 channels, 3750 samples/epoch, 125.0 Hz
+NOTE: pick_channels() is a legacy function. New code should use inst.pick(...).
+  EMG: 1 channels, 3750 samples/epoch, 125.0 Hz
+Loaded 1018 epochs (8.48 hours)
+Preprocessing data for iteration 1...
+Processing multi-channel data (EEG + EOG + EMG)
+Iteration 1: Processing EEG channels only
+Extracting features for iteration 1...
+Processing multi-channel data (EEG + EOG + EMG)
+Multi-channel Iteration 1: 32 features (target: 32+)
+Students must implement remaining 13 time-domain features per EEG channel!
+  Predicting 1018 epochs for H5...
+
+Processing holdout file: H6.edf...
+Loading holdout data from ../data/holdout\H6.edf...
+Identified channels:
+  EEG: ['EEG(sec)', 'EEG']
+  EOG: ['EOG(L)', 'EOG(R)']
+  EMG: ['EMG']
+NOTE: pick_channels() is a legacy function. New code should use inst.pick(...).
+  EEG: 2 channels, 3750 samples/epoch, 125.0 Hz
+NOTE: pick_channels() is a legacy function. New code should use inst.pick(...).
+  EOG: 2 channels, 3750 samples/epoch, 125.0 Hz
+NOTE: pick_channels() is a legacy function. New code should use inst.pick(...).
+  EMG: 1 channels, 3750 samples/epoch, 125.0 Hz
+Loaded 958 epochs (7.98 hours)
+Preprocessing data for iteration 1...
+Processing multi-channel data (EEG + EOG + EMG)
+Iteration 1: Processing EEG channels only
+Extracting features for iteration 1...
+Processing multi-channel data (EEG + EOG + EMG)
+Multi-channel Iteration 1: 32 features (target: 32+)
+Students must implement remaining 13 time-domain features per EEG channel!
+  Predicting 958 epochs for H6...
+
+Processing holdout file: H7.edf...
+Loading holdout data from ../data/holdout\H7.edf...
+Identified channels:
+  EEG: ['EEG(sec)', 'EEG']
+  EOG: ['EOG(L)', 'EOG(R)']
+  EMG: ['EMG']
+NOTE: pick_channels() is a legacy function. New code should use inst.pick(...).
+  EEG: 2 channels, 3750 samples/epoch, 125.0 Hz
+NOTE: pick_channels() is a legacy function. New code should use inst.pick(...).
+  EOG: 2 channels, 3750 samples/epoch, 125.0 Hz
+NOTE: pick_channels() is a legacy function. New code should use inst.pick(...).
+  EMG: 1 channels, 3750 samples/epoch, 125.0 Hz
+Loaded 1067 epochs (8.89 hours)
+Preprocessing data for iteration 1...
+Processing multi-channel data (EEG + EOG + EMG)
+Iteration 1: Processing EEG channels only
+Extracting features for iteration 1...
+Processing multi-channel data (EEG + EOG + EMG)
+Multi-channel Iteration 1: 32 features (target: 32+)
+Students must implement remaining 13 time-domain features per EEG channel!
+  Predicting 1067 epochs for H7...
+
+Processing holdout file: H8.edf...
+Loading holdout data from ../data/holdout\H8.edf...
+Identified channels:
+  EEG: ['EEG(sec)', 'EEG']
+  EOG: ['EOG(L)', 'EOG(R)']
+  EMG: ['EMG']
+NOTE: pick_channels() is a legacy function. New code should use inst.pick(...).
+  EEG: 2 channels, 3750 samples/epoch, 125.0 Hz
+NOTE: pick_channels() is a legacy function. New code should use inst.pick(...).
+  EOG: 2 channels, 3750 samples/epoch, 125.0 Hz
+NOTE: pick_channels() is a legacy function. New code should use inst.pick(...).
+  EMG: 1 channels, 3750 samples/epoch, 125.0 Hz
+Loaded 1066 epochs (8.88 hours)
+Preprocessing data for iteration 1...
+Processing multi-channel data (EEG + EOG + EMG)
+Iteration 1: Processing EEG channels only
+Extracting features for iteration 1...
+Processing multi-channel data (EEG + EOG + EMG)
+Multi-channel Iteration 1: 32 features (target: 32+)
+Students must implement remaining 13 time-domain features per EEG channel!
+  Predicting 1066 epochs for H8...
+
+Processing holdout file: H9.edf...
+Loading holdout data from ../data/holdout\H9.edf...
+Identified channels:
+  EEG: ['EEG(sec)', 'EEG']
+  EOG: ['EOG(L)', 'EOG(R)']
+  EMG: ['EMG']
+NOTE: pick_channels() is a legacy function. New code should use inst.pick(...).
+  EEG: 2 channels, 3750 samples/epoch, 125.0 Hz
+NOTE: pick_channels() is a legacy function. New code should use inst.pick(...).
+  EOG: 2 channels, 3750 samples/epoch, 125.0 Hz
+NOTE: pick_channels() is a legacy function. New code should use inst.pick(...).
+  EMG: 1 channels, 3750 samples/epoch, 125.0 Hz
+Loaded 1068 epochs (8.90 hours)
+Preprocessing data for iteration 1...
+Processing multi-channel data (EEG + EOG + EMG)
+Iteration 1: Processing EEG channels only
+Extracting features for iteration 1...
+Processing multi-channel data (EEG + EOG + EMG)
+Multi-channel Iteration 1: 32 features (target: 32+)
+Students must implement remaining 13 time-domain features per EEG channel!
+  Predicting 1068 epochs for H9...
+Submission file created successfully at: submission.csv
+Total predictions: 11460
 
 
 

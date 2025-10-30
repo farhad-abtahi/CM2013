@@ -55,7 +55,7 @@ def notch_filter(data, to_be_removed, fs, q_factor, no_harmonics): # Notch filte
         notch_freq = h * to_be_removed
 
         if notch_freq >= nyquist_criterion:
-            print("{notch_freq} skipped")
+            #print(f"{notch_freq} skipped")
             continue
 
         b, a = iirnotch(w0=notch_freq, Q=q_factor, fs=fs)
