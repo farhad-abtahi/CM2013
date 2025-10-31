@@ -276,7 +276,7 @@ def train_classifier(features, labels, groups, config):
     final_model.fit(features_resampled, labels_resampled)
     print("Final model training complete.")
 
-    return final_model
+    return final_model, np.array(all_y_test), np.array(all_y_pred)
 
 
 def print_performance_metrics(y_true, y_pred):

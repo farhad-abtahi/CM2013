@@ -24,7 +24,8 @@ def plot_confusion_matrix(y_true, y_pred, class_names):
         y_pred (np.ndarray): The predicted labels.
         class_names (list): The names of the classes.
     """
-    cm = confusion_matrix(y_true, y_pred)
+    label_order = np.arange(len(class_names))
+    cm = confusion_matrix(y_true, y_pred, labels=label_order)
     disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=class_names)
     disp.plot()
     plt.title("Confusion Matrix")
@@ -284,7 +285,7 @@ def plot_hypnogram(xml_path, edf_path=None):
         import traceback
         traceback.print_exc()
 
-def visualize_results(model, features, labels, config):
+def visualize_results(y_true, y_pred, config):
     """
     Visualizes the results of the classification.
 
@@ -297,8 +298,7 @@ def visualize_results(model, features, labels, config):
     print("Visualizing results...")
     # TODO: Add more visualizations as needed (e.g., feature importance).
     class_names = ['Wake', 'N1', 'N2', 'N3', 'REM']
-    y_pred = model.predict(features)
-    plot_confusion_matrix(labels, y_pred, class_names)
+    plot_confusion_matrix(y_true, y_pred, class_names)
 
 def visualize_fft(signal, fs, ax=None, title="FFT of Signal"):# add by Shuxuan
     n = len(signal)
