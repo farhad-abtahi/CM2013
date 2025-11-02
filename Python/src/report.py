@@ -9,7 +9,7 @@ from sklearn.metrics import (
 import pandas as pd
 import numpy as np 
 
-def generate_report(model, features, labels, config, processing_log):
+def generate_report(model, features, labels, config, processing_log, y_true_all=None, y_pred_all=None):
     """
     Generates a report summarizing the results.
 
@@ -29,8 +29,12 @@ def generate_report(model, features, labels, config, processing_log):
     # - Details about the model and features used
     
     # After prediction
-    y_pred = model.predict(features)
-    y_gt = labels
+
+    y_gt = np.array(y_true_all)
+    y_pred = np.array(y_pred_all)
+
+    #y_pred = model.predict(features)
+    #y_gt = labels
 
     # Calculate all metrics
     accuracy = accuracy_score(y_gt, y_pred)

@@ -158,7 +158,7 @@ def main():
     processing_log = stdout_buffer.getvalue()   
      
     if model is not None:
-        generate_report(model, selected_features, labels, config, processing_log)
+        generate_report(model, selected_features, labels, config, processing_log, y_true_all, y_pred_all)
     else:
         print("Skipping report - no trained model")
 
