@@ -21,14 +21,14 @@ import numpy as np
 
 
 def main():
-    # # Create a string buffer
-    # stdout_buffer = io.StringIO()
+    # Create a string buffer
+    stdout_buffer = io.StringIO()
 
-    # # Save the original stdout
-    # original_stdout = sys.stdout
+    # Save the original stdout
+    original_stdout = sys.stdout
 
-    # # Redirect stdout to the buffer
-    # sys.stdout = stdout_buffer 
+    # Redirect stdout to the buffer
+    sys.stdout = stdout_buffer 
 
     print("\n=== PROCESSING LOG ===")
 
