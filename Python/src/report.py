@@ -119,9 +119,9 @@ def calculate_sleep_metrics(labels, epoch_duration=30):
             part_start, part_stop = part
             dur_min = (part_stop - part_start + 1) * epoch_duration / 60.0
             rem_dur.append(dur_min)
-        metrics["Mean REM duration"] = np.mean(rem_dur)
+        metrics["Mean REM duration [min]"] = np.mean(rem_dur)
     else:
-        metrics["Mean REM duration"] = np.nan
+        metrics["Mean REM duration [min]"] = np.nan
 
     return metrics
 
