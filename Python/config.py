@@ -2,7 +2,7 @@
 
 # Set the current iteration of the project (1-4). 
 # This controls which parts of the pipeline are active.
-CURRENT_ITERATION = 1
+CURRENT_ITERATION = 2
 
 # Set to True to use cached data for preprocessing and feature extraction.
 USE_CACHE = False  # Temporarily disabled for testing with real data
