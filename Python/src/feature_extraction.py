@@ -1,3 +1,4 @@
+from typing import Any
 import numpy as np
 import scipy
 from mne_features.univariate import compute_hjorth_complexity
@@ -101,7 +102,7 @@ def extract_multi_channel_features(multi_channel_data, config):
             # Add EMG features (1 channel)
             emg_signal = multi_channel_data['emg'][epoch_idx, 0, :]
             emg_features = extract_emg_features(emg_signal)
-            epoch_features.extend(list(emg_features.values()))
+            epoch_features.extend(list[Any](emg_features.values()))
 
         all_features.append(epoch_features)
 

@@ -1,3 +1,9 @@
 # Python cache files
 __pycache__/
 *.pyc
+*.png
+cache/
+data/
+MATLAB/
+Python/__pycache__/
+Python/tests/__pycache__/

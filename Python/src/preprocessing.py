@@ -121,7 +121,7 @@ def preprocess_multi_channel(multi_channel_data, config):
     if config.CURRENT_ITERATION >= 2:  # EOG starts in iteration 2
         # Process EOG channels (2 channels) - may need different filtering
         eog_data = multi_channel_data['eog']
-        eog_fs = 50  # Actual sampling rate: 50 Hz (TODO: Get from channel_info)
+        eog_fs = 125  # Actual sampling rate: 50 Hz (TODO: Get from channel_info)
         preprocessed_eog = np.zeros_like(eog_data)
 
         for ch in range(eog_data.shape[1]):

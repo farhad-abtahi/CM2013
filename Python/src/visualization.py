@@ -143,7 +143,7 @@ def plot_sample_epoch(edf_path, epoch_idx=0, epoch_duration=30):
         plt.savefig(output_path, dpi=100, facecolor='white', edgecolor='black', bbox_inches='tight')
         print(f"\nSaved to {output_path}")
 
-        plt.show()
+        plt.show(block=False)
 
     except FileNotFoundError:
         print(f"Error: EDF file not found at {edf_path}")
@@ -260,7 +260,7 @@ def plot_hypnogram(xml_path, edf_path=None):
         ax2.set_xticklabels([f'{h/120:.1f}' for h in hour_ticks])
 
         plt.tight_layout()
-        plt.show()
+        plt.show(block=False)
 
         # Print statistics
         print("\nSleep Stage Statistics:")
@@ -315,7 +315,7 @@ def visualize_fft(signal, fs, ax=None, title="FFT of Signal"):# add by Shuxuan
     ax.set_ylabel("Magnitude")
     ax.grid(True, alpha=0.4)
     plt.savefig(f"{title}")
-    plt.show()
+    plt.show(block=False)
 
 def visualize_signal(signal, fs, ax=None, title="Time-domain Signal"):# add by Shuxuan
     n = len(signal)
@@ -330,4 +330,4 @@ def visualize_signal(signal, fs, ax=None, title="Time-domain Signal"):# add by S
     ax.set_ylabel("Amplitude (µV)")
     ax.grid(True, alpha=0.4)
     plt.savefig(f"{title}")
-    plt.show()
+    plt.show(block=False)
