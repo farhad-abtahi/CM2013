@@ -433,6 +433,26 @@ N2     315  400  1658   598  837
 N3      13   30   313  1136  126
 REM    196  158   361   105  298
 
+    
+## Clinical Validation
+Metric                                    True       Pred      Error
+----------------------------------------------------------------------
+Total recording time [min]              5146.5     5146.5        0.0
+Sleep Onset Latenancy (SOL) [min]         13.5        9.0        4.5
+REM Latency [min]                        114.0        5.0      109.0
+Total Sleep Time (TST) [hr]               56.8       65.7        8.9
+Wake After Sleep Onset (WASO) [min]     1723.5     1194.0      529.5
+Wake [%]                                  50.9       30.5       20.4
+N1 [%]                                     4.0       16.4       12.4
+N2 [%]                                    55.8       35.5       20.4
+N3 [%]                                    23.7       24.3        0.5
+REM [%]                                   16.4       23.9        7.5
+Number of awakenings                     286.0      944.0      658.0
+Sleep Efficiency (SE) [%]                 66.2       76.6       10.4
+REM cycle                                 71.0     1336.0     1265.0
+Mean REM duration                          7.9        0.7        7.2
+
+
     ## Notes
     Features shape: (10293, 16)
     Full report generated.
