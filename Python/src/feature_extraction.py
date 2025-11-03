@@ -38,27 +38,7 @@ def extract_time_domain_features(epoch):
         'total_energy': np.sum(epoch**2),
         'mean_power': np.mean(epoch**2)
     }
-
-    # TODO: Students must implement remaining time-domain features:
-    # Basic statistical features:
-    # features['variance'] = np.var(epoch)
-    # features['rms'] = np.sqrt(np.mean(epoch**2))
-    # features['min'] = np.min(epoch)
-    # features['max'] = np.max(epoch)
-    # features['range'] = np.max(epoch) - np.min(epoch)
-    # features['skewness'] = scipy.stats.skew(epoch)
-    # features['kurtosis'] = scipy.stats.kurtosis(epoch)
-
-    # Signal complexity features:
-    # features['zero_crossings'] = np.sum(np.diff(np.sign(epoch)) != 0)
-    # features['hjorth_activity'] = np.var(epoch)
-    # features['hjorth_mobility'] = np.sqrt(np.var(np.diff(epoch)) / np.var(epoch))
-    # features['hjorth_complexity'] = hjorth_complexity(epoch)
-
-    # Signal energy and power:
-    # features['total_energy'] = np.sum(epoch**2)
-    # features['mean_power'] = np.mean(epoch**2)
-
+    
     return features
 
 def extract_features(data, config):

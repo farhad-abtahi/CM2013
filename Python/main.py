@@ -1,5 +1,5 @@
 import config
-from src.data_loader import load_training_data
+from src.data_loader import load_all_training_data
 from src.preprocessing import preprocess
 from src.feature_extraction import extract_features
 from src.feature_selection import select_features
@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt
 import os
 import sys
 import io
-
+import numpy as np
 
 
 def main():
@@ -39,7 +39,7 @@ def main():
     print("\n=== STEP 1: DATA LOADING ===")
 
     #Loading all data
-    from pathlib import Path
+    '''from pathlib import Path
     training_dir = Path(config.TRAINING_DIR)
     all_eeg_data = []
     all_labels = []
@@ -68,18 +68,29 @@ def main():
             eeg_data, labels = load_training_data(edf_file, xml_file)
             print(f"Single-channel data loaded: {eeg_data.shape}, Labels: {labels.shape}")
 
-    import numpy as np
+    
     eeg_data = np.concatenate(all_eeg_data, axis = 0)
     labels = np.concatenate(all_labels, axis=0)
     all_record_ids = np.array(all_record_ids) #add by Sherry for classification(Strategy B)
-    #edf_file = os.path.join(config.TRAINING_DIR, "R1.edf")  # Example EDF file
-    #xml_file = os.path.join(config.TRAINING_DIR, "R1.xml")  # Corresponding annotation file
-    #edf_file = "C:/Users/姚宜萱/OneDrive - KTH/Signal processing/CM2013/data/training/R1.edf"
-    #xml_file = "C:/Users/姚宜萱/OneDrive - KTH/Signal processing/CM2013/data/training/R1.xml"
     
     # Handle both new multi-channel format and old single-channel format for compatibility
     plot_hypnogram(xml_file)
-    plot_sample_epoch(edf_file, epoch_idx=0)
+    plot_sample_epoch(edf_file, epoch_idx=0)'''
+
+    multi_channel_data, labels, all_record_ids, channel_info = load_all_training_data(config.TRAINING_DIR)
+    print(f"Multi-channel data loaded:")
+    print(f"  EEG: {multi_channel_data['eeg'].shape}")
+    print(f"  EOG: {multi_channel_data['eog'].shape}")
+    print(f"  EMG: {multi_channel_data['emg'].shape}")
+    print(f"Labels shape: {labels.shape}")
+
+    example_edf_file = os.path.join(config.TRAINING_DIR, "R1.edf")
+    example_xml_file = os.path.join(config.TRAINING_DIR, "R1.xml")
+    if os.path.exists(example_xml_file):
+        plot_hypnogram(example_xml_file)
+    if os.path.exists(example_edf_file):
+        plot_sample_epoch(example_edf_file, epoch_idx=0)
+    
     
     # 2. Preprocessing
     print("\n=== STEP 2: PREPROCESSING ===")
@@ -91,13 +102,13 @@ def main():
             print("Loaded preprocessed data from cache")
 
     if preprocessed_data is None:
-        preprocessed_data = preprocess(eeg_data, config)
-        print(f"Preprocessed data shape: {preprocessed_data.shape}")
+        preprocessed_data = preprocess(multi_channel_data, config)
+        print(f"Preprocessed data shape: {preprocessed_data['eeg'].shape}")
         if config.USE_CACHE:
             save_cache(preprocessed_data, cache_filename_preprocess, config.CACHE_DIR)
             print("Saved preprocessed data to cache")
     
-    raw_signal = eeg_data[0,:]
+    raw_signal = multi_channel_data['eeg'][0,0,:]
     visualize_signal(raw_signal if isinstance(raw_signal, np.ndarray) else raw_signal, 
                  fs=125, title="Raw EEG Signal (Time Domain)")
     visualize_fft(raw_signal if isinstance(raw_signal, np.ndarray) else raw_signal, 
@@ -127,7 +138,8 @@ def main():
 
     # 4. Feature Selection
     print("\n=== STEP 4: FEATURE SELECTION ===")
-    selected_features = select_features(features, labels, config)
+    #selected_features = select_features(features, labels, config)
+    selected_features = features
     print(f"Selected features shape: {selected_features.shape}")
 
     # 5. Classification
