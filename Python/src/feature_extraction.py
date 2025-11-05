@@ -51,6 +51,10 @@ def extract_frequency_domain_features(epoch, AR_method, Welch_method, wavelet_me
 
     return features
 
+def AR_method():
+    AR_features={}
+    return AR_features
+
 def wavelet_method(epoch, fs = 125, wavelet = 'db4', level = 5):
 
     coefficients = pywt.wavedec(epoch, wavelet, level)
