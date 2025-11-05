@@ -321,8 +321,8 @@ Using k-NN with k=5 and weights ='distance
 
 ============================================================
 LOSO Cross-Validation Results (10 subjects):
-  Accuracy = 48.6% ¡Ó 6.5%
-  Kappa    = 0.324 ¡Ó 0.085
+  Accuracy = 48.6% ï¿½ï¿½ 6.5%
+  Kappa    = 0.324 ï¿½ï¿½ 0.085
 ============================================================
 
 Per-Subject Performance:
