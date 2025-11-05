@@ -63,7 +63,7 @@ def notch_filter(data, to_be_removed, fs, q_factor, no_harmonics): # Notch filte
 
     return filtered
 
-def preprocess(data, config):
+def preprocess(data, channel_info, config):
     """
     STUDENT IMPLEMENTATION AREA: Preprocess data based on current iteration.
 
@@ -84,13 +84,13 @@ def preprocess(data, config):
 
     if is_multi_channel:
         print("Processing multi-channel data (EEG + EOG + EMG)")
-        return preprocess_multi_channel(data, config)
+        return preprocess_multi_channel(data, channel_info, config)
     else:
         print("Processing single-channel data (backward compatibility)")
-        return preprocess_single_channel(data, config)
+        return preprocess_single_channel(data, channel_info, config)
 
 
-def preprocess_multi_channel(multi_channel_data, config):
+def preprocess_multi_channel(multi_channel_data, channel_info, config):
     """
     Preprocess multi-channel data: 2 EEG + 2 EOG + 1 EMG channels.
     Each channel type may have different sampling rates and require different processing.
@@ -99,7 +99,7 @@ def preprocess_multi_channel(multi_channel_data, config):
 
     # Process EEG channels (2 channels)
     eeg_data = multi_channel_data['eeg']
-    eeg_fs = 125  # Actual sampling rate: 125 Hz (TODO: Get from channel_info)
+    eeg_fs = channel_info['eeg_fs']  # Actual sampling rate: 125 Hz (TODO: Get from channel_info)
     to_be_removed = 50 #for notch filter; can be 60
     q_factor = 30 #for notch filter; the higher its value, the narrower notch; typical range for EEG: 30-50
     no_harmonics = 2 #for notch filter
@@ -121,7 +121,7 @@ def preprocess_multi_channel(multi_channel_data, config):
     if config.CURRENT_ITERATION >= 2:  # EOG starts in iteration 2
         # Process EOG channels (2 channels) - may need different filtering
         eog_data = multi_channel_data['eog']
-        eog_fs = 125  # Actual sampling rate: 50 Hz (TODO: Get from channel_info)
+        eog_fs = channel_info['eog_fs']  # Actual sampling rate: 50 Hz (TODO: Get from channel_info)
         preprocessed_eog = np.zeros_like(eog_data)
 
         for ch in range(eog_data.shape[1]):
@@ -136,7 +136,7 @@ def preprocess_multi_channel(multi_channel_data, config):
     if config.CURRENT_ITERATION >= 3:  # EMG starts in iteration 3
         # Process EMG channel (1 channel) - may need higher frequency preservation
         emg_data = multi_channel_data['emg']
-        emg_fs = 125  # Actual sampling rate: 125 Hz (TODO: Get from channel_info)
+        emg_fs = channel_info['emg_fs']  # Actual sampling rate: 125 Hz (TODO: Get from channel_info)
         preprocessed_emg = np.zeros_like(emg_data)
 
         for epoch in range(emg_data.shape[0]):
@@ -161,13 +161,13 @@ def preprocess_multi_channel(multi_channel_data, config):
     return preprocessed_data
 
 
-def preprocess_single_channel(data, config):
+def preprocess_single_channel(data, channel_info, config):
     """
     Backward compatibility for single-channel preprocessing.
     """
     if config.CURRENT_ITERATION == 1:
         # EXAMPLE: Very basic low-pass filter (students should expand)
-        fs = 125  # Actual EEG sampling rate: 125 Hz (TODO: Get from data/config)
+        fs = channel_info['eeg_fs'] # Actual EEG sampling rate: 125 Hz (TODO: Get from data/config)
         #changed by Shuxuan
         #preprocessed_data = lowpass_filter(data, config.LOW_PASS_FILTER_FREQ, fs)
         #preprocessed_data = highpass_filter(data, config.HIGH_PASS_FILTER_FREQ, fs) #Highpass filter add by Sherry
@@ -175,6 +175,7 @@ def preprocess_single_channel(data, config):
         preprocessed_data = bandpass_filter(preprocessed_data, config.HIGH_PASS_FILTER_FREQ, config.LOW_PASS_FILTER_FREQ, fs = 125, order=4)
     elif config.CURRENT_ITERATION == 2:
         print("TODO: Implement enhanced preprocessing for iteration 2")
+        fs=channel_info['eog_fs']
         preprocessed_data = data  # Placeholder
 
     elif config.CURRENT_ITERATION >= 3:

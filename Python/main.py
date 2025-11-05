@@ -103,7 +103,7 @@ def main():
             print("Loaded preprocessed data from cache")
 
     if preprocessed_data is None:
-        preprocessed_data = preprocess(multi_channel_data, config)
+        preprocessed_data = preprocess(multi_channel_data, channel_info, config)
         print(f"Preprocessed data shape: {preprocessed_data['eeg'].shape}")
         if config.USE_CACHE:
             save_cache(preprocessed_data, cache_filename_preprocess, config.CACHE_DIR)
