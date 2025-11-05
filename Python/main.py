@@ -78,6 +78,7 @@ def main():
     plot_sample_epoch(edf_file, epoch_idx=0)'''
 
     multi_channel_data, labels, all_record_ids, channel_info = load_all_training_data(config.TRAINING_DIR)
+    
     print(f"Multi-channel data loaded:")
     print(f"  EEG: {multi_channel_data['eeg'].shape}")
     print(f"  EOG: {multi_channel_data['eog'].shape}")
@@ -104,20 +105,21 @@ def main():
 
     if preprocessed_data is None:
         preprocessed_data = preprocess(multi_channel_data, channel_info, config)
-        print(f"Preprocessed data shape: {preprocessed_data['eeg'].shape}")
+        print(f"Preprocessed EEG data shape: {preprocessed_data['eeg'].shape}")
+        print(f"Preprocessed EOG data shape: {preprocessed_data['eog'].shape}")
         if config.USE_CACHE:
             save_cache(preprocessed_data, cache_filename_preprocess, config.CACHE_DIR)
             print("Saved preprocessed data to cache")
     
-    raw_signal = multi_channel_data['eeg'][0,0,:]
+    raw_signal = multi_channel_data['eog'][0,0,:]
     visualize_signal(raw_signal if isinstance(raw_signal, np.ndarray) else raw_signal, 
-                 fs=125, title="Raw EEG Signal (Time Domain)")
+                 fs=channel_info['eog_fs'], title="Raw EOG Signal (Time Domain)")
     visualize_fft(raw_signal if isinstance(raw_signal, np.ndarray) else raw_signal, 
-              fs=125, title="Raw EEG Signal FFT")
+              fs=channel_info['eog_fs'], title="Raw EOG Signal FFT")
     visualize_signal(preprocessed_data[0] if isinstance(preprocessed_data, np.ndarray) 
-                 else preprocessed_data['eeg'][0,0,:], fs=125, title="Filtered EEG Signal (Time Domain)")
+                 else preprocessed_data['eog'][0,0,:], fs=channel_info['eog_fs'], title="Filtered EOG Signal (Time Domain)")
     visualize_fft(preprocessed_data[0] if isinstance(preprocessed_data, np.ndarray) 
-              else preprocessed_data['eeg'][0,0,:], fs=125, title="Filtered EEG Signal FFT")
+              else preprocessed_data['eog'][0,0,:], fs=channel_info['eog_fs'], title="Filtered EOG Signal FFT")
 
     plt.show()
 
