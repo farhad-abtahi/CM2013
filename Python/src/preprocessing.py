@@ -112,7 +112,7 @@ def preprocess_multi_channel(multi_channel_data, channel_info, config):
             filtered_signal = lowpass_filter(signal, config.LOW_PASS_FILTER_FREQ, eeg_fs)
             filtered_signal = highpass_filter(filtered_signal, config.HIGH_PASS_FILTER_FREQ, eeg_fs) #Highpass filter add by Sherry
             filtered_signal = notch_filter(filtered_signal, to_be_removed, eeg_fs, q_factor, no_harmonics) #new
-            filtered_signal = bandpass_filter(filtered_signal, config.HIGH_PASS_FILTER_FREQ, config.LOW_PASS_FILTER_FREQ, eeg_fs, order = 4)# Bandpass filter add by Shuxuan
+            filtered_signal = bandpass_filter(filtered_signal, config.LOW_PASS_FILTER_EEG_FREQ, config.HIGH_PASS_FILTER_FREQ, eeg_fs, order = 4)# Bandpass filter add by Shuxuan
             # DONE: Students should add bandpass filter, artifact removal
             preprocessed_eeg[epoch, ch, :] = filtered_signal
 
@@ -129,6 +129,8 @@ def preprocess_multi_channel(multi_channel_data, channel_info, config):
                 signal = eog_data[epoch, ch, :]
                 # EOG may need different filter settings (preserve slow eye movements)
                 filtered_signal = lowpass_filter(signal, 30, eog_fs)  # Lower cutoff for EOG
+                filtered_signal = notch_filter(filtered_signal, to_be_removed, eog_fs, q_factor, no_harmonics) #new
+                filtered_signal = bandpass_filter(filtered_signal, config.LOW_PASS_FILTER_EOG_FREQ, config.HIGH_PASS_FILTER_FREQ, eog_fs, order = 4)
                 preprocessed_eog[epoch, ch, :] = filtered_signal
 
         preprocessed_data['eog'] = preprocessed_eog

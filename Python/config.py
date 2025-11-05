@@ -23,8 +23,9 @@ if not os.path.exists(CACHE_DIR):
     os.makedirs(CACHE_DIR, exist_ok=True)
 
 # -- Preprocessing --
-LOW_PASS_FILTER_FREQ = 40  # Hz
-HIGH_PASS_FILTER_FREQ=0.5 ##Highpass filter frequency add by Sherry
+LOW_PASS_FILTER_EEG_FREQ = 40  # Hz
+LOW_PASS_FILTER_EOG_FREQ 5
+HIGH_PASS_FILTER_FREQ = 0.5 ##Highpass filter frequency add by Sherry
 
 # -- Feature Extraction --
 # (Add feature-specific parameters here)
