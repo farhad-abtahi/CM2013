@@ -42,6 +42,14 @@ def extract_time_domain_features(epoch):
     
     return features
 
+def extract_frequency_domain_features(epoch, AR_method, Welch_method, wavelet_method):
+
+    features = {
+
+    }
+
+    return features
+
 def extract_features(data, config):
     """
     STUDENT IMPLEMENTATION AREA: Extract features based on current iteration.
@@ -90,6 +98,9 @@ def extract_multi_channel_features(multi_channel_data, config):
         for ch in range(multi_channel_data['eeg'].shape[1]):
             eeg_signal = multi_channel_data['eeg'][epoch_idx, ch, :]
             eeg_features = extract_time_domain_features(eeg_signal)
+            epoch_features.extend(list(eeg_features.values()))
+
+            eeg_features= extract_frequency_domain_features(eeg_signal)
             epoch_features.extend(list(eeg_features.values()))
 
         if config.CURRENT_ITERATION >= 3:

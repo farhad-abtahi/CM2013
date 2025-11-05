@@ -143,8 +143,8 @@ def main():
 
     # 4. Feature Selection
     print("\n=== STEP 4: FEATURE SELECTION ===")
-    #selected_features = select_features(features, labels, config)
-    selected_features = features
+    selected_features = select_features(features, labels, config)
+    #selected_features = features
     print(f"Selected features shape: {selected_features.shape}")
 
     # 5. Classification
