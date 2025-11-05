@@ -91,6 +91,7 @@ def main():
     if os.path.exists(example_edf_file):
         plot_sample_epoch(example_edf_file, epoch_idx=0)
     
+    plt.show()
     
     # 2. Preprocessing
     print("\n=== STEP 2: PREPROCESSING ===")
@@ -117,6 +118,8 @@ def main():
                  else preprocessed_data['eeg'][0,0,:], fs=125, title="Filtered EEG Signal (Time Domain)")
     visualize_fft(preprocessed_data[0] if isinstance(preprocessed_data, np.ndarray) 
               else preprocessed_data['eeg'][0,0,:], fs=125, title="Filtered EEG Signal FFT")
+
+    plt.show()
 
     # 3. Feature Extraction
     print("\n=== STEP 3: FEATURE EXTRACTION ===")
@@ -157,6 +160,7 @@ def main():
     if model is not None:
         #plot_confusion_matrix(y_test, y_pred, class_names)
         visualize_results(y_true_all, y_pred_all, config)
+        plt.show()
     else:
         print("Skipping visualization - no trained model")
 
