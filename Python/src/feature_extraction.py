@@ -2,7 +2,8 @@ from typing import Any
 import numpy as np
 import scipy
 from mne_features.univariate import compute_hjorth_complexity
-
+import pywt # added
+from scipy.stats import skew, kurtosis # added
 
 def extract_time_domain_features(epoch):
     """
@@ -50,6 +51,15 @@ def extract_frequency_domain_features(epoch, AR_method, Welch_method, wavelet_me
 
     return features
 
+def wavelet_method(epoch, fs = 125, wavelet = 'db4', level = 5):
+
+    coefficients = pywt.wavedec(epoch, wavelet, level)
+    for coeff in coefficients:
+        energy = np.sum(coeff ** 2)
+    energy_tot = np.sum(energy)
+
+    wavelet_features = {}
+    
 def extract_features(data, config):
     """
     STUDENT IMPLEMENTATION AREA: Extract features based on current iteration.
