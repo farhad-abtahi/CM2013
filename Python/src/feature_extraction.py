@@ -47,14 +47,18 @@ def extract_time_domain_features(epoch):
 
 def extract_frequency_domain_features(epoch, fs, AR_method, Welch_method, wavelet_method):
 
-    features = {
-
-    }
-
+    features = {}
+    AR_features = AR_method(epoch,fs)
+    features.update(AR_features)
+    Welch_features = Welch_method(epoch,fs)
+    features.update(Welch_features)
+    wavelet_features = wavelet_method(epoch,fs)
+    features.update(wavelet_features)
+    
     return features
 
 def AR_method(epoch, fs):
-    p=pburg(epoch, order=16, fs=fs, criteria= 'AIC', NFFT=4096)
+    p=pburg(epoch, fs=fs, criteria= 'AIC', NFFT=4096)
     psd=p.psd
     freqs=p.frequencies()
 
@@ -109,9 +113,9 @@ def AR_method(epoch, fs):
     
     return AR_features
 
-def Welch_method():
-
-    return 
+def Welch_method(epoch,fs):
+    Welch_features={}
+    return Welch_features
 
 
 def wavelet_method(epoch, fs, wavelet = 'db4', level = 5):
