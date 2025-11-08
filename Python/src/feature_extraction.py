@@ -1,7 +1,9 @@
 from typing import Any
 import numpy as np
 import scipy
+from scipy.stats import entropy #add by Sherry
 from mne_features.univariate import compute_hjorth_complexity
+from spectrum import pburg #add by Sherry
 import pywt # added
 from scipy.stats import skew, kurtosis # added
 
@@ -43,7 +45,7 @@ def extract_time_domain_features(epoch):
     
     return features
 
-def extract_frequency_domain_features(epoch, AR_method, Welch_method, wavelet_method):
+def extract_frequency_domain_features(epoch, fs, AR_method, Welch_method, wavelet_method):
 
     features = {
 
@@ -51,11 +53,68 @@ def extract_frequency_domain_features(epoch, AR_method, Welch_method, wavelet_me
 
     return features
 
-def AR_method():
+def AR_method(epoch, fs):
+    p=pburg(epoch, order=16, fs=fs, criteria= 'AIC', NFFT=4096)
+    psd=p.psd
+    freqs=p.frequencies()
+
+    band={
+        'delta': (0.5,4),
+        'theta': (4,8),
+        'alpha': (8,13),
+        'beta':(13,30),
+        'gamma': (30,50)
+    }
+
     AR_features={}
+    band_powers = {}
+
+    for band_name, (low_freq, high_freq) in band.items():
+        idx_band = np.logical_and(freqs >= low_freq, freqs <= high_freq)
+        band_power = np.trapezoid(psd[idx_band], freqs[idx_band])
+        band_powers[f'{band_name}_power'] = band_power
+
+    idx_total = np.logical_and(freqs >= 0.5, freqs < 50)
+    total_power = np.trapezoid(psd[idx_total], freqs[idx_total])
+
+    AR_features['rel_delta']=band_powers['delta_power']/total_power
+    AR_features['rel_theta']=band_powers['theta_power']/total_power
+    AR_features['rel_alpha']=band_powers['alpha_power']/total_power
+    AR_features['rel_beta']=band_powers['beta_power']/total_power
+    AR_features['rel_gamma']=band_powers['gamma_power']/total_power
+
+    AR_features['delta_alpha_ratio'] = band_powers['delta_power'] / (band_powers['alpha_power'] + 1e-10)
+    AR_features['theta_beta_ratio'] = band_powers['theta_power'] / (band_powers['beta_power'] + 1e-10)
+    AR_features['slow_fast_ratio'] = (band_powers['delta_power'] + band_powers['theta_power']) / (band_powers['alpha_power'] +band_powers['beta_power'] + 1e-10)
+
+    cumulative_power = np.cumsum(psd)
+    total_power_sef = cumulative_power[-1]
+    threshold = 0.95 * total_power_sef
+    idx_threshold = np.where(cumulative_power >= threshold)[0]
+    if len(idx_threshold) > 0:
+        sef = freqs[idx_threshold[0]]
+    else:
+        sef = freqs[-1]
+    AR_features['edge_freq']=sef
+
+    AR_features['ar_peak_freq'] = freqs[idx_total][np.argmax(psd[idx_total])]
+
+    
+    psd_norm = psd / np.sum(psd)
+    psd_norm = psd_norm[psd_norm > 0]
+    entropy = -np.sum(psd_norm * np.log2(psd_norm))
+    entropy_norm = entropy / np.log2(len(psd_norm))
+
+    AR_features['entropy']=entropy_norm
+    
     return AR_features
 
-def wavelet_method(epoch, fs = 125, wavelet = 'db4', level = 5):
+def Welch_method():
+
+    return 
+
+
+def wavelet_method(epoch, fs, wavelet = 'db4', level = 5):
 
     coefficients = pywt.wavedec(epoch, wavelet, level)
     for coeff in coefficients:
@@ -64,7 +123,7 @@ def wavelet_method(epoch, fs = 125, wavelet = 'db4', level = 5):
 
     wavelet_features = {}
     
-def extract_features(data, config):
+def extract_features(data, channel_info, config):
     """
     STUDENT IMPLEMENTATION AREA: Extract features based on current iteration.
 
@@ -90,18 +149,22 @@ def extract_features(data, config):
 
     if is_multi_channel:
         print("Processing multi-channel data (EEG + EOG + EMG)")
-        return extract_multi_channel_features(data, config)
+        return extract_multi_channel_features(data, channel_info, config)
     else:
         print("Processing single-channel data (backward compatibility)")
-        return extract_single_channel_features(data, config)
+        return extract_single_channel_features(data, channel_info, config)
 
 
-def extract_multi_channel_features(multi_channel_data, config):
+def extract_multi_channel_features(multi_channel_data, channel_info, config):
     """
     Extract features from multi-channel data: 2 EEG + 2 EOG + 1 EMG channels.
 
     Students should expand this significantly!
     """
+    eeg_fs = channel_info['eeg_fs']
+    eog_fs = channel_info['eog_fs']
+    emg_fs = channel_info['emg_fs']
+
     n_epochs = multi_channel_data['eeg'].shape[0]
     all_features = []
 
@@ -114,7 +177,7 @@ def extract_multi_channel_features(multi_channel_data, config):
             eeg_features = extract_time_domain_features(eeg_signal)
             epoch_features.extend(list(eeg_features.values()))
 
-            eeg_features= extract_frequency_domain_features(eeg_signal)
+            eeg_features= extract_frequency_domain_features(eeg_signal, eeg_fs, AR_method, Welch_method, wavelet_method)
             epoch_features.extend(list(eeg_features.values()))
 
         if config.CURRENT_ITERATION >= 3:
