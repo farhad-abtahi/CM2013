@@ -117,8 +117,9 @@ def Welch_method(epoch,fs):
     Welch_features={}
     return Welch_features
 
+level = np.ceil(np.log2(125 / (2*0.5))) # ~= 6.97 so we can choose 7
 
-def wavelet_method(epoch, fs, wavelet='db4', level=5):
+def wavelet_method(epoch, fs, wavelet='db4', level=level):
     # this function is to extract wavelet based features from a EEG (epoch).
     # decomposiiton level = 5
     # feaures to be extract per level: energy, relative energy, entropy, mean, standard deviation, 
@@ -131,7 +132,7 @@ def wavelet_method(epoch, fs, wavelet='db4', level=5):
     for i, coeff in enumerate(coeffs):
         band_name = f'wavelet_L{i}'
         energy = np.sum(coeff ** 2)
-        rel_energy = energy / (total_energy + 1e-10)  # avoid div by 0
+        rel_energy = energy / (total_energy + 1e-10)  #to avoid div by 0
         psd_norm = np.abs(coeff) / (np.sum(np.abs(coeff)) + 1e-10)
         ent = -np.sum(psd_norm * np.log2(psd_norm + 1e-10))  # Shannon entropy
 
