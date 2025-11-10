@@ -6,7 +6,7 @@ from mne_features.univariate import compute_hjorth_complexity
 from spectrum import pburg #add by Sherry
 import pywt # added
 from scipy.stats import skew, kurtosis # added
-
+from src.preprocessing import compute_welch_psd
 def extract_time_domain_features(epoch):
     """
     EXAMPLE: Extract basic time-domain features from a single epoch.
@@ -113,8 +113,50 @@ def AR_method(epoch, fs):
     
     return AR_features
 
-def Welch_method(epoch,fs):
-    Welch_features={}
+def Welch_method(epoch, fs):
+   
+    Welch_features = {}
+    
+    # Welch parameters
+    nperseg = int(4 * fs)
+    noverlap = int(0.5 * nperseg)
+    window = 'hann'
+    
+    bands = {
+        'delta': (0, 4.0),
+        'theta': (4.0, 8.0),
+        'alpha': (8.0, 13.0),
+        'beta':  (13.0, 30.0)
+    }
+    
+    # Compute Welch PSD
+    freqs, psd = compute_welch_psd(
+        epoch,
+        fs=fs,
+        nperseg=nperseg,
+        noverlap=noverlap,
+        window=window,
+        nfft=None,
+        scaling='density'
+    )
+    
+    # Calculate total power in 0.5-40 Hz band
+    fmin, fmax = 0.5, 40.0
+    m_an = (freqs >= fmin) & (freqs <= fmax)
+    freqs_b, psd_b = freqs[m_an], psd[m_an]
+    total_power = float(np.trapezoid(psd_b, freqs_b)) if freqs_b.size > 1 else 0.0
+    
+    # Calculate absolute band powers
+    abs_powers = {}
+    for name, (lo, hi) in bands.items():
+        m = (freqs >= lo) & (freqs <= hi)
+        abs_powers[name] = float(np.trapezoid(psd[m], freqs[m])) if np.any(m) else 0.0
+    
+    # Calculate relative band powers
+    for name in bands.keys():
+        Welch_features[f'pow_{name}'] = abs_powers[name]
+        Welch_features[f'rel_{name}'] = (abs_powers[name] / total_power if total_power > 0 else 0.0)
+    
     return Welch_features
 
 # level = np.ceil(np.log2(125 / (2*0.5))) # ~= 6.97 so we can choose 7
@@ -203,10 +245,11 @@ def extract_multi_channel_features(multi_channel_data, channel_info, config):
             eeg_signal = multi_channel_data['eeg'][epoch_idx, ch, :]
             eeg_features = extract_time_domain_features(eeg_signal)
             epoch_features.extend(list(eeg_features.values()))
-
-            eeg_features= extract_frequency_domain_features(eeg_signal, eeg_fs, AR_method, Welch_method, wavelet_method)
-            epoch_features.extend(list(eeg_features.values()))
-
+            
+            # Iteration 2+: Add frequency domain features (AR + Welch + Wavelet)
+            if config.CURRENT_ITERATION >= 2:
+                eeg_freq_features = extract_frequency_domain_features(eeg_signal, eeg_fs, AR_method, Welch_method, wavelet_method)
+                epoch_features.extend(list(eeg_freq_features.values()))
         if config.CURRENT_ITERATION >= 3:
             # Add EOG features (2 channels)
             for ch in range(multi_channel_data['eog'].shape[1]):
@@ -234,7 +277,7 @@ def extract_multi_channel_features(multi_channel_data, channel_info, config):
     return features
 
 
-def extract_single_channel_features(data, config):
+def extract_single_channel_features(data, channel_info, config):
     """
     Backward compatibility for single-channel data.
     """
@@ -252,12 +295,22 @@ def extract_single_channel_features(data, config):
         #print("Students must implement the remaining time-domain features!")
 
     elif config.CURRENT_ITERATION == 2:
-        # TODO: Students must implement frequency-domain features
-        print("TODO: Students must implement frequency-domain feature extraction")
-        print("Target: ~31 features (time + frequency domain)")
-        n_epochs = data.shape[0] if len(data.shape) > 1 else 1
-        features = np.zeros((n_epochs, 0))  # Empty features - students must implement
+        # Iteration 2: Time domain + Frequency domain (AR + Welch + Wavelet)
+        fs = channel_info['eeg_fs']  # Get sampling frequency from channel_info
+        all_features = []
+        epochs = data if data.ndim > 1 else data[None, :]
+        for epoch in epochs:
+            # Time domain features
+            td = extract_time_domain_features(epoch)
+            
+            # Frequency domain features (AR + Welch + Wavelet)
+            freq_features = extract_frequency_domain_features(epoch, fs, AR_method, Welch_method, wavelet_method)
+            
+            all_features.append(list(td.values()) + list(freq_features.values()))
 
+        features = np.array(all_features)
+
+    
     elif config.CURRENT_ITERATION >= 3:
         # TODO: Students must implement multi-signal features
         print("TODO: Students should use multi-channel data format for iteration 3+")

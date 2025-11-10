@@ -1,4 +1,4 @@
-from scipy.signal import butter, lfilter, filtfilt, iirnotch
+from scipy.signal import butter, lfilter, filtfilt, iirnotch, welch
 import numpy as np
 
 def lowpass_filter(data, cutoff, fs, order=5):
@@ -63,7 +63,7 @@ def notch_filter(data, to_be_removed, fs, q_factor, no_harmonics): # Notch filte
 
     return filtered
 
-def preprocess(data, channel_info, config):
+def preprocess(data, config):
     """
     STUDENT IMPLEMENTATION AREA: Preprocess data based on current iteration.
 
@@ -132,10 +132,10 @@ def preprocess_multi_channel(multi_channel_data, channel_info, config):
                 filtered_signal = notch_filter(filtered_signal, to_be_removed, eog_fs, q_factor, no_harmonics) #new
                 filtered_signal = bandpass_filter(filtered_signal, config.HIGH_PASS_FILTER_FREQ, config.LOW_PASS_FILTER_EOG_FREQ, eog_fs, order = 4)
                 preprocessed_eog[epoch, ch, :] = filtered_signal
-
+                
         preprocessed_data['eog'] = preprocessed_eog
 
-    if config.CURRENT_ITERATION >= 3:  # EMG starts in iteration 3
+    if config.CURRENT_ITERATION >= 3:  # EMG starts in iteration 
         # Process EMG channel (1 channel) - may need higher frequency preservation
         emg_data = multi_channel_data['emg']
         emg_fs = channel_info['emg_fs']  # Actual sampling rate: 125 Hz (DONE: Get from channel_info)
