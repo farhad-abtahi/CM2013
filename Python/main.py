@@ -133,7 +133,7 @@ def main():
             print("Loaded features from cache")
 
     if features is None:
-        features = extract_features(preprocessed_data, config)
+        features = extract_features(preprocessed_data, channel_info ,config)
         print(f"Extracted features shape: {features.shape}")
         if features.shape[1] == 0:
             print("⚠️  WARNING: No features extracted! Students must implement feature extraction.")
