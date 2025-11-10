@@ -1,14 +1,14 @@
 
     
 === PROCESSING LOG ===
---- Sleep Scoring Pipeline - Iteration 1 ---
+--- Sleep Scoring Pipeline - Iteration 2 ---
 
 === STEP 1: DATA LOADING ===
-Loading all training data from ../data/training/...
+Loading all training data from ./data/training/...
 Found 10 recordings
 
 Loading R1...
-Loading training data from ../data/training\R1.edf and ../data/training\R1.xml...
+Loading training data from ./data/training\R1.edf and ./data/training\R1.xml...
 Identified channels:
   EEG: ['EEG(sec)', 'EEG']
   EOG: ['EOG(L)', 'EOG(R)']
@@ -29,7 +29,7 @@ Sleep stage distribution:
   REM: 102 epochs (9.4%)
 
 Loading R10...
-Loading training data from ../data/training\R10.edf and ../data/training\R10.xml...
+Loading training data from ./data/training\R10.edf and ./data/training\R10.xml...
 Identified channels:
   EEG: ['EEG(sec)', 'EEG']
   EOG: ['EOG(L)', 'EOG(R)']
@@ -50,7 +50,7 @@ Sleep stage distribution:
   REM: 168 epochs (15.5%)
 
 Loading R2...
-Loading training data from ../data/training\R2.edf and ../data/training\R2.xml...
+Loading training data from ./data/training\R2.edf and ./data/training\R2.xml...
 Identified channels:
   EEG: ['EEG(sec)', 'EEG']
   EOG: ['EOG(L)', 'EOG(R)']
@@ -71,7 +71,7 @@ Sleep stage distribution:
   REM: 61 epochs (5.7%)
 
 Loading R3...
-Loading training data from ../data/training\R3.edf and ../data/training\R3.xml...
+Loading training data from ./data/training\R3.edf and ./data/training\R3.xml...
 Identified channels:
   EEG: ['EEG(sec)', 'EEG']
   EOG: ['EOG(L)', 'EOG(R)']
@@ -92,7 +92,7 @@ Sleep stage distribution:
   REM: 86 epochs (8.2%)
 
 Loading R4...
-Loading training data from ../data/training\R4.edf and ../data/training\R4.xml...
+Loading training data from ./data/training\R4.edf and ./data/training\R4.xml...
 Identified channels:
   EEG: ['EEG(sec)', 'EEG']
   EOG: ['EOG(L)', 'EOG(R)']
@@ -113,7 +113,7 @@ Sleep stage distribution:
   REM: 92 epochs (10.5%)
 
 Loading R5...
-Loading training data from ../data/training\R5.edf and ../data/training\R5.xml...
+Loading training data from ./data/training\R5.edf and ./data/training\R5.xml...
 Identified channels:
   EEG: ['EEG(sec)', 'EEG']
   EOG: ['EOG(L)', 'EOG(R)']
@@ -134,7 +134,7 @@ Sleep stage distribution:
   REM: 91 epochs (8.4%)
 
 Loading R6...
-Loading training data from ../data/training\R6.edf and ../data/training\R6.xml...
+Loading training data from ./data/training\R6.edf and ./data/training\R6.xml...
 Identified channels:
   EEG: ['EEG(sec)', 'EEG']
   EOG: ['EOG(L)', 'EOG(R)']
@@ -155,7 +155,7 @@ Sleep stage distribution:
   REM: 158 epochs (14.6%)
 
 Loading R7...
-Loading training data from ../data/training\R7.edf and ../data/training\R7.xml...
+Loading training data from ./data/training\R7.edf and ./data/training\R7.xml...
 Identified channels:
   EEG: ['EEG(sec)', 'EEG']
   EOG: ['EOG(L)', 'EOG(R)']
@@ -176,7 +176,7 @@ Sleep stage distribution:
   REM: 148 epochs (16.1%)
 
 Loading R8...
-Loading training data from ../data/training\R8.edf and ../data/training\R8.xml...
+Loading training data from ./data/training\R8.edf and ./data/training\R8.xml...
 Identified channels:
   EEG: ['EEG(sec)', 'EEG']
   EOG: ['EOG(L)', 'EOG(R)']
@@ -197,7 +197,7 @@ Sleep stage distribution:
   REM: 81 epochs (8.4%)
 
 Loading R9...
-Loading training data from ../data/training\R9.edf and ../data/training\R9.xml...
+Loading training data from ./data/training\R9.edf and ./data/training\R9.xml...
 Identified channels:
   EEG: ['EEG(sec)', 'EEG']
   EOG: ['EOG(L)', 'EOG(R)']
@@ -259,83 +259,86 @@ Plotting Epoch 0 (Time: 0-30s)
 Saved to epoch0_signals.png
 
 === STEP 2: PREPROCESSING ===
-Preprocessing data for iteration 1...
+Preprocessing data for iteration 2...
 Processing multi-channel data (EEG + EOG + EMG)
-Iteration 1: Processing EEG channels only
-Preprocessed data shape: (10293, 2, 3750)
+Iteration 2: Processing EEG + EOG channels
+Preprocessed EEG data shape: (10293, 2, 3750)
+Preprocessed EOG data shape: (10293, 2, 3750)
 
 === STEP 3: FEATURE EXTRACTION ===
-Extracting features for iteration 1...
+Extracting features for iteration 2...
 Processing multi-channel data (EEG + EOG + EMG)
-Multi-channel Iteration 1: 32 features (target: 32+)
-Students must implement remaining 13 time-domain features per EEG channel!
-Extracted features shape: (10293, 32)
+Extracted features shape: (10293, 116)
 
 === STEP 4: FEATURE SELECTION ===
-Selected features shape: (10293, 32)
+Selecting features for iteration 2...
+Input features shape: (10293, 116)
+Early iteration - using all available features
+Selected features shape: (10293, 116)
+Selected features shape: (10293, 116)
 
 === STEP 5: CLASSIFICATION ===
-Training knn classifier...
-Features shape: (10293, 32), Labels shape: (10293,), Groups shape: (10293,)
+Training svm classifier...
+Features shape: (10293, 116), Labels shape: (10293,), Groups shape: (10293,)
 LOSO cross-validation with 10 folds
 Fold 1/10: Training on 9 subjects, testing on R1
   Resampled fold training distribution: [3351 3351 3351 3351 3351]
-Using k-NN with k=5 and weights ='distance
-  R1: Accuracy=51.0%, Kappa=0.358, F1-macro=0.448
+Using SVM with C=1.0, kernel=rbf
+  R1: Accuracy=56.6%, Kappa=0.431, F1-macro=0.451
 Fold 2/10: Training on 9 subjects, testing on R10
   Resampled fold training distribution: [3317 3317 3317 3317 3317]
-Using k-NN with k=5 and weights ='distance
-  R10: Accuracy=37.6%, Kappa=0.212, F1-macro=0.332
+Using SVM with C=1.0, kernel=rbf
+  R10: Accuracy=32.2%, Kappa=0.203, F1-macro=0.317
 Fold 3/10: Training on 9 subjects, testing on R2
   Resampled fold training distribution: [3570 3570 3570 3570 3570]
-Using k-NN with k=5 and weights ='distance
-  R2: Accuracy=53.3%, Kappa=0.321, F1-macro=0.406
+Using SVM with C=1.0, kernel=rbf
+  R2: Accuracy=74.4%, Kappa=0.561, F1-macro=0.495
 Fold 4/10: Training on 9 subjects, testing on R3
   Resampled fold training distribution: [3519 3519 3519 3519 3519]
-Using k-NN with k=5 and weights ='distance
-  R3: Accuracy=59.6%, Kappa=0.480, F1-macro=0.490
+Using SVM with C=1.0, kernel=rbf
+  R3: Accuracy=70.7%, Kappa=0.617, F1-macro=0.593
 Fold 5/10: Training on 9 subjects, testing on R4
   Resampled fold training distribution: [3631 3631 3631 3631 3631]
-Using k-NN with k=5 and weights ='distance
-  R4: Accuracy=53.2%, Kappa=0.384, F1-macro=0.397
+Using SVM with C=1.0, kernel=rbf
+  R4: Accuracy=53.7%, Kappa=0.394, F1-macro=0.380
 Fold 6/10: Training on 9 subjects, testing on R5
   Resampled fold training distribution: [3300 3300 3300 3300 3300]
-Using k-NN with k=5 and weights ='distance
-  R5: Accuracy=47.4%, Kappa=0.328, F1-macro=0.434
+Using SVM with C=1.0, kernel=rbf
+  R5: Accuracy=49.8%, Kappa=0.379, F1-macro=0.454
 Fold 7/10: Training on 9 subjects, testing on R6
   Resampled fold training distribution: [3279 3279 3279 3279 3279]
-Using k-NN with k=5 and weights ='distance
-  R6: Accuracy=39.3%, Kappa=0.214, F1-macro=0.330
+Using SVM with C=1.0, kernel=rbf
+  R6: Accuracy=45.6%, Kappa=0.289, F1-macro=0.361
 Fold 8/10: Training on 9 subjects, testing on R7
   Resampled fold training distribution: [3349 3349 3349 3349 3349]
-Using k-NN with k=5 and weights ='distance
-  R7: Accuracy=45.0%, Kappa=0.226, F1-macro=0.367
+Using SVM with C=1.0, kernel=rbf
+  R7: Accuracy=30.8%, Kappa=0.103, F1-macro=0.296
 Fold 9/10: Training on 9 subjects, testing on R8
   Resampled fold training distribution: [3446 3446 3446 3446 3446]
-Using k-NN with k=5 and weights ='distance
-  R8: Accuracy=53.4%, Kappa=0.413, F1-macro=0.440
+Using SVM with C=1.0, kernel=rbf
+  R8: Accuracy=58.5%, Kappa=0.461, F1-macro=0.475
 Fold 10/10: Training on 9 subjects, testing on R9
   Resampled fold training distribution: [3510 3510 3510 3510 3510]
-Using k-NN with k=5 and weights ='distance
-  R9: Accuracy=46.4%, Kappa=0.302, F1-macro=0.370
+Using SVM with C=1.0, kernel=rbf
+  R9: Accuracy=48.0%, Kappa=0.330, F1-macro=0.375
 
 ============================================================
 LOSO Cross-Validation Results (10 subjects):
-  Accuracy = 48.6% ï¿½ï¿½ 6.5%
-  Kappa    = 0.324 ï¿½ï¿½ 0.085
+  Accuracy = 52.0% ± 13.5%
+  Kappa    = 0.377 ± 0.147
 ============================================================
 
 Per-Subject Performance:
-  R3: 59.6% (kappa=0.480)
-  R8: 53.4% (kappa=0.413)
-  R2: 53.3% (kappa=0.321)
-  R4: 53.2% (kappa=0.384)
-  R1: 51.0% (kappa=0.358)
-  R5: 47.4% (kappa=0.328)
-  R9: 46.4% (kappa=0.302)
-  R7: 45.0% (kappa=0.226)
-  R6: 39.3% (kappa=0.214)
-  R10: 37.6% (kappa=0.212)
+  R2: 74.4% (kappa=0.561)
+  R3: 70.7% (kappa=0.617)
+  R8: 58.5% (kappa=0.461)
+  R1: 56.6% (kappa=0.431)
+  R4: 53.7% (kappa=0.394)
+  R5: 49.8% (kappa=0.379)
+  R9: 48.0% (kappa=0.330)
+  R6: 45.6% (kappa=0.289)
+  R10: 32.2% (kappa=0.203)
+  R7: 30.8% (kappa=0.103)
 
 ============================================================
 AGGREGATED PERFORMANCE METRICS (Across all LOSO folds)
@@ -344,28 +347,28 @@ AGGREGATED PERFORMANCE METRICS (Across all LOSO folds)
 ======================================================================
 SLEEP STAGE CLASSIFICATION PERFORMANCE METRICS
 ======================================================================
-Overall Accuracy: 0.485
-Macro F1-Score: 0.415
-Weighted F1-Score: 0.520
-Cohen's Kappa: 0.337
+Overall Accuracy: 0.522
+Macro F1-Score: 0.437
+Weighted F1-Score: 0.555
+Cohen's Kappa: 0.388
 
 Confusion Matrix:
       Wake   N1    N2    N3  REM
-Wake  1925  776   306    54  413
-N1      87   70    51     0   67
-N2     315  460  1413   651  969
-N3       9    2   258  1290   59
-REM    171  213   359    82  293
+Wake  2207  907   177    67  116
+N1      84  125    42     2   22
+N2     234  817  1463   676  618
+N3      12    2   159  1435   10
+REM    157  366   391    63  141
 
 Per-Class Performance Metrics:
 ----------------------------------------------------------------------
 Stage    Accuracy   Sensitivity  Specificity  F1-Score  
 ----------------------------------------------------------------------
-Wake     0.554      0.554        0.915        0.644     
-N1       0.255      0.255        0.855        0.078     
-N2       0.371      0.371        0.850        0.456     
-N3       0.797      0.797        0.909        0.698     
-REM      0.262      0.262        0.836        0.201     
+Wake     0.635      0.635        0.929        0.716     
+N1       0.455      0.455        0.791        0.100     
+N2       0.384      0.384        0.881        0.484     
+N3       0.887      0.887        0.907        0.743     
+REM      0.126      0.126        0.917        0.139     
 ----------------------------------------------------------------------
 
 Class Distribution in Test Set:
@@ -383,10 +386,10 @@ Notes for Sleep Scoring:
 - Clinical focus: High sensitivity for REM and N3 stages
 
 ============================================================
-Training final knn model on ALL training data...
+Training final svm model on ALL training data...
 Resampled full dataset distribution: [3808 3808 3808 3808 3808]
 Final model training complete.
-Trained knn classifier
+Trained svm classifier
 
 === STEP 6: VISUALIZATION ===
 Visualizing results...
@@ -395,30 +398,30 @@ Visualizing results...
 
 
 
-    # Sleep Scoring Report - Iteration 1
+    # Sleep Scoring Report - Iteration 2
 
     ## Model
-    KNeighborsClassifier
+    SVC
 
     ## Performance
-    Accuracy:            0.485
-    Kappa:               0.337
-    F1-score (macro):    0.415
-    F1-score (weighted): 0.520
+    Accuracy:            0.522
+    Kappa:               0.388
+    F1-score (macro):    0.437
+    F1-score (weighted): 0.555
 
     ## Per-class Metrics
-    Precision: [0.7679 0.046  0.592  0.6211 0.1627]
-    Recall:    [0.5541 0.2545 0.3711 0.7973 0.2621]
-    F1:        [0.6437 0.078  0.4562 0.6982 0.2008]
+    Precision: [0.8192 0.0564 0.6555 0.6398 0.1555]
+    Recall:    [0.6353 0.4545 0.3842 0.8869 0.1261]
+    F1:        [0.7156 0.1003 0.4844 0.7433 0.1393]
     Support:   [3474  275 3808 1618 1118]
 
     ## Confusion Matrix
           Wake   N1    N2    N3  REM
-Wake  1925  776   306    54  413
-N1      87   70    51     0   67
-N2     315  460  1413   651  969
-N3       9    2   258  1290   59
-REM    171  213   359    82  293
+Wake  2207  907   177    67  116
+N1      84  125    42     2   22
+N2     234  817  1463   676  618
+N3      12    2   159  1435   10
+REM    157  366   391    63  141
 
     
 ## Clinical Validation
@@ -426,21 +429,21 @@ Metric                                    True       Pred      Error
 ----------------------------------------------------------------------
 Total recording time [min]              5146.5     5146.5        0.0
 Sleep Onset Latenancy (SOL) [min]         13.5       14.5        1.0
-REM Latency [min]                        114.0        3.0      111.0
-Total Sleep Time (TST) [hr]               56.8       64.9        8.1
-Wake After Sleep Onset (WASO) [min]     1723.5     1239.0      484.5
-Wake [%]                                  50.9       32.2       18.7
-N1 [%]                                     4.0       19.5       15.5
-N2 [%]                                    55.8       30.7       25.2
-N3 [%]                                    23.7       26.7        2.9
-REM [%]                                   16.4       23.1        6.7
-Number of awakenings                     286.0      959.0      673.0
-Sleep Efficiency (SE) [%]                 66.2       75.6        9.4
-REM cycle                                 71.0     1231.0     1160.0
-Mean REM duration                          7.9        0.7        7.1
+REM Latency [min]                        114.0      160.5       46.5
+Total Sleep Time (TST) [hr]               56.8       63.3        6.5
+Wake After Sleep Onset (WASO) [min]     1723.5     1332.5      391.0
+Wake [%]                                  50.9       35.5       15.5
+N1 [%]                                     4.0       29.2       25.1
+N2 [%]                                    55.8       29.4       26.5
+N3 [%]                                    23.7       29.5        5.8
+REM [%]                                   16.4       11.9        4.5
+Number of awakenings                     286.0      514.0      228.0
+Sleep Efficiency (SE) [%]                 66.2       73.8        7.6
+REM cycle                                 71.0      556.0      485.0
+Mean REM duration [min]                    7.9        0.8        7.1
 
 
     ## Notes
-    Features shape: (10293, 32)
+    Features shape: (10293, 116)
     Full report generated.
     
