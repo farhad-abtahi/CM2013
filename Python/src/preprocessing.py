@@ -63,7 +63,26 @@ def notch_filter(data, to_be_removed, fs, q_factor, no_harmonics): # Notch filte
 
     return filtered
 
-def preprocess(data, config):
+def compute_welch_psd(signal, fs, nperseg=None, noverlap=None, window='hann', nfft=None, scaling='density'):
+    if nperseg is None:
+        nperseg = int(4 * fs)
+    
+    if noverlap is None:
+        noverlap = int(0.5 * nperseg)
+
+    freqs, psd = welch(
+        signal, 
+        fs=fs, 
+        window=window, 
+        nperseg=nperseg, 
+        noverlap=noverlap, 
+        nfft=nfft, 
+        scaling=scaling
+    )
+    
+    return freqs, psd
+
+def preprocess(data, channel_info, config):
     """
     STUDENT IMPLEMENTATION AREA: Preprocess data based on current iteration.
 
