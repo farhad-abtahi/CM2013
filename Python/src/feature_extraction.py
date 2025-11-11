@@ -75,7 +75,7 @@ def AR_method(epoch, fs):
     AR_features={}
     band_powers = {}
 
-    #Power in each frequency band
+    #Power in each frequency band (5 features)
     for band_name, (low_freq, high_freq) in band.items():
         idx_band = np.logical_and(freqs >= low_freq, freqs <= high_freq)
         band_power = np.trapezoid(psd[idx_band], freqs[idx_band])
@@ -84,18 +84,19 @@ def AR_method(epoch, fs):
     idx_total = np.logical_and(freqs >= 0.5, freqs < 50)
     total_power = np.trapezoid(psd[idx_total], freqs[idx_total])
 
-    #ref_power
+    #ref_power (5 features)
     AR_features['rel_delta']=band_powers['delta_power']/(total_power+ 1e-10)
     AR_features['rel_theta']=band_powers['theta_power']/(total_power+ 1e-10)
     AR_features['rel_alpha']=band_powers['alpha_power']/(total_power+ 1e-10)
     AR_features['rel_beta']=band_powers['beta_power']/(total_power+ 1e-10)
     AR_features['rel_gamma']=band_powers['gamma_power']/(total_power+ 1e-10)
 
+    #Power ratios (3 features)
     AR_features['delta_alpha_ratio'] = band_powers['delta_power'] / (band_powers['alpha_power'] + 1e-10)
     AR_features['theta_beta_ratio'] = band_powers['theta_power'] / (band_powers['beta_power'] + 1e-10)
     AR_features['slow_fast_ratio'] = (band_powers['delta_power'] + band_powers['theta_power']) / (band_powers['alpha_power'] +band_powers['beta_power'] + 1e-10)
 
-    #Spectral edge frequency
+    #Spectral edge frequency (1 feature)
     cumulative_power = np.cumsum(psd)
     total_power_sef = cumulative_power[-1]
     threshold = 0.95 * total_power_sef
@@ -106,14 +107,14 @@ def AR_method(epoch, fs):
         sef = freqs[-1]
     AR_features['edge_freq']=sef
 
-    #Peak frequency
+    #Peak frequency (1 feature)
     AR_features['ar_peak_freq'] = freqs[idx_total][np.argmax(psd[idx_total])]
 
     
     psd_norm = psd / (np.sum(psd)+ 1e-10)
     psd_norm = psd_norm[psd_norm > 0]
 
-    #Spectral entropy measures
+    #Spectral entropy measures (1 feature)
     entropy = -np.sum(psd_norm * np.log2(psd_norm))
     entropy_norm = entropy / (np.log2(len(psd_norm))+ 1e-10)
 
