@@ -168,9 +168,7 @@ def Welch_method(epoch, fs):
     
     return Welch_features
 
-# level = np.ceil(np.log2(125 / (2*0.5))) # ~= 6.97 so we can choose 7
-
-def wavelet_method(epoch, fs, wavelet='db4', level=7):
+def wavelet_method(epoch, fs, wavelet='db4', level=5):
     # this function is to extract wavelet based features from a EEG (epoch).
     # decomposiiton level = 5
     # feaures to be extract per level: energy, relative energy, entropy, mean, standard deviation, 
