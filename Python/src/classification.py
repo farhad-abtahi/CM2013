@@ -9,6 +9,7 @@ from sklearn.metrics import precision_score, recall_score, f1_score
 from sklearn.metrics import cohen_kappa_score
 from imblearn.over_sampling import SMOTE
 import pandas as pd
+from tqdm import tqdm
 
 '''
 #This is strategy A
@@ -134,12 +135,15 @@ def train_classifier(features, labels, groups, config):
     all_y_test = []
     all_y_pred = []
 
-    for fold_idx, (train_idx, test_idx) in enumerate(logo.split(features, labels, groups)):
+    pbar = tqdm(logo.split(features, labels, groups), total=n_splits, desc="Training (LOGO-CV)")
+
+    for fold_idx, (train_idx, test_idx) in enumerate(pbar):
         X_train, X_test = features[train_idx], features[test_idx]
         y_train, y_test = labels[train_idx], labels[test_idx]
         # Held out in this fold
         test_subject = np.unique(groups[test_idx])[0]
-        print(f"Fold {fold_idx+1}/10: Training on 9 subjects, testing on {test_subject}")
+        pbar.set_description(f"Fold {fold_idx+1}/10: Training on 9 subjects, testing on {test_subject}")
+        #print(f"Fold {fold_idx+1}/10: Training on 9 subjects, testing on {test_subject}")
 
         #Deal with data imbalance
         safe_k_neighbors = min(5, len(y_train[y_train==1])-1) 
@@ -215,6 +219,7 @@ def train_classifier(features, labels, groups, config):
     std_acc = np.std([r['accuracy'] for r in loso_results])
     mean_kappa = np.mean([r['kappa'] for r in loso_results])
     std_kappa = np.std([r['kappa'] for r in loso_results])
+    pbar.set_postfix(AvgAcc=f"{mean_acc:.1%}", AvgKappa=f"{mean_kappa:.3f}")
 
     print("\n" + "="*60)
     print(f"LOSO Cross-Validation Results (10 subjects):")
