@@ -60,7 +60,7 @@ def extract_frequency_domain_features(epoch, fs, AR_method, Welch_method, wavele
     return features
 
 def AR_method(epoch, fs):
-    p=pburg(epoch, order=16, sampling=fs, criteria= 'AIC', NFFT=4096)
+    p=pburg(epoch, order=16, sampling=fs, NFFT=1024)
     psd=np.array(p.psd)
     freqs=np.array(p.frequencies())
 
