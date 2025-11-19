@@ -59,57 +59,104 @@ def extract_frequency_domain_features(epoch, fs, AR_method, Welch_method, wavele
     
     return features
 
-def AR_method(epoch, fs):
-    p=pburg(epoch, order=16, sampling=fs, NFFT=1024)
-    psd=np.array(p.psd)
-    freqs=np.array(p.frequencies())
+# Precompute band masks OUTSIDE the epoch loop (huge speedup)
+'''
+def prepare_masks(fs, nfft=512):
+    freqs = np.linspace(0, fs/2, nfft//2 + 1)
 
-    band={
-        'delta': (0.5,4),
-        'theta': (4,8),
-        'alpha': (8,13),
-        'beta':(13,30),
-        'gamma': (30,50)
+    band = {
+        'delta': (0.5, 4),
+        'theta': (4, 8),
+        'alpha': (8, 13),
+        'beta':  (13, 30),
+        'gamma': (30, 50)
     }
 
-    AR_features={}
+    masks = {}
+    for name, (lo, hi) in band.items():
+        masks[name] = (freqs >= lo) & (freqs <= hi)
+
+    total_mask = (freqs >= 0.5) & (freqs <= 50)
+
+    return freqs, masks, total_mask
+'''
+
+def prepare_freqs_masks(fs, nfft=512):
+    """
+    Prepare frequency axis and boolean masks for canonical bands.
+    Returns: freqs, masks(dict), total_mask
+    """
+    freqs = np.linspace(0, fs/2, nfft//2 + 1)
+
+    bands = {
+        "delta": (0.5, 4),
+        "theta": (4, 8),
+        "alpha": (8, 13),
+        "beta":  (13, 30),
+        "gamma": (30, 50)
+    }
+
+    masks = {name: (freqs >= lo) & (freqs <= hi) for name, (lo, hi) in bands.items()}
+    total_mask = (freqs >= 0.5) & (freqs <= 50)
+
+    return freqs, masks, total_mask
+
+
+def AR_method(epoch, fs, order=16, nfft=512, freqs=None, masks=None, total_mask=None):
+    """
+    Burg-based AR feature extraction.
+    """
+    #just to ensure that masks exist (safe default)
+    if masks is None or freqs is None or total_mask is None:
+        freqs, masks, total_mask = prepare_freqs_masks(fs, nfft)
+
+    #run Burg
+    p = pburg(epoch, order=order, sampling=fs, NFFT=nfft)
+    psd = np.array(p.psd)
+    try:
+        freqs_ar = np.array(p.frequencies())
+    except Exception:
+        # some versions expose different API; if not available, assume pburg used same grid
+        freqs_ar = freqs
+
+    # interpolate PSD to precomputed freq grid if needed
+    if not np.allclose(freqs, freqs_ar):
+        psd = np.interp(freqs, freqs_ar, psd)
+
+    AR_features = {}
+
+    # band powers
     band_powers = {}
+    for name, mask in masks.items():
+        if np.any(mask):
+            band_powers[name] = np.trapz(psd[mask], freqs[mask])
+        else:
+            band_powers[name] = 0.0
 
-    #Power in each frequency band (5 features)
-    for band_name, (low_freq, high_freq) in band.items():
-        idx_band = np.logical_and(freqs >= low_freq, freqs <= high_freq)
-        band_power = np.trapezoid(psd[idx_band], freqs[idx_band])
-        band_powers[f'{band_name}_power'] = band_power
+    total_power = np.trapz(psd[total_mask], freqs[total_mask]) + 1e-12
 
-    idx_total = np.logical_and(freqs >= 0.5, freqs < 50)
-    total_power = np.trapezoid(psd[idx_total], freqs[idx_total])
+    # relative powers
+    for name in band_powers:
+        AR_features[f"rel_{name}"] = band_powers[name] / total_power
 
-    #ref_power (5 features)
-    AR_features['rel_delta']=band_powers['delta_power']/(total_power+ 1e-10)
-    AR_features['rel_theta']=band_powers['theta_power']/(total_power+ 1e-10)
-    AR_features['rel_alpha']=band_powers['alpha_power']/(total_power+ 1e-10)
-    AR_features['rel_beta']=band_powers['beta_power']/(total_power+ 1e-10)
-    AR_features['rel_gamma']=band_powers['gamma_power']/(total_power+ 1e-10)
+    # ratios
+    AR_features["delta_alpha_ratio"] = band_powers["delta"] / (band_powers["alpha"] + 1e-12)
+    AR_features["theta_beta_ratio"]  = band_powers["theta"] / (band_powers["beta"]  + 1e-12)
+    AR_features["slow_fast_ratio"]   = (band_powers["delta"] + band_powers["theta"]) / \
+                                      (band_powers["alpha"] + band_powers["beta"] + 1e-12)
 
-    #Power ratios (3 features)
-    AR_features['delta_alpha_ratio'] = band_powers['delta_power'] / (band_powers['alpha_power'] + 1e-10)
-    AR_features['theta_beta_ratio'] = band_powers['theta_power'] / (band_powers['beta_power'] + 1e-10)
-    AR_features['slow_fast_ratio'] = (band_powers['delta_power'] + band_powers['theta_power']) / (band_powers['alpha_power'] +band_powers['beta_power'] + 1e-10)
+    # spectral edge (95%)
+    cumulative = np.cumsum(psd)
+    threshold = 0.95 * cumulative[-1]
+    idx = np.searchsorted(cumulative, threshold)
+    AR_features["edge_freq"] = freqs[min(idx, len(freqs)-1)]
 
-    #Spectral edge frequency (1 feature)
-    cumulative_power = np.cumsum(psd)
-    total_power_sef = cumulative_power[-1]
-    threshold = 0.95 * total_power_sef
-    idx_threshold = np.where(cumulative_power >= threshold)[0]
-    if len(idx_threshold) > 0:
-        sef = freqs[idx_threshold[0]]
+    # peak frequency inside total_mask
+    tm = total_mask
+    if np.any(tm):
+        AR_features["ar_peak_freq"] = freqs[tm][np.argmax(psd[tm])]
     else:
-        sef = freqs[-1]
-    AR_features['edge_freq']=sef
-
-    #Peak frequency (1 feature)
-    AR_features['ar_peak_freq'] = freqs[idx_total][np.argmax(psd[idx_total])]
-
+        AR_features["ar_peak_freq"] = freqs[np.argmax(psd)]
 
     #Spectral entropy measures (1 feature)
 
@@ -193,6 +240,7 @@ def wavelet_method(epoch, fs, wavelet='db4', level=5):
         })
 
     return wavelet_features 
+
 def entropy(psd):
     psd=np.array(psd)
     psd=np.abs(psd)
@@ -252,6 +300,9 @@ def extract_multi_channel_features(multi_channel_data, channel_info, config):
     n_epochs = multi_channel_data['eeg'].shape[0]
     all_features = []
 
+    # Precompute AR masks once for all epochs
+    FREQS, MASKS, TOTAL_MASK = prepare_freqs_masks(eeg_fs, nfft=512)
+
     for epoch_idx in tqdm(range(n_epochs), desc="Extracting Features"):
         epoch_features = []
 
@@ -263,7 +314,13 @@ def extract_multi_channel_features(multi_channel_data, channel_info, config):
             
             # Iteration 2+: Add frequency domain features (AR + Welch + Wavelet)
             if config.CURRENT_ITERATION >= 2:
-                eeg_freq_features = extract_frequency_domain_features(eeg_signal, eeg_fs, AR_method, Welch_method, wavelet_method)
+                eeg_freq_features = extract_frequency_domain_features(
+                                    eeg_signal,
+                                    eeg_fs,
+                                    lambda ep, fs: AR_method(ep, fs, freqs=FREQS, masks=MASKS, total_mask=TOTAL_MASK),
+                                    Welch_method,
+                                    wavelet_method
+                                )
                 epoch_features.extend(list(eeg_freq_features.values()))
         if config.CURRENT_ITERATION >= 3:
             # Add EOG features (2 channels)
@@ -313,13 +370,23 @@ def extract_single_channel_features(data, channel_info, config):
         # Iteration 2: Time domain + Frequency domain (AR + Welch + Wavelet)
         fs = channel_info['eeg_fs']  # Get sampling frequency from channel_info
         all_features = []
+
+        # Precompute AR masks once
+        FREQS, MASKS, TOTAL_MASK = prepare_freqs_masks(fs, nfft=512)
+
         epochs = data if data.ndim > 1 else data[None, :]
         for epoch in epochs:
             # Time domain features
             td = extract_time_domain_features(epoch)
             
             # Frequency domain features (AR + Welch + Wavelet)
-            freq_features = extract_frequency_domain_features(epoch, fs, AR_method, Welch_method, wavelet_method)
+            freq_features = extract_frequency_domain_features(
+                            epoch,
+                            fs,
+                            lambda ep, fs: AR_method(ep, fs, freqs=FREQS, masks=MASKS, total_mask=TOTAL_MASK),
+                            Welch_method,
+                            wavelet_method
+                        )
             
             all_features.append(list(td.values()) + list(freq_features.values()))
 
