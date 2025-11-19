@@ -18,6 +18,7 @@ import os
 import sys
 import io
 import numpy as np
+from sklearn.preprocessing import StandardScaler
 
 
 def main():
@@ -150,7 +151,8 @@ def main():
     # 5. Classification
     print("\n=== STEP 5: CLASSIFICATION ===")
     if selected_features.shape[1] > 0:
-        model, y_true_all, y_pred_all = train_classifier(selected_features, labels, all_record_ids, config) #modify by Sherry for classification(Strategy B)
+        scaler = StandardScaler()
+        model, y_true_all, y_pred_all = train_classifier(selected_features, labels, all_record_ids, config, scaler=scaler) #modify by Sherry for classification(Strategy B)
         print(f"Trained {config.CLASSIFIER_TYPE} classifier")
     else:
         print("⚠️  WARNING: Cannot train classifier - no features available!")

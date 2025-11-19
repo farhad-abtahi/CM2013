@@ -124,7 +124,7 @@ def train_classifier(features, labels, config):
 '''
 
 #This one is LOSO (Strategy B)
-def train_classifier(features, labels, groups, config):
+def train_classifier(features, labels, groups, config, scaler):
     print(f"Training {config.CLASSIFIER_TYPE} classifier...")
     print(f"Features shape: {features.shape}, Labels shape: {labels.shape}, Groups shape: {groups.shape}")
     logo=LeaveOneGroupOut()
@@ -169,6 +169,7 @@ def train_classifier(features, labels, groups, config):
             model = SVC(
                 C=getattr(config, 'SVM_C', 1.0),
                 kernel=getattr(config, 'SVM_KERNEL', 'rbf'),
+                class_weight='balanced', #added
                 random_state=42
             )
             print(f"Using SVM with C={model.C}, kernel={model.kernel}")
@@ -189,11 +190,16 @@ def train_classifier(features, labels, groups, config):
             raise ValueError(f"Invalid iteration: {config.CURRENT_ITERATION}")
         
 
+        #scaled features
+        X_train_resampled = scaler.fit_transform(X_train_resampled)
+        X_test_scaled = scaler.transform(X_test)
+
         # Train classifier on 9 subjects
         model.fit(X_train_resampled, y_train_resampled)
 
         # Predict on held-out subject
-        y_pred = model.predict(X_test)
+        #y_pred = model.predict(X_test)
+        y_pred = model.predict(X_test_scaled)
 
         # Calculate metrics for this subject
         accuracy = accuracy_score(y_test, y_pred)
@@ -278,7 +284,14 @@ def train_classifier(features, labels, groups, config):
         raise ValueError(f"Invalid iteration: {config.CURRENT_ITERATION}")
     
     #Train with all data
-    final_model.fit(features_resampled, labels_resampled)
+    #final_model.fit(features_resampled, labels_resampled)
+
+    # Scale all features before final training
+    features_resampled_scaled = scaler.fit_transform(features_resampled)
+
+    # Train final model
+    final_model.fit(features_resampled_scaled, labels_resampled)
+
     print("Final model training complete.")
 
     return final_model, np.array(all_y_test), np.array(all_y_pred)
