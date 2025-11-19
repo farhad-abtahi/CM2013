@@ -110,15 +110,10 @@ def AR_method(epoch, fs):
     #Peak frequency (1 feature)
     AR_features['ar_peak_freq'] = freqs[idx_total][np.argmax(psd[idx_total])]
 
-    
-    psd_norm = psd / (np.sum(psd)+ 1e-10)
-    psd_norm = psd_norm[psd_norm > 0]
 
     #Spectral entropy measures (1 feature)
-    entropy = -np.sum(psd_norm * np.log2(psd_norm))
-    entropy_norm = entropy / (np.log2(len(psd_norm))+ 1e-10)
 
-    AR_features['entropy']=entropy_norm
+    AR_features['entropy']=entropy(psd)
     
     return AR_features
 
@@ -165,6 +160,8 @@ def Welch_method(epoch, fs):
     for name in bands.keys():
         Welch_features[f'pow_{name}'] = abs_powers[name]
         Welch_features[f'rel_{name}'] = (abs_powers[name] / total_power if total_power > 0 else 0.0)
+
+    Welch_features['welch_entropy'] = entropy(psd)
     
     return Welch_features
 
@@ -182,8 +179,7 @@ def wavelet_method(epoch, fs, wavelet='db4', level=5):
         band_name = f'wavelet_L{i}'
         energy = np.sum(coeff ** 2)
         rel_energy = energy / (total_energy + 1e-10)  #to avoid div by 0
-        psd_norm = np.abs(coeff) / (np.sum(np.abs(coeff)) + 1e-10)
-        ent = -np.sum(psd_norm * np.log2(psd_norm + 1e-10))  # Shannon entropy
+        ent=entropy(coeff)
 
         # Compute per-coefficient statistics
         wavelet_features.update({
@@ -197,7 +193,19 @@ def wavelet_method(epoch, fs, wavelet='db4', level=5):
         })
 
     return wavelet_features 
+def entropy(psd):
+    psd=np.array(psd)
+    psd=np.abs(psd)
+    psd_sum=psd.sum()
+    if psd_sum==0:
+        return 0.0
+    norm_psd=psd/psd_sum
 
+    mask=norm_psd>0
+    norm_psd=norm_psd[mask]
+    ent=-np.sum(norm_psd*np.log2(norm_psd))
+    norm_ent=ent/np.log2(len(psd))
+    return norm_ent
     
 def extract_features(data, channel_info, config):
     """
