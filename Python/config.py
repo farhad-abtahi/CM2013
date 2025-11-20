@@ -42,6 +42,7 @@ elif CURRENT_ITERATION == 2:
     CLASSIFIER_TYPE = 'svm'
     SVM_C = 1.0
     SVM_KERNEL = 'rbf'
+    SVM_GAMMA = 'scale'
 elif CURRENT_ITERATION == 3:
     # Iteration 3: Multi-signal processing with Random Forest
     CLASSIFIER_TYPE = 'random_forest'
