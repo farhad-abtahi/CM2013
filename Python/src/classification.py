@@ -59,7 +59,7 @@ def train_classifier(features, labels, groups, config, scaler):
                 kernel=getattr(config, 'SVM_KERNEL', 'rbf'),
                 gamma='scale',
                 class_weight='balanced', #added
-                cache_size=1000,
+                cache_size=2000,
                 random_state=42
             )
             print(f"Using SVM with C={model.C}, kernel={model.kernel}")
