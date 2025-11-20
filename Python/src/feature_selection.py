@@ -67,9 +67,10 @@ def select_features(features, labels, config):
         corr_selected_features=data.drop(to_drop, axis=1)
 
         #Statistical Testing (Option B:Mutual Information)
-        MI_selected_features=SelectKBest(mutual_info_classif,k=30).fit_transform(corr_selected_features, labels)
+        k_features = getattr(config, 'FEATURE_SELECTION_K', 50)
+        MI_selected_features=SelectKBest(mutual_info_classif,k=k_features).fit_transform(corr_selected_features, labels)
 
-        print("Select best 30 features")
+        print(f"Select best {k_features} features")
         selected_features = MI_selected_features
 
     elif config.CURRENT_ITERATION == 3:

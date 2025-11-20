@@ -30,6 +30,9 @@ HIGH_PASS_FILTER_FREQ = 0.5 ##Highpass filter frequency add by Sherry
 # -- Feature Extraction --
 # (Add feature-specific parameters here)
 
+# -- Feature Selection --
+FEATURE_SELECTION_K = 50
+
 # -- Classification --
 # Iteration-specific parameters - students should modify these based on current iteration
 if CURRENT_ITERATION == 1:
