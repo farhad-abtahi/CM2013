@@ -57,12 +57,13 @@ def train_classifier(features, labels, groups, config, scaler):
             model = SVC(
                 C=getattr(config, 'SVM_C', 10.0),
                 kernel=getattr(config, 'SVM_KERNEL', 'rbf'),
-                gamma='scale',
+                gamma=getattr(config, 'SVM_GAMMA', 'scale'), 
                 class_weight='balanced', #added
                 cache_size=2000,
-                random_state=42
+                random_state=42,
+                probability=True
             )
-            print(f"Using SVM with C={model.C}, kernel={model.kernel}")
+            print(f"Using SVM with C={model.C}, kernel={model.kernel}, gamma={model.gamma}")
 
         elif config.CURRENT_ITERATION >= 3:
             # Iteration 3+: Random Forest
@@ -158,7 +159,10 @@ def train_classifier(features, labels, groups, config, scaler):
         final_model = SVC(
             C=getattr(config, 'SVM_C', 1.0),
             kernel=getattr(config, 'SVM_KERNEL', 'rbf'),
-            random_state=42
+            gamma=getattr(config, 'SVM_GAMMA', 'scale'),
+            class_weight='balanced',
+            random_state=42,
+            probability=True
         )
     
     elif config.CURRENT_ITERATION >= 3:
