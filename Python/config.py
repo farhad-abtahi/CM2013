@@ -40,7 +40,7 @@ if CURRENT_ITERATION == 1:
 elif CURRENT_ITERATION == 2:
     # Iteration 2: Enhanced EEG processing with SVM
     CLASSIFIER_TYPE = 'svm'
-    SVM_C = 1.0
+    SVM_C = 10
     SVM_KERNEL = 'rbf'
 elif CURRENT_ITERATION == 3:
     # Iteration 3: Multi-signal processing with Random Forest
