@@ -48,7 +48,7 @@ def main():
     print(f"  EOG: {multi_channel_data['eog'].shape}")
     print(f"  EMG: {multi_channel_data['emg'].shape}")
     print(f"Labels shape: {labels.shape}")
-
+    ''' 
     example_edf_file = os.path.join(config.TRAINING_DIR, "R1.edf")
     example_xml_file = os.path.join(config.TRAINING_DIR, "R1.xml")
     if os.path.exists(example_xml_file):
@@ -56,7 +56,8 @@ def main():
     if os.path.exists(example_edf_file):
         plot_sample_epoch(example_edf_file, epoch_idx=0)
     
-    plt.show()
+    plt.show()'''
+   
     
     # 2. Preprocessing
     print("\n=== STEP 2: PREPROCESSING ===")
@@ -76,6 +77,7 @@ def main():
             print("Saved preprocessed data to cache")
     
     raw_signal = multi_channel_data['eog'][0,0,:]
+    ''' 
     visualize_signal(raw_signal if isinstance(raw_signal, np.ndarray) else raw_signal, 
                  fs=channel_info['eog_fs'], title="Raw EOG Signal (Time Domain)")
     visualize_fft(raw_signal if isinstance(raw_signal, np.ndarray) else raw_signal, 
@@ -85,7 +87,8 @@ def main():
     visualize_fft(preprocessed_data[0] if isinstance(preprocessed_data, np.ndarray) 
               else preprocessed_data['eog'][0,0,:], fs=channel_info['eog_fs'], title="Filtered EOG Signal FFT")
 
-    plt.show()
+    plt.show()'''
+   
 
     # 3. Feature Extraction
     print("\n=== STEP 3: FEATURE EXTRACTION ===")
