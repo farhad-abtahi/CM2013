@@ -40,43 +40,6 @@ def main():
     print("\n=== STEP 1: DATA LOADING ===")
 
     #Loading all data
-    '''from pathlib import Path
-    training_dir = Path(config.TRAINING_DIR)
-    all_eeg_data = []
-    all_labels = []
-    all_record_ids=[] #add by Sherry for classification(Strategy B)
-    for edf_file in training_dir.glob("R*.edf"):
-        xml_file = edf_file.with_suffix(".xml")
-        record_id=edf_file.stem #add by Sherry for classification(Strategy B)
-
-        try:
-            multi_channel_data, labels, channel_info = load_training_data(edf_file, xml_file)
-            print(f"Multi-channel data loaded:")
-            print(f"  EEG: {multi_channel_data['eeg'].shape}")
-            print(f"  EOG: {multi_channel_data['eog'].shape}")
-            print(f"  EMG: {multi_channel_data['emg'].shape}")
-            print(f"Labels shape: {labels.shape}")
-
-        # For pipeline compatibility, use EEG data as primary signal
-            eeg_data = multi_channel_data['eeg'][:, 0, :]  # Use first EEG channel for now
-            #print(f"Using EEG channel 1 for pipeline: {eeg_data.shape}")
-            all_eeg_data.append(eeg_data)
-            all_labels.append(labels)
-            all_record_ids.extend([record_id] * len(labels))#add by Sherry for classification(Strategy B)
-
-        except (ValueError, TypeError):
-        # Fallback to old format if multi-channel not implemented
-            eeg_data, labels = load_training_data(edf_file, xml_file)
-            print(f"Single-channel data loaded: {eeg_data.shape}, Labels: {labels.shape}")
-
-    
-    eeg_data = np.concatenate(all_eeg_data, axis = 0)
-    labels = np.concatenate(all_labels, axis=0)
-    all_record_ids = np.array(all_record_ids) #add by Sherry for classification(Strategy B)
-    
-    # Handle both new multi-channel format and old single-channel format for compatibility
-    plot_hypnogram(xml_file)
-    plot_sample_epoch(edf_file, epoch_idx=0)'''
 
     multi_channel_data, labels, all_record_ids, channel_info = load_all_training_data(config.TRAINING_DIR)
     

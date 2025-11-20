@@ -60,26 +60,6 @@ def extract_frequency_domain_features(epoch, fs, AR_method, Welch_method, wavele
     return features
 
 # Precompute band masks OUTSIDE the epoch loop (huge speedup)
-'''
-def prepare_masks(fs, nfft=512):
-    freqs = np.linspace(0, fs/2, nfft//2 + 1)
-
-    band = {
-        'delta': (0.5, 4),
-        'theta': (4, 8),
-        'alpha': (8, 13),
-        'beta':  (13, 30),
-        'gamma': (30, 50)
-    }
-
-    masks = {}
-    for name, (lo, hi) in band.items():
-        masks[name] = (freqs >= lo) & (freqs <= hi)
-
-    total_mask = (freqs >= 0.5) & (freqs <= 50)
-
-    return freqs, masks, total_mask
-'''
 
 def prepare_freqs_masks(fs, nfft=512):
     """
@@ -129,11 +109,11 @@ def AR_method(epoch, fs, order=16, nfft=512, freqs=None, masks=None, total_mask=
     band_powers = {}
     for name, mask in masks.items():
         if np.any(mask):
-            band_powers[name] = np.trapz(psd[mask], freqs[mask])
+            band_powers[name] = np.trapezoid(psd[mask], freqs[mask])
         else:
             band_powers[name] = 0.0
 
-    total_power = np.trapz(psd[total_mask], freqs[total_mask]) + 1e-12
+    total_power = np.trapezoid(psd[total_mask], freqs[total_mask]) + 1e-12
 
     # relative powers
     for name in band_powers:
@@ -322,12 +302,17 @@ def extract_multi_channel_features(multi_channel_data, channel_info, config):
                                     wavelet_method
                                 )
                 epoch_features.extend(list(eeg_freq_features.values()))
-        if config.CURRENT_ITERATION >= 3:
+            
+        if config.CURRENT_ITERATION >= 2:
+
             # Add EOG features (2 channels)
-            for ch in range(multi_channel_data['eog'].shape[1]):
-                eog_signal = multi_channel_data['eog'][epoch_idx, ch, :]
-                eog_features = extract_eog_features(eog_signal)
-                epoch_features.extend(list(eog_features.values()))
+            if 'eog' in multi_channel_data:
+                for ch in range(multi_channel_data['eog'].shape[1]):
+                    eog_signal = multi_channel_data['eog'][epoch_idx, ch, :]
+                    eog_features = extract_eog_features(eog_signal)
+                    epoch_features.extend(list(eog_features.values()))
+
+        if config.CURRENT_ITERATION >= 3:
 
             # Add EMG features (1 channel)
             emg_signal = multi_channel_data['emg'][epoch_idx, 0, :]
@@ -418,7 +403,19 @@ def extract_eog_features(eog_signal):
         'eog_mean': np.mean(eog_signal),
         'eog_std': np.std(eog_signal),
         'eog_range': np.max(eog_signal) - np.min(eog_signal),
+        'eog_kurtosis': kurtosis(eog_signal),
     }
+
+    features['eog_energy'] = np.sum(eog_signal ** 2)
+    features['eog_entropy'] = entropy(eog_signal)
+
+    #Hjorth Mobility
+    diff_signal = np.diff(eog_signal)
+    var_signal = np.var(eog_signal)
+    if var_signal > 0:
+        features['eog_mobility'] = np.sqrt(np.var(diff_signal) / var_signal)
+    else:
+        features['eog_mobility'] = 0
 
     # TODO: Students should add:
     # - Eye movement detection features
