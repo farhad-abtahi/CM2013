@@ -2,6 +2,13 @@ import numpy as np
 import pandas as pd
 from sklearn.feature_selection import VarianceThreshold, f_classif, mutual_info_classif, SelectKBest
 from sklearn.preprocessing import MinMaxScaler
+import os
+
+# Handle both package import and standalone execution
+try:
+    from .utils import save_cache
+except ImportError:
+    from utils import save_cache
 
 def select_features(features, labels, config):
     """
@@ -51,6 +58,11 @@ def select_features(features, labels, config):
         # Select features and send the original variance value to the next step
         mask_var=selected_var.get_support()
         var_selected_features=features[:,mask_var]
+        
+        # Save variance mask for inference
+        varmask_filename = f"varmask_iter{config.CURRENT_ITERATION}.joblib"
+        save_cache(mask_var, varmask_filename, config.CACHE_DIR)
+        print(f"Saved variance mask to {varmask_filename}")
 
         #Correlation Analysis
         #Create a DataFrame
@@ -65,10 +77,30 @@ def select_features(features, labels, config):
         #Select the columns that have a correlation bigger than a certain threshhold with any other column
         to_drop = [column for column in upper.columns if any(upper[column] > 0.95)]
         corr_selected_features=data.drop(to_drop, axis=1)
+        
+        # Create correlation mask (boolean array indicating which columns to keep)
+        # This mask is applied to var_selected_features (after variance thresholding)
+        # to_drop contains column indices/names from the DataFrame
+        # We need to create a boolean mask for the original var_selected_features columns
+        n_cols_after_var = var_selected_features.shape[1]
+        corrmask = np.ones(n_cols_after_var, dtype=bool)
+        for col_idx, col_name in enumerate(data.columns):
+            if col_name in to_drop:
+                corrmask[col_idx] = False
+        
+        corrmask_filename = f"corrmask_iter{config.CURRENT_ITERATION}.joblib"
+        save_cache(corrmask, corrmask_filename, config.CACHE_DIR)
+        print(f"Saved correlation mask to {corrmask_filename}")
 
         #Statistical Testing (Option B:Mutual Information)
         k_features = getattr(config, 'FEATURE_SELECTION_K', 50)
-        MI_selected_features=SelectKBest(mutual_info_classif,k=k_features).fit_transform(corr_selected_features, labels)
+        selector = SelectKBest(mutual_info_classif, k=k_features)
+        MI_selected_features = selector.fit_transform(corr_selected_features, labels)
+        
+        # Save selector for inference
+        selector_filename = f"feature_selector_iter{config.CURRENT_ITERATION}.joblib"
+        save_cache(selector, selector_filename, config.CACHE_DIR)
+        print(f"Saved feature selector to {selector_filename}")
 
         print(f"Select best {k_features} features")
         selected_features = MI_selected_features

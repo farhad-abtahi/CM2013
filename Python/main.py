@@ -124,6 +124,15 @@ def main():
         scaler = StandardScaler()
         model, y_true_all, y_pred_all = train_classifier(selected_features, labels, all_record_ids, config, scaler=scaler) #modify by Sherry for classification(Strategy B)
         print(f"Trained {config.CLASSIFIER_TYPE} classifier")
+        
+        # Save model and scaler for inference
+        model_filename = f"model_iter{config.CURRENT_ITERATION}.joblib"
+        save_cache(model, model_filename, config.CACHE_DIR)
+        print(f"Saved model to {model_filename}")
+        
+        scaler_filename = f"scaler_iter{config.CURRENT_ITERATION}.joblib"
+        save_cache(scaler, scaler_filename, config.CACHE_DIR)
+        print(f"Saved scaler to {scaler_filename}")
     else:
         print("⚠️  WARNING: Cannot train classifier - no features available!")
         print("Students must implement feature extraction first.")
