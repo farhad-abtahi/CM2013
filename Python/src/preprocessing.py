@@ -1,4 +1,5 @@
 from scipy.signal import butter, lfilter, filtfilt, iirnotch, welch
+from sklearn.linear_model import LinearRegression
 import numpy as np
 
 def lowpass_filter(data, cutoff, fs, order=5):
@@ -128,8 +129,8 @@ def preprocess_multi_channel(multi_channel_data, channel_info, config):
         for epoch in range(eeg_data.shape[0]):
             signal = eeg_data[epoch, ch, :]
             # Apply EEG-specific preprocessing
-            filtered_signal = lowpass_filter(signal, config.LOW_PASS_FILTER_EEG_FREQ, eeg_fs)
-            filtered_signal = highpass_filter(filtered_signal, config.HIGH_PASS_FILTER_FREQ, eeg_fs) #Highpass filter add by Sherry
+            #filtered_signal = lowpass_filter(signal, config.LOW_PASS_FILTER_EEG_FREQ, eeg_fs)
+            #filtered_signal = highpass_filter(filtered_signal, config.HIGH_PASS_FILTER_FREQ, eeg_fs) #Highpass filter add by Sherry
             filtered_signal = notch_filter(filtered_signal, to_be_removed, eeg_fs, q_factor, no_harmonics) #new
             filtered_signal = bandpass_filter(filtered_signal, config.HIGH_PASS_FILTER_FREQ, config.LOW_PASS_FILTER_EEG_FREQ, eeg_fs, order = 4)# Bandpass filter add by Shuxuan
             # DONE: Students should add bandpass filter, artifact removal
@@ -147,12 +148,22 @@ def preprocess_multi_channel(multi_channel_data, channel_info, config):
             for epoch in range(eog_data.shape[0]):
                 signal = eog_data[epoch, ch, :]
                 # EOG may need different filter settings (preserve slow eye movements)
-                filtered_signal = lowpass_filter(signal, 30, eog_fs)  # Lower cutoff for EOG
+                #filtered_signal = lowpass_filter(signal, 30, eog_fs)  # Lower cutoff for EOG
                 filtered_signal = notch_filter(filtered_signal, to_be_removed, eog_fs, q_factor, no_harmonics) #new
                 filtered_signal = bandpass_filter(filtered_signal, config.HIGH_PASS_FILTER_FREQ, config.LOW_PASS_FILTER_EOG_FREQ, eog_fs, order = 4)
                 preprocessed_eog[epoch, ch, :] = filtered_signal
                 
         preprocessed_data['eog'] = preprocessed_eog
+
+        #EOG Artifact Removal from EEG
+        reg=LinearRegression()
+        for epoch in range(preprocessed_data['eeg'].shape[0]):
+            X_eog=preprocessed_data['eog'][epoch,:,:].T
+            for ch in range(preprocessed_data['eeg'].shape[1]):
+                y_eeg= preprocessed_data['eeg'][epoch,ch,:]
+                reg.fit(X_eog,y_eeg)
+                eog_artifact=reg.predict(X_eog)
+                preprocessed_data['eeg'][epoch,ch,:]=y_eeg-eog_artifact
 
     if config.CURRENT_ITERATION >= 3:  # EMG starts in iteration 
         # Process EMG channel (1 channel) - may need higher frequency preservation
@@ -160,18 +171,27 @@ def preprocess_multi_channel(multi_channel_data, channel_info, config):
         emg_fs = channel_info['emg_fs']  # Actual sampling rate: 125 Hz (DONE: Get from channel_info)
         preprocessed_emg = np.zeros_like(emg_data)
 
-        for epoch in range(emg_data.shape[0]):
-            signal = emg_data[epoch, 0, :]
-            # EMG needs higher frequency content preserved (muscle activity)
-            filtered_signal = lowpass_filter(signal, 70, emg_fs)  # Higher cutoff for EMG
-            preprocessed_emg[epoch, 0, :] = filtered_signal
+        for ch in range(emg_data.shape[1]):
+            for epoch in range(emg_data.shape[0]):
+                signal = emg_data[epoch, ch, :]
+                # EMG needs higher frequency content preserved (muscle activity)
+                #filtered_signal = lowpass_filter(signal, config.LOW_PASS_FILTER_EMG_FREQ, emg_fs)  # Higher cutoff for EMG
+                filtered_signal = notch_filter(filtered_signal, to_be_removed, emg_fs, q_factor, no_harmonics) #new
+                filtered_signal = bandpass_filter(filtered_signal, config.HIGH_PASS_FILTER_EMG_FREQ, config.LOW_PASS_FILTER_EMG_FREQ, emg_fs, order = 4)
+                preprocessed_emg[epoch, ch, :] = filtered_signal
 
         preprocessed_data['emg'] = preprocessed_emg
+
+        
         print("Multi-channel preprocessing applied to EEG + EOG + EMG")
+
+
     elif config.CURRENT_ITERATION >= 2:
         print("Iteration 2: Processing EEG + EOG channels")
     else:
         print("Iteration 1: Processing EEG channels only")
+
+
 
     # TODO: Students should add:
     # - Channel-specific artifact removal -> DONE

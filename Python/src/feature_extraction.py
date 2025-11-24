@@ -402,6 +402,8 @@ def extract_eog_features(eog_signal):
     features = {
         'eog_mean': np.mean(eog_signal),
         'eog_std': np.std(eog_signal),
+        'eog_peak': np.max(abs(eog_signal)),
+        'eog_var':np.var(eog_signal),
         'eog_range': np.max(eog_signal) - np.min(eog_signal),
         'eog_kurtosis': kurtosis(eog_signal),
     }
@@ -438,6 +440,8 @@ def extract_emg_features(emg_signal):
         'emg_mean': np.mean(emg_signal),
         'emg_std': np.std(emg_signal),
         'emg_rms': np.sqrt(np.mean(emg_signal**2)),
+        'emg_power': np.mean(emg_signal**2),
+        'emg_var': np.var(emg_signal)
     }
 
     # TODO: Students should add:
