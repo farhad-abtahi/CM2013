@@ -5,7 +5,7 @@
 CURRENT_ITERATION = 1
 
 # Set to True to use cached data for preprocessing and feature extraction.
-USE_CACHE = False  # Temporarily disabled for testing with real data
+USE_CACHE = True
 
 # -- File Paths --
 import os
@@ -24,7 +24,7 @@ if not os.path.exists(CACHE_DIR):
 
 # -- Preprocessing --
 LOW_PASS_FILTER_FREQ = 40  # Hz
-
+HIGH_PASS_FILTER_FREQ = 0.1 #Hz
 # -- Feature Extraction --
 # (Add feature-specific parameters here)
 

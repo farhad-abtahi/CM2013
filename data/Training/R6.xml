@@ -1,0 +1,2117 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<PSGAnnotation>
+    
+    
+    <SoftwareVersion>Anonymized</SoftwareVersion>
+    
+    
+    <EpochLength>30</EpochLength>
+    
+    
+    <ScoredEvents>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:WakeState</EventConcept>
+            
+            
+            <Start>0.0</Start>
+            
+            
+            <Duration>3660.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N2</EventConcept>
+            
+            
+            <Start>3660.0</Start>
+            
+            
+            <Duration>420.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N3</EventConcept>
+            
+            
+            <Start>4080.0</Start>
+            
+            
+            <Duration>30.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N2</EventConcept>
+            
+            
+            <Start>4110.0</Start>
+            
+            
+            <Duration>30.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N3</EventConcept>
+            
+            
+            <Start>4140.0</Start>
+            
+            
+            <Duration>60.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N2</EventConcept>
+            
+            
+            <Start>4200.0</Start>
+            
+            
+            <Duration>30.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N3</EventConcept>
+            
+            
+            <Start>4230.0</Start>
+            
+            
+            <Duration>60.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N2</EventConcept>
+            
+            
+            <Start>4290.0</Start>
+            
+            
+            <Duration>30.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N3</EventConcept>
+            
+            
+            <Start>4320.0</Start>
+            
+            
+            <Duration>30.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N2</EventConcept>
+            
+            
+            <Start>4350.0</Start>
+            
+            
+            <Duration>450.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N3</EventConcept>
+            
+            
+            <Start>4800.0</Start>
+            
+            
+            <Duration>30.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N2</EventConcept>
+            
+            
+            <Start>4830.0</Start>
+            
+            
+            <Duration>30.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N3</EventConcept>
+            
+            
+            <Start>4860.0</Start>
+            
+            
+            <Duration>30.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N2</EventConcept>
+            
+            
+            <Start>4890.0</Start>
+            
+            
+            <Duration>30.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N3</EventConcept>
+            
+            
+            <Start>4920.0</Start>
+            
+            
+            <Duration>120.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N2</EventConcept>
+            
+            
+            <Start>5040.0</Start>
+            
+            
+            <Duration>30.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N3</EventConcept>
+            
+            
+            <Start>5070.0</Start>
+            
+            
+            <Duration>180.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N2</EventConcept>
+            
+            
+            <Start>5250.0</Start>
+            
+            
+            <Duration>90.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N3</EventConcept>
+            
+            
+            <Start>5340.0</Start>
+            
+            
+            <Duration>30.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:WakeState</EventConcept>
+            
+            
+            <Start>5370.0</Start>
+            
+            
+            <Duration>210.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N1</EventConcept>
+            
+            
+            <Start>5580.0</Start>
+            
+            
+            <Duration>120.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N2</EventConcept>
+            
+            
+            <Start>5700.0</Start>
+            
+            
+            <Duration>180.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:WakeState</EventConcept>
+            
+            
+            <Start>5880.0</Start>
+            
+            
+            <Duration>30.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N1</EventConcept>
+            
+            
+            <Start>5910.0</Start>
+            
+            
+            <Duration>30.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N2</EventConcept>
+            
+            
+            <Start>5940.0</Start>
+            
+            
+            <Duration>450.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N3</EventConcept>
+            
+            
+            <Start>6390.0</Start>
+            
+            
+            <Duration>30.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N2</EventConcept>
+            
+            
+            <Start>6420.0</Start>
+            
+            
+            <Duration>60.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:WakeState</EventConcept>
+            
+            
+            <Start>6480.0</Start>
+            
+            
+            <Duration>150.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N1</EventConcept>
+            
+            
+            <Start>6630.0</Start>
+            
+            
+            <Duration>30.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:WakeState</EventConcept>
+            
+            
+            <Start>6660.0</Start>
+            
+            
+            <Duration>30.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N2</EventConcept>
+            
+            
+            <Start>6690.0</Start>
+            
+            
+            <Duration>300.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:WakeState</EventConcept>
+            
+            
+            <Start>6990.0</Start>
+            
+            
+            <Duration>300.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N2</EventConcept>
+            
+            
+            <Start>7290.0</Start>
+            
+            
+            <Duration>60.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N3</EventConcept>
+            
+            
+            <Start>7350.0</Start>
+            
+            
+            <Duration>30.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N2</EventConcept>
+            
+            
+            <Start>7380.0</Start>
+            
+            
+            <Duration>480.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N3</EventConcept>
+            
+            
+            <Start>7860.0</Start>
+            
+            
+            <Duration>30.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N2</EventConcept>
+            
+            
+            <Start>7890.0</Start>
+            
+            
+            <Duration>210.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:RapidEyeMovementSleep</EventConcept>
+            
+            
+            <Start>8100.0</Start>
+            
+            
+            <Duration>960.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:WakeState</EventConcept>
+            
+            
+            <Start>9060.0</Start>
+            
+            
+            <Duration>420.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N2</EventConcept>
+            
+            
+            <Start>9480.0</Start>
+            
+            
+            <Duration>90.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:WakeState</EventConcept>
+            
+            
+            <Start>9570.0</Start>
+            
+            
+            <Duration>30.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N1</EventConcept>
+            
+            
+            <Start>9600.0</Start>
+            
+            
+            <Duration>90.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N2</EventConcept>
+            
+            
+            <Start>9690.0</Start>
+            
+            
+            <Duration>810.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N3</EventConcept>
+            
+            
+            <Start>10500.0</Start>
+            
+            
+            <Duration>30.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N2</EventConcept>
+            
+            
+            <Start>10530.0</Start>
+            
+            
+            <Duration>150.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N3</EventConcept>
+            
+            
+            <Start>10680.0</Start>
+            
+            
+            <Duration>30.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N2</EventConcept>
+            
+            
+            <Start>10710.0</Start>
+            
+            
+            <Duration>120.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N3</EventConcept>
+            
+            
+            <Start>10830.0</Start>
+            
+            
+            <Duration>30.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N2</EventConcept>
+            
+            
+            <Start>10860.0</Start>
+            
+            
+            <Duration>180.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N3</EventConcept>
+            
+            
+            <Start>11040.0</Start>
+            
+            
+            <Duration>30.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N2</EventConcept>
+            
+            
+            <Start>11070.0</Start>
+            
+            
+            <Duration>30.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N3</EventConcept>
+            
+            
+            <Start>11100.0</Start>
+            
+            
+            <Duration>60.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N2</EventConcept>
+            
+            
+            <Start>11160.0</Start>
+            
+            
+            <Duration>150.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N3</EventConcept>
+            
+            
+            <Start>11310.0</Start>
+            
+            
+            <Duration>150.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N2</EventConcept>
+            
+            
+            <Start>11460.0</Start>
+            
+            
+            <Duration>30.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N3</EventConcept>
+            
+            
+            <Start>11490.0</Start>
+            
+            
+            <Duration>30.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N2</EventConcept>
+            
+            
+            <Start>11520.0</Start>
+            
+            
+            <Duration>60.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N3</EventConcept>
+            
+            
+            <Start>11580.0</Start>
+            
+            
+            <Duration>60.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N2</EventConcept>
+            
+            
+            <Start>11640.0</Start>
+            
+            
+            <Duration>60.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N3</EventConcept>
+            
+            
+            <Start>11700.0</Start>
+            
+            
+            <Duration>60.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N2</EventConcept>
+            
+            
+            <Start>11760.0</Start>
+            
+            
+            <Duration>1650.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:WakeState</EventConcept>
+            
+            
+            <Start>13410.0</Start>
+            
+            
+            <Duration>30.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N2</EventConcept>
+            
+            
+            <Start>13440.0</Start>
+            
+            
+            <Duration>360.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:WakeState</EventConcept>
+            
+            
+            <Start>13800.0</Start>
+            
+            
+            <Duration>150.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N1</EventConcept>
+            
+            
+            <Start>13950.0</Start>
+            
+            
+            <Duration>30.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:WakeState</EventConcept>
+            
+            
+            <Start>13980.0</Start>
+            
+            
+            <Duration>30.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N2</EventConcept>
+            
+            
+            <Start>14010.0</Start>
+            
+            
+            <Duration>390.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:WakeState</EventConcept>
+            
+            
+            <Start>14400.0</Start>
+            
+            
+            <Duration>300.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N1</EventConcept>
+            
+            
+            <Start>14700.0</Start>
+            
+            
+            <Duration>30.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N2</EventConcept>
+            
+            
+            <Start>14730.0</Start>
+            
+            
+            <Duration>30.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:WakeState</EventConcept>
+            
+            
+            <Start>14760.0</Start>
+            
+            
+            <Duration>30.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N1</EventConcept>
+            
+            
+            <Start>14790.0</Start>
+            
+            
+            <Duration>30.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N2</EventConcept>
+            
+            
+            <Start>14820.0</Start>
+            
+            
+            <Duration>960.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N3</EventConcept>
+            
+            
+            <Start>15780.0</Start>
+            
+            
+            <Duration>30.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N2</EventConcept>
+            
+            
+            <Start>15810.0</Start>
+            
+            
+            <Duration>510.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:RapidEyeMovementSleep</EventConcept>
+            
+            
+            <Start>16320.0</Start>
+            
+            
+            <Duration>210.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:WakeState</EventConcept>
+            
+            
+            <Start>16530.0</Start>
+            
+            
+            <Duration>60.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N1</EventConcept>
+            
+            
+            <Start>16590.0</Start>
+            
+            
+            <Duration>30.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N2</EventConcept>
+            
+            
+            <Start>16620.0</Start>
+            
+            
+            <Duration>120.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:RapidEyeMovementSleep</EventConcept>
+            
+            
+            <Start>16740.0</Start>
+            
+            
+            <Duration>990.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:WakeState</EventConcept>
+            
+            
+            <Start>17730.0</Start>
+            
+            
+            <Duration>1110.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N1</EventConcept>
+            
+            
+            <Start>18840.0</Start>
+            
+            
+            <Duration>30.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:WakeState</EventConcept>
+            
+            
+            <Start>18870.0</Start>
+            
+            
+            <Duration>120.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N1</EventConcept>
+            
+            
+            <Start>18990.0</Start>
+            
+            
+            <Duration>60.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:WakeState</EventConcept>
+            
+            
+            <Start>19050.0</Start>
+            
+            
+            <Duration>180.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N1</EventConcept>
+            
+            
+            <Start>19230.0</Start>
+            
+            
+            <Duration>30.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:WakeState</EventConcept>
+            
+            
+            <Start>19260.0</Start>
+            
+            
+            <Duration>150.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N1</EventConcept>
+            
+            
+            <Start>19410.0</Start>
+            
+            
+            <Duration>30.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N2</EventConcept>
+            
+            
+            <Start>19440.0</Start>
+            
+            
+            <Duration>1590.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:WakeState</EventConcept>
+            
+            
+            <Start>21030.0</Start>
+            
+            
+            <Duration>30.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N2</EventConcept>
+            
+            
+            <Start>21060.0</Start>
+            
+            
+            <Duration>1170.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:WakeState</EventConcept>
+            
+            
+            <Start>22230.0</Start>
+            
+            
+            <Duration>30.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N2</EventConcept>
+            
+            
+            <Start>22260.0</Start>
+            
+            
+            <Duration>90.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:WakeState</EventConcept>
+            
+            
+            <Start>22350.0</Start>
+            
+            
+            <Duration>60.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N1</EventConcept>
+            
+            
+            <Start>22410.0</Start>
+            
+            
+            <Duration>90.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:RapidEyeMovementSleep</EventConcept>
+            
+            
+            <Start>22500.0</Start>
+            
+            
+            <Duration>300.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:WakeState</EventConcept>
+            
+            
+            <Start>22800.0</Start>
+            
+            
+            <Duration>30.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:RapidEyeMovementSleep</EventConcept>
+            
+            
+            <Start>22830.0</Start>
+            
+            
+            <Duration>660.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:WakeState</EventConcept>
+            
+            
+            <Start>23490.0</Start>
+            
+            
+            <Duration>30.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:RapidEyeMovementSleep</EventConcept>
+            
+            
+            <Start>23520.0</Start>
+            
+            
+            <Duration>480.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:WakeState</EventConcept>
+            
+            
+            <Start>24000.0</Start>
+            
+            
+            <Duration>90.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N1</EventConcept>
+            
+            
+            <Start>24090.0</Start>
+            
+            
+            <Duration>30.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:WakeState</EventConcept>
+            
+            
+            <Start>24120.0</Start>
+            
+            
+            <Duration>90.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N1</EventConcept>
+            
+            
+            <Start>24210.0</Start>
+            
+            
+            <Duration>150.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:WakeState</EventConcept>
+            
+            
+            <Start>24360.0</Start>
+            
+            
+            <Duration>60.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N1</EventConcept>
+            
+            
+            <Start>24420.0</Start>
+            
+            
+            <Duration>60.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N2</EventConcept>
+            
+            
+            <Start>24480.0</Start>
+            
+            
+            <Duration>330.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:WakeState</EventConcept>
+            
+            
+            <Start>24810.0</Start>
+            
+            
+            <Duration>30.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N1</EventConcept>
+            
+            
+            <Start>24840.0</Start>
+            
+            
+            <Duration>90.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N2</EventConcept>
+            
+            
+            <Start>24930.0</Start>
+            
+            
+            <Duration>1200.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:WakeState</EventConcept>
+            
+            
+            <Start>26130.0</Start>
+            
+            
+            <Duration>30.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N1</EventConcept>
+            
+            
+            <Start>26160.0</Start>
+            
+            
+            <Duration>60.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N2</EventConcept>
+            
+            
+            <Start>26220.0</Start>
+            
+            
+            <Duration>1140.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:RapidEyeMovementSleep</EventConcept>
+            
+            
+            <Start>27360.0</Start>
+            
+            
+            <Duration>510.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:WakeState</EventConcept>
+            
+            
+            <Start>27870.0</Start>
+            
+            
+            <Duration>90.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:RapidEyeMovementSleep</EventConcept>
+            
+            
+            <Start>27960.0</Start>
+            
+            
+            <Duration>150.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:WakeState</EventConcept>
+            
+            
+            <Start>28110.0</Start>
+            
+            
+            <Duration>90.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N1</EventConcept>
+            
+            
+            <Start>28200.0</Start>
+            
+            
+            <Duration>30.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:WakeState</EventConcept>
+            
+            
+            <Start>28230.0</Start>
+            
+            
+            <Duration>30.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N1</EventConcept>
+            
+            
+            <Start>28260.0</Start>
+            
+            
+            <Duration>60.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N2</EventConcept>
+            
+            
+            <Start>28320.0</Start>
+            
+            
+            <Duration>360.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:WakeState</EventConcept>
+            
+            
+            <Start>28680.0</Start>
+            
+            
+            <Duration>30.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N1</EventConcept>
+            
+            
+            <Start>28710.0</Start>
+            
+            
+            <Duration>30.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N2</EventConcept>
+            
+            
+            <Start>28740.0</Start>
+            
+            
+            <Duration>570.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:WakeState</EventConcept>
+            
+            
+            <Start>29310.0</Start>
+            
+            
+            <Duration>60.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N1</EventConcept>
+            
+            
+            <Start>29370.0</Start>
+            
+            
+            <Duration>30.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:WakeState</EventConcept>
+            
+            
+            <Start>29400.0</Start>
+            
+            
+            <Duration>150.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N1</EventConcept>
+            
+            
+            <Start>29550.0</Start>
+            
+            
+            <Duration>90.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N2</EventConcept>
+            
+            
+            <Start>29640.0</Start>
+            
+            
+            <Duration>360.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:WakeState</EventConcept>
+            
+            
+            <Start>30000.0</Start>
+            
+            
+            <Duration>540.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N1</EventConcept>
+            
+            
+            <Start>30540.0</Start>
+            
+            
+            <Duration>30.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:WakeState</EventConcept>
+            
+            
+            <Start>30570.0</Start>
+            
+            
+            <Duration>90.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N1</EventConcept>
+            
+            
+            <Start>30660.0</Start>
+            
+            
+            <Duration>60.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N2</EventConcept>
+            
+            
+            <Start>30720.0</Start>
+            
+            
+            <Duration>480.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:RapidEyeMovementSleep</EventConcept>
+            
+            
+            <Start>31200.0</Start>
+            
+            
+            <Duration>480.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:WakeState</EventConcept>
+            
+            
+            <Start>31680.0</Start>
+            
+            
+            <Duration>30.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N1</EventConcept>
+            
+            
+            <Start>31710.0</Start>
+            
+            
+            <Duration>60.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:WakeState</EventConcept>
+            
+            
+            <Start>31770.0</Start>
+            
+            
+            <Duration>30.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:NonRapidEyeMovementSleep-N1</EventConcept>
+            
+            
+            <Start>31800.0</Start>
+            
+            
+            <Duration>30.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+        
+        <ScoredEvent>
+            
+            
+            <EventConcept>SDO:WakeState</EventConcept>
+            
+            
+            <Start>31830.0</Start>
+            
+            
+            <Duration>660.0</Duration>
+            
+        
+        </ScoredEvent>
+        
+    
+    </ScoredEvents>
+    
+
+</PSGAnnotation>
