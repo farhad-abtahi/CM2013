@@ -131,7 +131,7 @@ def preprocess_multi_channel(multi_channel_data, channel_info, config):
             # Apply EEG-specific preprocessing
             #filtered_signal = lowpass_filter(signal, config.LOW_PASS_FILTER_EEG_FREQ, eeg_fs)
             #filtered_signal = highpass_filter(filtered_signal, config.HIGH_PASS_FILTER_FREQ, eeg_fs) #Highpass filter add by Sherry
-            filtered_signal = notch_filter(filtered_signal, to_be_removed, eeg_fs, q_factor, no_harmonics) #new
+            filtered_signal = notch_filter(signal, to_be_removed, eeg_fs, q_factor, no_harmonics) #new
             filtered_signal = bandpass_filter(filtered_signal, config.HIGH_PASS_FILTER_FREQ, config.LOW_PASS_FILTER_EEG_FREQ, eeg_fs, order = 4)# Bandpass filter add by Shuxuan
             # DONE: Students should add bandpass filter, artifact removal
             preprocessed_eeg[epoch, ch, :] = filtered_signal

@@ -70,12 +70,15 @@ def train_classifier(features, labels, groups, config, scaler):
             # TODO: Students should tune hyperparameters (n_estimators, max_depth, etc.)
             model = RandomForestClassifier(
                 n_estimators=getattr(config, 'RF_N_ESTIMATORS', 100),
-                max_depth=getattr(config, 'RF_MAX_DEPTH', None),
-                min_samples_split=getattr(config, 'RF_MIN_SAMPLES_SPLIT', 2),
+                max_depth=getattr(config, 'RF_MAX_DEPTH', 10),
+                min_samples_split=getattr(config, 'RF_MIN_SAMPLES_SPLIT', 5),
+                min_samples_leaf=getattr(config, 'RF_MIN_SAMPLES_LEAF', 2),
+                class_weight='balanced',
                 random_state=42,
                 n_jobs=-1  # Use all available cores
             )
-            print(f"Using Random Forest with {model.n_estimators} trees")
+            print(f"Using Random Forest: {model.n_estimators} trees, max_depth={model.max_depth}, "
+                  f"min_samples_split={model.min_samples_split}, min_samples_leaf={model.min_samples_leaf}")
 
         else:
             raise ValueError(f"Invalid iteration: {config.CURRENT_ITERATION}")
@@ -168,8 +171,10 @@ def train_classifier(features, labels, groups, config, scaler):
     elif config.CURRENT_ITERATION >= 3:
         final_model = RandomForestClassifier(
             n_estimators=getattr(config, 'RF_N_ESTIMATORS', 100),
-            max_depth=getattr(config, 'RF_MAX_DEPTH', None),
-            min_samples_split=getattr(config, 'RF_MIN_SAMPLES_SPLIT', 2),
+            max_depth=getattr(config, 'RF_MAX_DEPTH', 10),
+            min_samples_split=getattr(config, 'RF_MIN_SAMPLES_SPLIT', 5),
+            min_samples_leaf=getattr(config, 'RF_MIN_SAMPLES_LEAF', 2),
+            class_weight='balanced',
             random_state=42,
             n_jobs=-1
         )

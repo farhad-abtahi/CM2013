@@ -50,13 +50,16 @@ elif CURRENT_ITERATION == 3:
     # Iteration 3: Multi-signal processing with Random Forest
     CLASSIFIER_TYPE = 'random_forest'
     RF_N_ESTIMATORS = 100
-    RF_MAX_DEPTH = 10
+    RF_MAX_DEPTH = 10 # 10-30
+    RF_MIN_SAMPLES_SPLIT = 5  # 2-10
+    RF_MIN_SAMPLES_LEAF = 2  # 1-4
 elif CURRENT_ITERATION == 4:
     # Iteration 4: Full system optimization
     CLASSIFIER_TYPE = 'random_forest'
     RF_N_ESTIMATORS = 200
-    RF_MAX_DEPTH = None
-    RF_MIN_SAMPLES_SPLIT = 5
+    RF_MAX_DEPTH = 20  # 10-30
+    RF_MIN_SAMPLES_SPLIT = 5 # 2-10
+    RF_MIN_SAMPLES_LEAF = 2  # 1-4
 else:
     raise ValueError(f"Invalid CURRENT_ITERATION: {CURRENT_ITERATION}. Must be 1-4.")
 
