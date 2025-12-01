@@ -110,6 +110,19 @@ def preprocess(data, channel_info, config):
         return preprocess_single_channel(data, channel_info, config)
 
 
+#function to calculate bandpower - used later in emg artifacts removal
+def compute_bandpower(signal, fs, band):
+    f_min, f_max = band
+    freqs, psd = welch(signal, fs=fs, nperseg=fs*2)
+    mask = (freqs>=f_min) & (freqs<=f_max)
+
+    if not np.any(mask):
+        return 0.0
+    
+    psd_mask = psd[mask]
+    freqs_mask = freqs[mask]
+    return np.trapezoid(psd_mask,freqs_mask)
+
 def preprocess_multi_channel(multi_channel_data, channel_info, config):
     """
     Preprocess multi-channel data: 2 EEG + 2 EOG + 1 EMG channels.
@@ -149,7 +162,7 @@ def preprocess_multi_channel(multi_channel_data, channel_info, config):
                 signal = eog_data[epoch, ch, :]
                 # EOG may need different filter settings (preserve slow eye movements)
                 #filtered_signal = lowpass_filter(signal, 30, eog_fs)  # Lower cutoff for EOG
-                filtered_signal = notch_filter(filtered_signal, to_be_removed, eog_fs, q_factor, no_harmonics) #new
+                filtered_signal = notch_filter(signal, to_be_removed, eog_fs, q_factor, no_harmonics) #new
                 filtered_signal = bandpass_filter(filtered_signal, config.HIGH_PASS_FILTER_FREQ, config.LOW_PASS_FILTER_EOG_FREQ, eog_fs, order = 4)
                 preprocessed_eog[epoch, ch, :] = filtered_signal
                 
@@ -170,17 +183,37 @@ def preprocess_multi_channel(multi_channel_data, channel_info, config):
         emg_data = multi_channel_data['emg']
         emg_fs = channel_info['emg_fs']  # Actual sampling rate: 125 Hz (DONE: Get from channel_info)
         preprocessed_emg = np.zeros_like(emg_data)
-
+        
         for ch in range(emg_data.shape[1]):
             for epoch in range(emg_data.shape[0]):
                 signal = emg_data[epoch, ch, :]
+                
                 # EMG needs higher frequency content preserved (muscle activity)
                 #filtered_signal = lowpass_filter(signal, config.LOW_PASS_FILTER_EMG_FREQ, emg_fs)  # Higher cutoff for EMG
-                filtered_signal = notch_filter(filtered_signal, to_be_removed, emg_fs, q_factor, no_harmonics) #new
+                filtered_signal = notch_filter(signal, to_be_removed, emg_fs, q_factor, no_harmonics) #new
                 filtered_signal = bandpass_filter(filtered_signal, config.HIGH_PASS_FILTER_EMG_FREQ, config.LOW_PASS_FILTER_EMG_FREQ, emg_fs, order = 4)
                 preprocessed_emg[epoch, ch, :] = filtered_signal
-
+                
         preprocessed_data['emg'] = preprocessed_emg
+
+        #EMG artifacts removal from EEG
+        #to get the threshold addapted to a patient we can compute baseline power
+        baseline_power = np.mean([
+            compute_bandpower(preprocessed_data['emg'][epoch,0,:], emg_fs, band=(20,40))
+            for epoch in range(preprocessed_data['emg'].shape[0])
+        ])
+        emg_th = 2.0*baseline_power #threshold is 2 times baseline power
+
+        for epoch in range(preprocessed_data['eeg'].shape[0]):
+            emg_signal = preprocessed_data['emg'][epoch,0,:]
+            emg_power = compute_bandpower(emg_signal, emg_fs, band=(20,40))
+
+            if emg_power>emg_th:
+                for ch in range(preprocessed_data['eeg'].shape[1]):
+                    eeg_signal = preprocessed_data['eeg'][epoch,ch,:]
+                    eeg_cleaned = lowpass_filter(eeg_signal,cutoff=18,fs=channel_info['eeg_fs'],order=4)
+                    preprocessed_data['eeg'][epoch,ch,:]=eeg_cleaned 
+
 
         
         print("Multi-channel preprocessing applied to EEG + EOG + EMG")
