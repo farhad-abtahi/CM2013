@@ -372,7 +372,6 @@ graph TD
 
 #### Documentation
 - [ ] Technical report (15 pages max)
-- [ ] API documentation
 - [ ] User guide
 - [ ] Performance analysis
 
