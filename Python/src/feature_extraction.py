@@ -1,4 +1,13 @@
+from typing import Any
 import numpy as np
+import scipy
+from scipy.stats import entropy #add by Sherry
+from mne_features.univariate import compute_hjorth_complexity
+from spectrum import pburg #add by Sherry
+import pywt # added
+from scipy.stats import skew, kurtosis # added
+from src.preprocessing import compute_welch_psd
+from tqdm import tqdm
 
 def extract_time_domain_features(epoch):
     """
@@ -21,31 +30,212 @@ def extract_time_domain_features(epoch):
         'mean': np.mean(epoch),
         'median': np.median(epoch),
         'std': np.std(epoch),
+        'variance': np.var(epoch),
+        'rms':np.sqrt(np.mean(epoch**2)),
+        'min':np.min(epoch),
+        'max': np.max(epoch),
+        'range': np.max(epoch) - np.min(epoch),
+        'skewness': scipy.stats.skew(epoch),
+        'kurtosis': scipy.stats.kurtosis(epoch),
+        'zero_crossings': np.sum(np.diff(np.sign(epoch)) != 0),
+        'hjorth_activity': np.var(epoch),
+        'hjorth_mobility': np.sqrt(np.var(np.diff(epoch)) / np.var(epoch)),
+        'hjorth_complexity': compute_hjorth_complexity(epoch),
+        'total_energy': np.sum(epoch**2),
+        'mean_power': np.mean(epoch**2)
     }
-
-    # TODO: Students must implement remaining time-domain features:
-    # Basic statistical features:
-    # features['variance'] = np.var(epoch)
-    # features['rms'] = np.sqrt(np.mean(epoch**2))
-    # features['min'] = np.min(epoch)
-    # features['max'] = np.max(epoch)
-    # features['range'] = np.max(epoch) - np.min(epoch)
-    # features['skewness'] = scipy.stats.skew(epoch)
-    # features['kurtosis'] = scipy.stats.kurtosis(epoch)
-
-    # Signal complexity features:
-    # features['zero_crossings'] = np.sum(np.diff(np.sign(epoch)) != 0)
-    # features['hjorth_activity'] = np.var(epoch)
-    # features['hjorth_mobility'] = np.sqrt(np.var(np.diff(epoch)) / np.var(epoch))
-    # features['hjorth_complexity'] = hjorth_complexity(epoch)
-
-    # Signal energy and power:
-    # features['total_energy'] = np.sum(epoch**2)
-    # features['mean_power'] = np.mean(epoch**2)
-
+    
     return features
 
-def extract_features(data, config):
+def extract_frequency_domain_features(epoch, fs, AR_method, Welch_method, wavelet_method):
+
+    features = {}
+    AR_features = AR_method(epoch,fs)
+    features.update(AR_features)
+    Welch_features = Welch_method(epoch,fs)
+    features.update(Welch_features)
+    wavelet_features = wavelet_method(epoch,fs)
+    features.update(wavelet_features)
+    
+    return features
+
+# Precompute band masks OUTSIDE the epoch loop (huge speedup)
+
+def prepare_freqs_masks(fs, nfft=512):
+    """
+    Prepare frequency axis and boolean masks for canonical bands.
+    Returns: freqs, masks(dict), total_mask
+    """
+    freqs = np.linspace(0, fs/2, nfft//2 + 1)
+
+    bands = {
+        "delta": (0.5, 4),
+        "theta": (4, 8),
+        "alpha": (8, 13),
+        "beta":  (13, 30),
+        "gamma": (30, 50)
+    }
+
+    masks = {name: (freqs >= lo) & (freqs <= hi) for name, (lo, hi) in bands.items()}
+    total_mask = (freqs >= 0.5) & (freqs <= 50)
+
+    return freqs, masks, total_mask
+
+
+def AR_method(epoch, fs, order=16, nfft=512, freqs=None, masks=None, total_mask=None):
+    """
+    Burg-based AR feature extraction.
+    """
+    #just to ensure that masks exist (safe default)
+    if masks is None or freqs is None or total_mask is None:
+        freqs, masks, total_mask = prepare_freqs_masks(fs, nfft)
+
+    #run Burg
+    p = pburg(epoch, order=order, sampling=fs, NFFT=nfft)
+    psd = np.array(p.psd)
+    try:
+        freqs_ar = np.array(p.frequencies())
+    except Exception:
+        # some versions expose different API; if not available, assume pburg used same grid
+        freqs_ar = freqs
+
+    # interpolate PSD to precomputed freq grid if needed
+    if not np.allclose(freqs, freqs_ar):
+        psd = np.interp(freqs, freqs_ar, psd)
+
+    AR_features = {}
+
+    # band powers
+    band_powers = {}
+    for name, mask in masks.items():
+        if np.any(mask):
+            band_powers[name] = np.trapezoid(psd[mask], freqs[mask])
+        else:
+            band_powers[name] = 0.0
+
+    total_power = np.trapezoid(psd[total_mask], freqs[total_mask]) + 1e-12
+
+    # relative powers
+    for name in band_powers:
+        AR_features[f"rel_{name}"] = band_powers[name] / total_power
+
+    # ratios
+    AR_features["delta_alpha_ratio"] = band_powers["delta"] / (band_powers["alpha"] + 1e-12)
+    AR_features["theta_beta_ratio"]  = band_powers["theta"] / (band_powers["beta"]  + 1e-12)
+    AR_features["slow_fast_ratio"]   = (band_powers["delta"] + band_powers["theta"]) / \
+                                      (band_powers["alpha"] + band_powers["beta"] + 1e-12)
+
+    # spectral edge (95%)
+    cumulative = np.cumsum(psd)
+    threshold = 0.95 * cumulative[-1]
+    idx = np.searchsorted(cumulative, threshold)
+    AR_features["edge_freq"] = freqs[min(idx, len(freqs)-1)]
+
+    # peak frequency inside total_mask
+    tm = total_mask
+    if np.any(tm):
+        AR_features["ar_peak_freq"] = freqs[tm][np.argmax(psd[tm])]
+    else:
+        AR_features["ar_peak_freq"] = freqs[np.argmax(psd)]
+
+    #Spectral entropy measures (1 feature)
+
+    AR_features['entropy']=entropy(psd)
+    
+    return AR_features
+
+def Welch_method(epoch, fs):
+   
+    Welch_features = {}
+    
+    # Welch parameters
+    nperseg = int(4 * fs)
+    noverlap = int(0.5 * nperseg)
+    window = 'hann'
+    
+    bands = {
+        'delta': (0, 4.0),
+        'theta': (4.0, 8.0),
+        'alpha': (8.0, 13.0),
+        'beta':  (13.0, 30.0)
+    }
+    
+    # Compute Welch PSD
+    freqs, psd = compute_welch_psd(
+        epoch,
+        fs=fs,
+        nperseg=nperseg,
+        noverlap=noverlap,
+        window=window,
+        nfft=None,
+        scaling='density'
+    )
+    
+    # Calculate total power in 0.5-40 Hz band
+    fmin, fmax = 0.5, 40.0
+    m_an = (freqs >= fmin) & (freqs <= fmax)
+    freqs_b, psd_b = freqs[m_an], psd[m_an]
+    total_power = float(np.trapezoid(psd_b, freqs_b)) if freqs_b.size > 1 else 0.0
+    
+    # Calculate absolute band powers
+    abs_powers = {}
+    for name, (lo, hi) in bands.items():
+        m = (freqs >= lo) & (freqs <= hi)
+        abs_powers[name] = float(np.trapezoid(psd[m], freqs[m])) if np.any(m) else 0.0
+    
+    # Calculate relative band powers
+    for name in bands.keys():
+        Welch_features[f'pow_{name}'] = abs_powers[name]
+        Welch_features[f'rel_{name}'] = (abs_powers[name] / total_power if total_power > 0 else 0.0)
+
+    Welch_features['welch_entropy'] = entropy(psd)
+    
+    return Welch_features
+
+def wavelet_method(epoch, fs, wavelet='db4', level=5):
+    # this function is to extract wavelet based features from a EEG (epoch).
+    # decomposiiton level = 5
+    # feaures to be extract per level: energy, relative energy, entropy, mean, standard deviation, 
+    # skewness and kurtosis
+
+    coeffs = pywt.wavedec(epoch, wavelet, level=level)
+    wavelet_features = {}
+    total_energy = sum(np.sum(c ** 2) for c in coeffs)
+
+    for i, coeff in enumerate(coeffs):
+        band_name = f'wavelet_L{i}'
+        energy = np.sum(coeff ** 2)
+        rel_energy = energy / (total_energy + 1e-10)  #to avoid div by 0
+        ent=entropy(coeff)
+
+        # Compute per-coefficient statistics
+        wavelet_features.update({
+            f'{band_name}_energy': energy,
+            f'{band_name}_rel_energy': rel_energy,
+            f'{band_name}_entropy': ent,
+            f'{band_name}_mean': np.mean(coeff),
+            f'{band_name}_std': np.std(coeff),
+            f'{band_name}_skew': skew(coeff),
+            f'{band_name}_kurt': kurtosis(coeff),
+        })
+
+    return wavelet_features 
+
+def entropy(psd):
+    psd=np.array(psd)
+    psd=np.abs(psd)
+    psd_sum=psd.sum()
+    if psd_sum==0:
+        return 0.0
+    norm_psd=psd/psd_sum
+
+    mask=norm_psd>0
+    norm_psd=norm_psd[mask]
+    ent=-np.sum(norm_psd*np.log2(norm_psd))
+    norm_ent=ent/np.log2(len(psd))
+    return norm_ent
+    
+def extract_features(data, channel_info, config):
     """
     STUDENT IMPLEMENTATION AREA: Extract features based on current iteration.
 
@@ -71,22 +261,29 @@ def extract_features(data, config):
 
     if is_multi_channel:
         print("Processing multi-channel data (EEG + EOG + EMG)")
-        return extract_multi_channel_features(data, config)
+        return extract_multi_channel_features(data, channel_info, config)
     else:
         print("Processing single-channel data (backward compatibility)")
-        return extract_single_channel_features(data, config)
+        return extract_single_channel_features(data, channel_info, config)
 
 
-def extract_multi_channel_features(multi_channel_data, config):
+def extract_multi_channel_features(multi_channel_data, channel_info, config):
     """
     Extract features from multi-channel data: 2 EEG + 2 EOG + 1 EMG channels.
 
     Students should expand this significantly!
     """
+    eeg_fs = channel_info['eeg_fs']
+    eog_fs = channel_info['eog_fs']
+    emg_fs = channel_info['emg_fs']
+
     n_epochs = multi_channel_data['eeg'].shape[0]
     all_features = []
 
-    for epoch_idx in range(n_epochs):
+    # Precompute AR masks once for all epochs
+    FREQS, MASKS, TOTAL_MASK = prepare_freqs_masks(eeg_fs, nfft=512)
+
+    for epoch_idx in tqdm(range(n_epochs), desc="Extracting Features"):
         epoch_features = []
 
         # EEG features (2 channels)
@@ -94,25 +291,40 @@ def extract_multi_channel_features(multi_channel_data, config):
             eeg_signal = multi_channel_data['eeg'][epoch_idx, ch, :]
             eeg_features = extract_time_domain_features(eeg_signal)
             epoch_features.extend(list(eeg_features.values()))
+            
+            # Iteration 2+: Add frequency domain features (AR + Welch + Wavelet)
+            if config.CURRENT_ITERATION >= 2:
+                eeg_freq_features = extract_frequency_domain_features(
+                                    eeg_signal,
+                                    eeg_fs,
+                                    lambda ep, fs: AR_method(ep, fs, freqs=FREQS, masks=MASKS, total_mask=TOTAL_MASK),
+                                    Welch_method,
+                                    wavelet_method
+                                )
+                epoch_features.extend(list(eeg_freq_features.values()))
+            
+        if config.CURRENT_ITERATION >= 2:
+
+            # Add EOG features (2 channels)
+            if 'eog' in multi_channel_data:
+                for ch in range(multi_channel_data['eog'].shape[1]):
+                    eog_signal = multi_channel_data['eog'][epoch_idx, ch, :]
+                    eog_features = extract_eog_features(eog_signal)
+                    epoch_features.extend(list(eog_features.values()))
 
         if config.CURRENT_ITERATION >= 3:
-            # Add EOG features (2 channels)
-            for ch in range(multi_channel_data['eog'].shape[1]):
-                eog_signal = multi_channel_data['eog'][epoch_idx, ch, :]
-                eog_features = extract_eog_features(eog_signal)
-                epoch_features.extend(list(eog_features.values()))
 
             # Add EMG features (1 channel)
             emg_signal = multi_channel_data['emg'][epoch_idx, 0, :]
             emg_features = extract_emg_features(emg_signal)
-            epoch_features.extend(list(emg_features.values()))
+            epoch_features.extend(list[Any](emg_features.values()))
 
         all_features.append(epoch_features)
 
     features = np.array(all_features)
 
     if config.CURRENT_ITERATION == 1:
-        expected = 2 * 3  # 2 EEG channels × 3 features each
+        expected = 2 * 16  # 2 EEG channels × 3 features each
         print(f"Multi-channel Iteration 1: {features.shape[1]} features (target: {expected}+)")
         print("Students must implement remaining 13 time-domain features per EEG channel!")
     elif config.CURRENT_ITERATION >= 3:
@@ -122,7 +334,7 @@ def extract_multi_channel_features(multi_channel_data, config):
     return features
 
 
-def extract_single_channel_features(data, config):
+def extract_single_channel_features(data, channel_info, config):
     """
     Backward compatibility for single-channel data.
     """
@@ -135,16 +347,37 @@ def extract_single_channel_features(data, config):
             all_features.append(list(features.values()))
         features = np.array(all_features)
 
-        print(f"WARNING: Only {features.shape[1]} features extracted, target is 16 for iteration 1")
-        print("Students must implement the remaining time-domain features!")
+        print(f"{features.shape[1]} features extracted")
+        #print(f"WARNING: Only {features.shape[1]} features extracted, target is 16 for iteration 1")
+        #print("Students must implement the remaining time-domain features!")
 
     elif config.CURRENT_ITERATION == 2:
-        # TODO: Students must implement frequency-domain features
-        print("TODO: Students must implement frequency-domain feature extraction")
-        print("Target: ~31 features (time + frequency domain)")
-        n_epochs = data.shape[0] if len(data.shape) > 1 else 1
-        features = np.zeros((n_epochs, 0))  # Empty features - students must implement
+        # Iteration 2: Time domain + Frequency domain (AR + Welch + Wavelet)
+        fs = channel_info['eeg_fs']  # Get sampling frequency from channel_info
+        all_features = []
 
+        # Precompute AR masks once
+        FREQS, MASKS, TOTAL_MASK = prepare_freqs_masks(fs, nfft=512)
+
+        epochs = data if data.ndim > 1 else data[None, :]
+        for epoch in epochs:
+            # Time domain features
+            td = extract_time_domain_features(epoch)
+            
+            # Frequency domain features (AR + Welch + Wavelet)
+            freq_features = extract_frequency_domain_features(
+                            epoch,
+                            fs,
+                            lambda ep, fs: AR_method(ep, fs, freqs=FREQS, masks=MASKS, total_mask=TOTAL_MASK),
+                            Welch_method,
+                            wavelet_method
+                        )
+            
+            all_features.append(list(td.values()) + list(freq_features.values()))
+
+        features = np.array(all_features)
+
+    
     elif config.CURRENT_ITERATION >= 3:
         # TODO: Students must implement multi-signal features
         print("TODO: Students should use multi-channel data format for iteration 3+")
@@ -169,8 +402,22 @@ def extract_eog_features(eog_signal):
     features = {
         'eog_mean': np.mean(eog_signal),
         'eog_std': np.std(eog_signal),
+        'eog_peak': np.max(abs(eog_signal)),
+        'eog_var':np.var(eog_signal),
         'eog_range': np.max(eog_signal) - np.min(eog_signal),
+        'eog_kurtosis': kurtosis(eog_signal),
     }
+
+    features['eog_energy'] = np.sum(eog_signal ** 2)
+    features['eog_entropy'] = entropy(eog_signal)
+
+    #Hjorth Mobility
+    diff_signal = np.diff(eog_signal)
+    var_signal = np.var(eog_signal)
+    if var_signal > 0:
+        features['eog_mobility'] = np.sqrt(np.var(diff_signal) / var_signal)
+    else:
+        features['eog_mobility'] = 0
 
     # TODO: Students should add:
     # - Eye movement detection features
@@ -193,6 +440,8 @@ def extract_emg_features(emg_signal):
         'emg_mean': np.mean(emg_signal),
         'emg_std': np.std(emg_signal),
         'emg_rms': np.sqrt(np.mean(emg_signal**2)),
+        'emg_power': np.mean(emg_signal**2),
+        'emg_var': np.var(emg_signal)
     }
 
     # TODO: Students should add:

@@ -133,7 +133,7 @@ def load_training_data(edf_file_path, xml_file_path, epoch_length=30):
     # Trim labels to match data (in case of rounding issues)
     labels = labels[:n_epochs]
 
-    return multi_channel_data, labels, channel_info
+    return multi_channel_data, labels, channel_info 
 
 
 def load_holdout_data(edf_file_path, epoch_length=30):

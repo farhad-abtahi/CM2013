@@ -58,6 +58,7 @@ python main.py
 ```
 
 **First Run Results**:
+
 - ✅ Configuration loads successfully
 - ✅ Multi-channel dummy data is loaded (240 epochs, 2 hours):
   - 2 EEG channels (C3-A2, C4-A1) at 125 Hz (3750 samples/epoch)
@@ -70,6 +71,7 @@ python main.py
 - ✅ Basic k-NN classifier trains (but with minimal features)
 
 **What Students Must Implement**:
+
 1. **Multi-Channel Data Loading**:
    - Real EDF/XML file parsing for R1.edf/R1.xml format
    - Handle 2 EEG + 2 EOG + 1 EMG channels with different sampling rates
@@ -101,9 +103,10 @@ This will create a `submission.csv` file in the `data/` directory, formatted as 
 ### 5. Configuration
 
 The `config.py` file is central to managing the project. You can adjust:
-*   `CURRENT_ITERATION`: To switch between different stages of development (1-4).
-*   `USE_CACHE`: To enable/disable caching of intermediate results.
-*   File paths, preprocessing parameters, and model hyperparameters.
+
+- `CURRENT_ITERATION`: To switch between different stages of development (1-4).
+- `USE_CACHE`: To enable/disable caching of intermediate results.
+- File paths, preprocessing parameters, and model hyperparameters.
 
 ### 6. Google Colab
 
@@ -120,9 +123,9 @@ This project follows an agile, iterative development approach as outlined in the
 
 ### Data Structure
 
-*   **`data/training/`**: This directory should contain EDF files and their corresponding XML annotation files for training and validation of your models. These files have associated sleep stage labels.
-*   **`data/holdout/`**: This directory should contain EDF files for which you need to predict sleep stages. These files do *not* have associated labels and are used for competition submission.
-*   **`data/sample/`**: This directory contains a small sample of data for testing the pipeline.
+- **`data/training/`**: This directory should contain EDF files and their corresponding XML annotation files for training and validation of your models. These files have associated sleep stage labels.
+- **`data/holdout/`**: This directory should contain EDF files for which you need to predict sleep stages. These files do _not_ have associated labels and are used for competition submission.
+- **`data/sample/`**: This directory contains a small sample of data for testing the pipeline.
 
 ### EDF File Format
 

@@ -2,14 +2,14 @@
 
 # Set the current iteration of the project (1-4). 
 # This controls which parts of the pipeline are active.
-CURRENT_ITERATION = 1
+CURRENT_ITERATION = 2
 
 # Set to True to use cached data for preprocessing and feature extraction.
 USE_CACHE = False  # Temporarily disabled for testing with real data
 
 # -- File Paths --
 import os
-DATA_DIR = '../data/'
+DATA_DIR = './data/'
 TRAINING_DIR = f'{DATA_DIR}training/'
 HOLDOUT_DIR = f'{DATA_DIR}holdout/'
 SAMPLE_DIR = f'{DATA_DIR}sample/'
@@ -23,10 +23,15 @@ if not os.path.exists(CACHE_DIR):
     os.makedirs(CACHE_DIR, exist_ok=True)
 
 # -- Preprocessing --
-LOW_PASS_FILTER_FREQ = 40  # Hz
+LOW_PASS_FILTER_EEG_FREQ = 40  # Hz
+LOW_PASS_FILTER_EOG_FREQ = 5
+HIGH_PASS_FILTER_FREQ = 0.5 ##Highpass filter frequency add by Sherry
 
 # -- Feature Extraction --
 # (Add feature-specific parameters here)
+
+# -- Feature Selection --
+FEATURE_SELECTION_K = 50
 
 # -- Classification --
 # Iteration-specific parameters - students should modify these based on current iteration
@@ -34,22 +39,27 @@ if CURRENT_ITERATION == 1:
     # Iteration 1: Basic pipeline with k-NN
     CLASSIFIER_TYPE = 'knn'
     KNN_N_NEIGHBORS = 5
+    KNN_WEIGHTS = 'distance' #add by Sherry
 elif CURRENT_ITERATION == 2:
     # Iteration 2: Enhanced EEG processing with SVM
     CLASSIFIER_TYPE = 'svm'
-    SVM_C = 1.0
+    SVM_C = 10
     SVM_KERNEL = 'rbf'
+    SVM_GAMMA = 'scale'
 elif CURRENT_ITERATION == 3:
     # Iteration 3: Multi-signal processing with Random Forest
     CLASSIFIER_TYPE = 'random_forest'
     RF_N_ESTIMATORS = 100
-    RF_MAX_DEPTH = 10
+    RF_MAX_DEPTH = 10 # 10-30
+    RF_MIN_SAMPLES_SPLIT = 5  # 2-10
+    RF_MIN_SAMPLES_LEAF = 2  # 1-4
 elif CURRENT_ITERATION == 4:
     # Iteration 4: Full system optimization
     CLASSIFIER_TYPE = 'random_forest'
     RF_N_ESTIMATORS = 200
-    RF_MAX_DEPTH = None
-    RF_MIN_SAMPLES_SPLIT = 5
+    RF_MAX_DEPTH = 20  # 10-30
+    RF_MIN_SAMPLES_SPLIT = 5 # 2-10
+    RF_MIN_SAMPLES_LEAF = 2  # 1-4
 else:
     raise ValueError(f"Invalid CURRENT_ITERATION: {CURRENT_ITERATION}. Must be 1-4.")
 
