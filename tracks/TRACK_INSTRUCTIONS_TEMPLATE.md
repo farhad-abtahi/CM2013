@@ -37,7 +37,7 @@ trade-offs). The grade is on the quality of the reasoning, not on matching one b
 
 ## 5. Deliverables
 - A short **report** (design decisions justified; results read against chance/inter-rater ceiling).
-- `predictions.csv` on the held-out split (per-track mini-competition), if enabled.
+- `predictions.csv` on the held-out split (per-track hold-out evaluation), if enabled.
 - A slot in the **cross-track showcase**: "same methods, our signal — what was different?"
 - A **results log**: copy `results_log_TEMPLATE.md` into your team repo as `RESULTS.md` and add one row per iteration — what changed and why, the metric **with its spread**, whether it beat the previous iteration (or why you kept it anyway), and the commit. **This file is graded** (rubric Criterion 9, 3 pts) and it asks specifically for at least one decision you went back and **revised because of a downstream result** — the notebook's "Decision points on this track" section has a symptom → stage table to diagnose from, and prints an A/B of several options so you can see the numbers move.
 

@@ -79,7 +79,7 @@ however well written it is.
 Filled in per track below. Both are graded the same way as the common criteria — match
 the evidence to a row.
 
-**On Criterion 7 — it grades the comparison, not the leaderboard.** This criterion used
+**On Criterion 7 — it grades the comparison, not the raw metric.** This criterion used
 to require beating `default_baseline()` for the top bands, which put "finished below the
 baseline" in the *Missing* row no matter how rigorous the work behind it was. That
 contradicted this rubric's own stated intent (*"a team with a modest metric but honest,
@@ -191,8 +191,10 @@ The point value is unchanged at **4**, and the sheet still totals **30**.
 
 ## Using this rubric
 
-- **Grade blind to the leaderboard.** The hold-out competition (`COMPETITION.md`) ranks
-  teams on the raw metric; this rubric grades the *code, report, and presentation*. A
+- **Grade on the work, not the raw metric.** The hold-out evaluation
+  (`HOLDOUT_EVALUATION.md`) reports each team's score on the withheld set back to that
+  team only — it is not a cross-team ranking; this rubric grades the *code, report, and
+  presentation*. A
   team with a modest metric but honest, well-diagnosed work should outscore a team with
   a better number and sloppy execution — that is the point of Criteria 5 and 9.
 - **Criterion 3 (validation honesty) is a soft gate.** Code that fails the "no

@@ -12,7 +12,7 @@
 | Smoke-test records | 1001, 1002, 1004 |
 | Expected runtime | ~2–4 min on a subset (Colab, CPU) |
 | DSP focus | dropout removal + interpolation, FHR baseline/variability (STV/LTV), accel/decel detection, uterine-contraction features |
-| Competition submission | record-level `predictions.csv` |
+| Hold-out submission | record-level `predictions.csv` |
 | Difficulty (1–5) | 3 |
 
 **Citation.** Chudáček V, et al. (2014); Goldberger AL, et al. PhysioNet (2000).
@@ -48,4 +48,4 @@ over our 0.10, achieved without leakage. Read your result against that low, nois
   State your threshold — it changes the whole task. Apgar is an alternative label in the header.
 - **Strong class imbalance** (few pathological). Score macro-F1 / κ / per-class recall, never accuracy.
 - **Where in the trace matters** — the acidemia signal concentrates near delivery; window the tail.
-- **Split by recording.** One label per record (`record,label` competition).
+- **Split by recording.** One label per record (`record,label` hold-out submission).

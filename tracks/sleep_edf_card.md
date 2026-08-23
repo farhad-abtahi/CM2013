@@ -12,7 +12,7 @@
 | Smoke-test records | SC4001, SC4011, SC4021 |
 | Expected runtime | ~3–6 min on a Sleep-Cassette subset (Colab, CPU) |
 | DSP focus | band power, spindle STFT/wavelet, EOG/EMG artifact handling |
-| Competition submission | epoch-level `predictions.csv` |
+| Hold-out submission | epoch-level `predictions.csv` |
 | Difficulty (1–5) | 3 |
 
 **Citation.** Kemp B, et al. (2000); Goldberger AL, et al. PhysioNet (2000).

@@ -34,4 +34,4 @@ relative to an easy one (HAR).
   hide a weak cross-subject result behind a strong within-subject one.
 - **Synthetic vs real:** smoke/CI numbers are plumbing checks, never reported as results.
 - **Deliverables:** report (≤ N pages), a `predictions.csv` on the held-out split (per-track
-  mini-competition, optional), and a slot in the **cross-track showcase**.
+  hold-out evaluation, optional), and a slot in the **cross-track showcase**.

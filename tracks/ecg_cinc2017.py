@@ -124,7 +124,7 @@ class ECGCinC2017Track(TrackAdapter):
         dsp_focus="band-pass + notch, Pan–Tompkins QRS, R–R irregularity/HRV, signal quality",
         difficulty=3,
         eval_modes=("new-record",),
-        submission_granularity="record",         # one label per record for the competition
+        submission_granularity="record",         # one label per record for hold-out evaluation
     )
 
     #: Capability declaration (see `TrackAdapter.SUPPORTED_CFG_KEYS`). Like
@@ -396,7 +396,7 @@ if __name__ == "__main__":
              rep["cohens_kappa"], rep["n_groups"]))
     print("spread:", rep["summary"])          # never the pooled number alone (§16.3)
     print("classes:", rep["labels"], "\nconfusion (rows=true):\n", rep["confusion"])
-    # competition demo: fit on train records, write a predictions.csv on held-out records
+    # hold-out demo: fit on train records, write a predictions.csv on held-out records
     # smoke() emits records grouped by class, so shuffle before an index-based split
     recs = list(np.random.default_rng(0).permutation(t.smoke()))
     split = int(0.8 * len(recs))

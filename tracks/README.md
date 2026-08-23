@@ -34,7 +34,7 @@ behave differently on EEG vs ECG vs IMU vs EMG.
   → `baseline` → `infer` → `report`, §16.2 / rubric Criterion 1) + the shared, never-overridden
   `evaluate()` (leave-one-group-out for few groups, 5-fold GroupKFold for many, leakage guard,
   **selection fit inside every fold**) which returns per-group / per-fold results and the metric's
-  **spread**, not just a pooled number + `default_baseline()` + the competition harness
+  **spread**, not just a pooled number + `default_baseline()` + the hold-out evaluation harness
   (`train_baseline`, `write_submission`, `holdout_score`). `preprocess()` and `select_features()`
   default to pass-through and document their alternatives with trade-offs — the scaffold offers
   options, it does not pick the pipeline for the student. Each track declares the cfg keys it
@@ -55,7 +55,7 @@ behave differently on EEG vs ECG vs IMU vs EMG.
   synthetic smoke (offline). R&K→AASM (S3+S4→N3), drop MOVEMENT/UNKNOWN, split by **subject**.
 - `ecg_cinc2017.py` — **second built track** (PhysioNet/CinC-2017 single-lead ECG). Real `wfdb`
   loader (Colab) + synthetic smoke. 4-class rhythm N/A/O/~; split by **record**; QRS/HRV/SQI
-  features; record-level competition.
+  features; record-level hold-out evaluation.
 - `har.py` — **HAR** (UCI-HAR raw inertial), IMU activity; split by subject. Real loader validated.
 - `ctg_ctu_uhb.py` — **CTG (fetal)** (CTU-UHB, `wfdb`), FHR+UC, normal/pathological by umbilical pH;
   split by recording. Real loader validated (a deliberately hard problem).
@@ -63,8 +63,8 @@ behave differently on EEG vs ECG vs IMU vs EMG.
   new-subject) via `evaluate_modes()`. Real loader validated.
 - `bci_eegmmidb.py` — **BCI motor imagery** (EEGMMIDB, `mne`), 64-ch EEG L/R imagery; **two eval
   modes**. Real loader validated (near-chance naive baseline — CSP is the student's job).
-- `COMPETITION.md`, `TRACK_INSTRUCTIONS_TEMPLATE.md`, `dataset_card_TEMPLATE.md`, `results_log_TEMPLATE.md`,
-  `readiness_matrix_TEMPLATE.md` — the competition + templates for each new track.
+- `HOLDOUT_EVALUATION.md`, `TRACK_INSTRUCTIONS_TEMPLATE.md`, `dataset_card_TEMPLATE.md`, `results_log_TEMPLATE.md`,
+  `readiness_matrix_TEMPLATE.md` — the hold-out evaluation mechanics + templates for each new track.
 - `CAPSTONE_REPORT_RUBRIC.md` — `RUBRIC.md`'s common/domain-specific split made concrete: a
   30-point (code + report + presentation), 8-criterion **team** grading sheet **per track**, each
   with 4-tier point-band descriptors, so grading is transparent to students and consistent across
@@ -110,13 +110,14 @@ re-verified on every CI run. Two artifacts make that layer auditable:
 
 ## First-pass scope (do not start ten tracks)
 **Built:** Sleep-EDF (reference) and **ECG / CinC-2017** (second track) — two different signals,
-one adapter interface, one rubric, one competition harness. That proves the architecture; the
+one adapter interface, one rubric, one hold-out evaluation harness. That proves the architecture; the
 remaining tracks (HAR, CTG, EMG, BCI, …) are now a config/data-card addition, not new architecture.
 
-## Hold-out competition
-Every track runs a per-track hold-out competition (submit `predictions.csv`, instructor scores on
-withheld labels, leaderboard on the track's default metric) alongside the cross-track showcase.
-Format and mechanics: `COMPETITION.md`.
+## Hold-out evaluation
+Every track runs a per-track hold-out evaluation (submit `predictions.csv`, instructor scores it
+against withheld labels on the track's default metric — reported to your team only, not ranked
+against other teams) alongside the cross-track showcase.
+Format and mechanics: `HOLDOUT_EVALUATION.md`.
 
 ## Fully-open core (agreement-free)
 Sleep-EDF · UCI-HAR/PAMAP2 · MIT-BIH/CinC-2017 (ECG) · CTU-UHB (CTG) · Ninapro (EMG) ·

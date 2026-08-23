@@ -12,7 +12,7 @@
 | Smoke-test records | S1, S2, S3 |
 | Expected runtime | ~3–6 min on a subject subset (Colab, CPU) |
 | DSP focus | windowing, MAV/RMS/waveform-length/variance + mean-frequency per channel |
-| Competition submission | epoch-level `predictions.csv` |
+| Hold-out submission | epoch-level `predictions.csv` |
 | Difficulty (1–5) | 3 |
 
 **Citation.** Atzori M, et al. Sci Data (2014). Ninapro DB1.

@@ -12,7 +12,7 @@
 | Smoke-test records | S001, S002, S003 |
 | Expected runtime | ~3–6 min on a subject subset (Colab, CPU) |
 | DSP focus | band-pass, mu/beta ERD at C3/C4/Cz, C3–C4 laterality, CSP (extension) |
-| Competition submission | epoch-level `predictions.csv` |
+| Hold-out submission | epoch-level `predictions.csv` |
 | Difficulty (1–5) | 4 |
 
 **Citation.** Schalk G, et al. (2004); Goldberger AL, et al. PhysioNet (2000).

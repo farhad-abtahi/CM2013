@@ -12,7 +12,7 @@
 | Smoke-test records | subj_1, subj_2 |
 | Expected runtime | ~1–3 min (Colab, CPU) |
 | DSP focus | gravity/motion filtering, windowing, dominant-frequency (cadence), magnitude |
-| Competition submission | epoch-level `predictions.csv` |
+| Hold-out submission | epoch-level `predictions.csv` |
 | Difficulty (1–5) | 2 |
 
 **Citation.** Anguita D, et al. UCI HAR dataset (2013).

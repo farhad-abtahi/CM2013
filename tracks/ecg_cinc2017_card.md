@@ -12,7 +12,7 @@
 | Smoke-test records | A00001, A00004, A00006 |
 | Expected runtime | ~2–5 min on a subset (Colab, CPU) |
 | DSP focus | band-pass + notch, Pan–Tompkins QRS, R–R irregularity/HRV, signal quality |
-| Competition submission | record-level `predictions.csv` |
+| Hold-out submission | record-level `predictions.csv` |
 | Difficulty (1–5) | 3 |
 
 **Citation.** Clifford GD, et al. PhysioNet/CinC Challenge 2017.
@@ -45,5 +45,5 @@ detection, richer HRV/morphology features, and explicit Noisy-class signal-quali
 - **Single lead, variable length (9–60 s), 300 Hz** — pad/segment consistently.
 - **AF signature is R–R irregularity**, not a single feature; the `~` (Noisy) class is a *signal-quality* problem, not a rhythm.
 - **Strong class imbalance** (Normal ≫ AF ≫ Other ≫ Noisy) — score macro-F1 / κ, never accuracy.
-- **Split by record**; the official metric is per-record — the competition submits `record,label`.
+- **Split by record**; the official metric is per-record — the hold-out submission uses `record,label`.
 - Robust **QRS detection under noise** is half the battle; a bad detector wrecks the R–R features.

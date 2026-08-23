@@ -155,7 +155,7 @@ and record both numbers in `RESULTS.md`.
 
 ## 5. Deliverables
 - A short **report** (features justified physiologically; results vs. the class-prior baseline).
-- `predictions.csv` (`record,label`) on the held-out split for the mini-competition.
+- `predictions.csv` (`record,label`) on the held-out split for hold-out evaluation.
 - A slot in the **cross-track showcase**: "same variability/deceleration ideas, our signal."
 - A **results log**: copy `results_log_TEMPLATE.md` into your team repo as `RESULTS.md` and add one row per iteration — what changed and why, the metric **with its spread**, whether it beat the previous iteration (or why you kept it anyway), and the commit. **This file is graded** (rubric Criterion 9, 3 pts) and it asks specifically for at least one decision you went back and **revised because of a downstream result** — the notebook's "Decision points on this track" section has a symptom → stage table to diagnose from, and prints an A/B of several options so you can see the numbers move.
 

@@ -183,7 +183,7 @@ and record both numbers in `RESULTS.md`.
 ## 5. Deliverables
 - A short **report** reading your κ against the **human ceiling (κ ≈ 0.76)** — a number *above* it is a
   red flag (Wake imbalance / tiny subset), not a win. Justify every design choice.
-- `predictions.csv` (`record,epoch,label`) on the held-out split for the mini-competition.
+- `predictions.csv` (`record,epoch,label`) on the held-out split for hold-out evaluation.
 - A cross-track showcase slot: "the same band-power/feature ideas, on EEG."
 - A **results log**: copy `results_log_TEMPLATE.md` into your team repo as `RESULTS.md` and add one row per iteration — what changed and why, the metric **with its spread**, whether it beat the previous iteration (or why you kept it anyway), and the commit. **This file is graded** (rubric Criterion 9, 3 pts) and it asks specifically for at least one decision you went back and **revised because of a downstream result** — the notebook's "Decision points on this track" section has a symptom → stage table to diagnose from, and prints an A/B of several options so you can see the numbers move.
 

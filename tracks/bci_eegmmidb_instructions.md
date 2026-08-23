@@ -184,7 +184,7 @@ and record both numbers in `RESULTS.md`.
 ## 5. Deliverables
 - A short **report** with the **evaluation mode** on every number, and an honest account of which
   subjects were decodable.
-- `predictions.csv` on the held-out split for the mini-competition.
+- `predictions.csv` on the held-out split for hold-out evaluation.
 - A cross-track showcase slot: "spatial filtering was the difference."
 - A **results log**: copy `results_log_TEMPLATE.md` into your team repo as `RESULTS.md` and add one row per iteration — what changed and why, the metric **with its spread**, whether it beat the previous iteration (or why you kept it anyway), and the commit. **This file is graded** (rubric Criterion 9, 3 pts) and it asks specifically for at least one decision you went back and **revised because of a downstream result** — the notebook's "Decision points on this track" section has a symptom → stage table to diagnose from, and prints an A/B of several options so you can see the numbers move.
 

@@ -1818,7 +1818,7 @@ class TrackAdapter:
             gg.extend(groups[te].tolist()); ff.extend([k] * len(te))
         return self._make_report(yt, yp, groups=gg, folds=ff, n_groups=n_groups)
 
-    # ---- per-track hold-out competition ----
+    # ---- per-track hold-out evaluation ----
     def train_baseline(self, train_recs, clf=None, cfg=None):
         """Modules 2-5 on the FULL training set -> a frozen `FittedModel`
         (selector + classifier) ready for `infer()` / `write_submission()`.
@@ -1837,14 +1837,14 @@ class TrackAdapter:
 
     def write_submission(self, test_recs, path, model, cfg=None,
                          allow_cfg_mismatch: bool = False):
-        """Write a competition `predictions.csv` in the track's granularity:
+        """Write a hold-out `predictions.csv` in the track's granularity:
         `record,epoch,label` (epoch-level) or `record,label` (record-level).
         Uses module 6 (`infer`) — the frozen path, no fitting.
 
         Like `infer()`, this reuses **the cfg the model was trained under** when
         `cfg` is omitted, and refuses a cfg that conflicts with it. A submission
         generated from a different pipeline than the one you validated is the one
-        mistake here that no leaderboard number can reveal to you."""
+        mistake here that no held-out score can reveal to you."""
         import csv
         gran = getattr(self.meta, "submission_granularity", "epoch")
         with open(path, "w", newline="") as f:
@@ -1860,7 +1860,7 @@ class TrackAdapter:
         return path
 
     def holdout_score(self, train_recs, holdout_recs, clf=None, cfg=None):
-        """Instructor leaderboard: fit on train, score on a LABELED hold-out.
+        """Instructor hold-out scoring: fit on train, score on a LABELED hold-out.
         Reports per-held-out-group results too, so the hold-out number also
         carries its spread rather than one pooled figure.
 
@@ -1908,7 +1908,7 @@ class TrackAdapter:
             f"| Smoke-test records | {', '.join(map(str, m.smoke_test_records))} |\n"
             f"| Expected runtime | {m.expected_runtime} |\n"
             f"| DSP focus | {m.dsp_focus} |\n"
-            f"| Competition submission | {m.submission_granularity}-level `predictions.csv` |\n"
+            f"| Hold-out submission | {m.submission_granularity}-level `predictions.csv` |\n"
             f"| Difficulty (1–5) | {m.difficulty} |\n\n"
             f"**Citation.** {m.citation}\n\n"
             f"**Source.** {m.url}\n")
