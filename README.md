@@ -5,6 +5,10 @@ Course code repository for **CM2013** (KTH, HT26), the companion course to
 Learning*. Contains the demo notebooks, the graded labs, and the capstone
 project scaffold.
 
+**→ [Notebook gallery](https://farhad-abtahi.github.io/CM2013/)** — every demo, lab, and
+capstone-track notebook in one searchable, filterable page, each with its Colab/nbviewer/
+JupyterLite/download links already wired up.
+
 ## Structure
 
 ```
@@ -21,12 +25,6 @@ src/bsp/      Shared Python library the notebooks import (loaders, metrics,
 src/figures/  Pre-rendered book figures used by the demo notebooks
 tests/        Regression test suite for the track adapters and shared library
 ```
-
-## Browse everything
-
-**→ [Notebook gallery](https://farhad-abtahi.github.io/CM2013/)** — every demo, lab, and
-capstone-track notebook in one searchable, filterable page, each with its Colab/nbviewer/
-JupyterLite/download links already wired up.
 
 ## Three ways to run every notebook
 
@@ -84,4 +82,4 @@ doesn't affect the adapter code, which is MIT-licensed.
 ## The book
 
 This repo is the code companion to *Biomedical Signal Processing & Data
-Analytics: From Physiology to Machine Learning*. https://aiinhealthcarebook.com
+Analytics: From Physiology to Machine Learning*.

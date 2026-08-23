@@ -3,7 +3,7 @@
   "branch": "main",
   "book_title": "CM2013 — Signal Processing and Data Analytics in Biomedical Engineering",
   "book_subtitle": "Demo notebooks, labs, and capstone tracks",
-  "book_url": "https://aiinhealthcarebook.com",
+  "book_url": null,
   "notebooks": [
     {
       "num": 1,

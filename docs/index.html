@@ -157,7 +157,7 @@ fetch("notebooks.json").then(r=>r.json()).then(d=>{
   document.getElementById("bookSub").textContent=d.book_subtitle;
   const gh=`https://github.com/${d.repo}`;
   document.getElementById("topLinks").innerHTML=
-    `<a href="${d.book_url}" target="_blank" rel="noopener">→ Book</a>`+
+    (d.book_url?`<a href="${d.book_url}" target="_blank" rel="noopener">→ Book</a>`:``)+
     `<a href="${gh}" target="_blank" rel="noopener">→ GitHub repository</a>`;
   document.getElementById("footLinks").innerHTML=
     `Companion code for <em>${d.book_title}</em> · <a href="${gh}">GitHub</a>`;
