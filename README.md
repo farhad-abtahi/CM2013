@@ -22,6 +22,12 @@ src/figures/  Pre-rendered book figures used by the demo notebooks
 tests/        Regression test suite for the track adapters and shared library
 ```
 
+## Browse everything
+
+**→ [Notebook gallery](https://farhad-abtahi.github.io/CM2013/)** — every demo, lab, and
+capstone-track notebook in one searchable, filterable page, each with its Colab/nbviewer/
+JupyterLite/download links already wired up.
+
 ## Three ways to run every notebook
 
 Every notebook (demo, track, and lab) carries three badges:

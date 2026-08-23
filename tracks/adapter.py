@@ -1051,7 +1051,7 @@ def spectral_bandpower(x, fs, band, method="welch", **kw) -> float:
     inside = (f > lo) & (f < hi)
     fb = np.concatenate(([lo], f[inside], [hi]))
     pb = np.concatenate(([np.interp(lo, f, pxx)], pxx[inside], [np.interp(hi, f, pxx)]))
-    trapz = getattr(np, "trapezoid", np.trapz)
+    trapz = np.trapezoid if hasattr(np, "trapezoid") else np.trapz
     return float(trapz(pb, fb))
 
 

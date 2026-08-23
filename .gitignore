@@ -5,7 +5,9 @@ __pycache__/
 .pytest_cache/
 
 # CI-generated (built by .github/workflows/deploy.yml, published to Pages — not committed)
-docs/
+# docs/index.html and docs/notebooks.json ARE committed (the hand-authored gallery page).
+docs/nb/
+docs/lite/
 _lite_content/
 .jupyterlite.doit.db
 

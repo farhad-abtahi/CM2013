@@ -1,0 +1,619 @@
+{
+  "repo": "farhad-abtahi/CM2013",
+  "branch": "main",
+  "book_title": "CM2013 — Signal Processing and Data Analytics in Biomedical Engineering",
+  "book_subtitle": "Demo notebooks, labs, and capstone tracks",
+  "book_url": "https://aiinhealthcarebook.com",
+  "notebooks": [
+    {
+      "num": 1,
+      "kind": "chapter",
+      "slug": "ch01_biosignal_zoo",
+      "file": "notebooks/ch01_biosignal_zoo.ipynb",
+      "title": "Biosignals & Medical Images",
+      "question": "Where do the wiggles in an ECG or EEG actually come from, and what makes a signal 'hard'?",
+      "concepts": [
+        "Origins of ECG / EEG / EMG and their signatures (EOG: amplitude/bandwidth only)",
+        "Amplitude, bandwidth and rhythm as a signal 'fingerprint'",
+        "Deterministic vs stochastic; stationary vs non-stationary"
+      ],
+      "lite": "full",
+      "ml": false,
+      "pilot": false
+    },
+    {
+      "num": 1,
+      "kind": "lab",
+      "slug": "lab01_biosignal_zoo_and_acquisition_audit",
+      "file": "labs/lab01_biosignal_zoo_and_acquisition_audit/lab01_biosignal_zoo_and_acquisition_audit.ipynb",
+      "title": "Lab 01 — The biosignal zoo & an acquisition audit",
+      "question": "Is this recording fit for the question I want to ask of it?",
+      "concepts": [
+        "Chapter 1 — §1.4 (biosignal signatures), §1.6 (the taxonomy), §1.8 (task types), §1.9 (the pipeline)."
+      ],
+      "lite": "full",
+      "ml": false,
+      "pilot": false
+    },
+    {
+      "num": 2,
+      "kind": "chapter",
+      "slug": "ch02_sampling_aliasing",
+      "file": "notebooks/ch02_sampling_aliasing.ipynb",
+      "title": "Sampling, Aliasing & Quantization",
+      "question": "How does a continuous voltage become discrete numbers without lying about the truth?",
+      "concepts": [
+        "Nyquist–Shannon sampling theorem and the Nyquist frequency",
+        "Aliasing and why it is irreversible",
+        "Quantization SNR ≈ 6.02·N + 1.76 dB and crest-factor headroom",
+        "Anti-alias filtering and the guard band",
+        "Spatial / imaging sampling: moiré and Radon (CT) undersampling"
+      ],
+      "lite": "full",
+      "ml": false,
+      "pilot": true
+    },
+    {
+      "num": 2,
+      "kind": "lab",
+      "slug": "lab02_sampling_aliasing_clock_drift",
+      "file": "labs/lab02_sampling_aliasing_clock_drift/lab02_sampling_aliasing_clock_drift.ipynb",
+      "title": "Lab 02 — Sampling, aliasing & clock drift",
+      "question": "Is my sampling rate and timing good enough for the question I am asking?",
+      "concepts": [
+        "Chapter 2 — §2.7–§2.9 (Nyquist, aliasing, quantization), §2.13 (non-uniform sampling & resampling)."
+      ],
+      "lite": "full",
+      "ml": false,
+      "pilot": false
+    },
+    {
+      "num": 3,
+      "kind": "chapter",
+      "slug": "ch03_fourier_fft",
+      "file": "notebooks/ch03_fourier_fft.ipynb",
+      "title": "Fourier Analysis, FFT & Time–Frequency",
+      "question": "How do we see the delta, theta, alpha and spindle 'notes' hidden inside a raw EEG trace?",
+      "concepts": [
+        "Fourier series, the Gibbs phenomenon, and the FFT's O(N log N) win",
+        "Frequency resolution Δf = fs/N vs zero-padding (interpolation ≠ resolution)",
+        "The STFT and the spectrogram; the uncertainty trade-off",
+        "2-D FFT of an image: magnitude vs phase, and the inverse FFT",
+        "One operation, two domains: convolve↔multiply, smooth↔low-pass"
+      ],
+      "lite": "full",
+      "ml": false,
+      "pilot": false
+    },
+    {
+      "num": 3,
+      "kind": "lab",
+      "slug": "lab03_representation_stft_vs_global",
+      "file": "labs/lab03_representation_stft_vs_global/lab03_representation_stft_vs_global.ipynb",
+      "title": "Lab 03 — Representation: the STFT vs the global spectrum",
+      "question": "Is one global spectrum enough, or does the signal's content change over time — and *when*?",
+      "concepts": [
+        "Chapter 3 — §3.9–§3.10 (STFT/spectrogram and the uncertainty trade-off), §3.7 (resolution vs zero-padding)."
+      ],
+      "lite": "full",
+      "ml": false,
+      "pilot": false
+    },
+    {
+      "num": 4,
+      "kind": "chapter",
+      "slug": "ch04_windowing_leakage",
+      "file": "notebooks/ch04_windowing_leakage.ipynb",
+      "title": "Windowing & Spectral Leakage",
+      "question": "Why does a clean sinusoid smear across neighbouring frequencies, and which window fixes it?",
+      "concepts": [
+        "The finite-length problem and the origin of spectral leakage",
+        "Window functions (rect, Hann, Hamming, Blackman, Kaiser, Tukey)",
+        "Main-lobe width, side-lobe level, ENBW, scalloping loss",
+        "The resolution–leakage trade-off, quantified",
+        "Choosing a window for ECG / EEG / EMG"
+      ],
+      "lite": "full",
+      "ml": false,
+      "pilot": false
+    },
+    {
+      "num": 4,
+      "kind": "lab",
+      "slug": "lab04_windowing_leakage_choice",
+      "file": "labs/lab04_windowing_leakage_choice/lab04_windowing_leakage_choice.ipynb",
+      "title": "Lab 04 — Windowing & the leakage↔resolution trade",
+      "question": "Which window lets me see the peaks I care about — without leakage burying a weak one?",
+      "concepts": [
+        "Chapter 4 — §4.2–§4.5 (leakage, window functions, window properties, the resolution↔leakage trade), §4.6 (selection guidelines)."
+      ],
+      "lite": "full",
+      "ml": false,
+      "pilot": false
+    },
+    {
+      "num": 5,
+      "kind": "chapter",
+      "slug": "ch05_wavelets_transforms",
+      "file": "notebooks/ch05_wavelets_transforms.ipynb",
+      "title": "Wavelets & Other Transforms",
+      "question": "When a single spectrum is not enough — how do we localize a transient K-complex in time and frequency?",
+      "concepts": [
+        "Multiresolution time–frequency tiling (tall-thin vs short-wide)",
+        "DWT levels mapped to EEG bands; the Hilbert envelope for EMG",
+        "2-D DWT subband pyramid (LL/LH/HL/HH) on an image",
+        "Inverse transform & perfect reconstruction",
+        "Wavelet compression & denoising"
+      ],
+      "lite": "reduced",
+      "ml": false,
+      "pilot": false
+    },
+    {
+      "num": 5,
+      "kind": "lab",
+      "slug": "lab05_transform_choice_cwt_dwt_hilbert",
+      "file": "labs/lab05_transform_choice_cwt_dwt_hilbert/lab05_transform_choice_cwt_dwt_hilbert.ipynb",
+      "title": "Lab 05 — Choosing a transform: CWT / DWT / Hilbert",
+      "question": "Which representation fits THIS signal's time–frequency structure — and does each part get the *right notion of 'frequency'*?",
+      "concepts": [
+        "Chapter 5 — §5.3–§5.5 (CWT/DWT, localizing a K-complex, the Hilbert envelope)."
+      ],
+      "lite": "reduced",
+      "ml": false,
+      "pilot": false
+    },
+    {
+      "num": 6,
+      "kind": "chapter",
+      "slug": "ch06_stochastic_ar",
+      "file": "notebooks/ch06_stochastic_ar.ipynb",
+      "title": "Stochastic Processes & AR/ARMA Modelling",
+      "question": "Biosignals are partly random — how do we describe and model that randomness usefully?",
+      "concepts": [
+        "Stationarity: strict, wide-sense, and local/quasi-stationary",
+        "Autocorrelation, PACF, and the Wiener–Khinchin theorem",
+        "AR / MA / ARMA models as compact signal descriptions",
+        "Order selection with AIC / MDL",
+        "Why a global spectrum hides 30-second stage changes"
+      ],
+      "lite": "reduced",
+      "ml": false,
+      "pilot": false
+    },
+    {
+      "num": 6,
+      "kind": "lab",
+      "slug": "lab06_ar_fit_residual_checks",
+      "file": "labs/lab06_ar_fit_residual_checks/lab06_ar_fit_residual_checks.ipynb",
+      "title": "Lab 06 — AR modelling: fit, order, and residual checks",
+      "question": "Does my AR model actually fit — or is it hallucinating a peak?",
+      "concepts": [
+        "Chapter 6 — §6.6–§6.8 (AR/MA/ARMA, order selection via ACF/PACF, an AR spectrum with a real peak), §6.3 (autocorrelation)."
+      ],
+      "lite": "reduced",
+      "ml": false,
+      "pilot": false
+    },
+    {
+      "num": 7,
+      "kind": "chapter",
+      "slug": "ch07_spectral_estimation",
+      "file": "notebooks/ch07_spectral_estimation.ipynb",
+      "title": "Spectral Estimation",
+      "question": "The raw periodogram is noisy and unreliable — how do we get a spectrum we can trust?",
+      "concepts": [
+        "Why the periodogram is inconsistent (variance does not fall with N)",
+        "Bartlett & Welch: averaging to cut variance (≈1/K)",
+        "Multitaper (Slepian/DPSS) estimation",
+        "Parametric AR spectra via Yule–Walker / Burg",
+        "HRV band power (LF/HF) as a worked example"
+      ],
+      "lite": "reduced",
+      "ml": false,
+      "pilot": true
+    },
+    {
+      "num": 7,
+      "kind": "lab",
+      "slug": "lab07_estimator_choice_robust_peak",
+      "file": "labs/lab07_estimator_choice_robust_peak/lab07_estimator_choice_robust_peak.ipynb",
+      "title": "Lab 07 — Spectral estimator choice & the robust-peak checklist",
+      "question": "Is this spectral peak real — and which estimator should I trust?",
+      "concepts": [
+        "Chapter 7 — §7.2 (why the periodogram is inconsistent), §7.5 (Welch's method), §7.9 (model-order selection and the decision framework)."
+      ],
+      "lite": "reduced",
+      "ml": false,
+      "pilot": false
+    },
+    {
+      "num": 8,
+      "kind": "chapter",
+      "slug": "ch08_noise_artifacts",
+      "file": "notebooks/ch08_noise_artifacts.ipynb",
+      "title": "Noise & Artifacts",
+      "question": "Before removing noise, can we name it? Powerline hum, baseline sway, muscle bursts, blinks.",
+      "concepts": [
+        "Noise colours: white, pink (1/f), brown; PSD slope",
+        "Powerline interference and its harmonics",
+        "Impulsive / salt-and-pepper noise; baseline wander & motion",
+        "Quality control BEFORE preprocessing",
+        "Diagnose the noise before choosing the tool"
+      ],
+      "lite": "full",
+      "ml": false,
+      "pilot": false
+    },
+    {
+      "num": 8,
+      "kind": "lab",
+      "slug": "lab08_qc_screen_what_must_survive",
+      "file": "labs/lab08_qc_screen_what_must_survive/lab08_qc_screen_what_must_survive.ipynb",
+      "title": "Lab 08 — A QC screen and the 'what must survive' question",
+      "question": "Is this recording fit — and what must a correction NOT damage?",
+      "concepts": [
+        "Chapter 8 — §8.2 (quality control before preprocessing), §8.6 (powerline interference), §8.8 (baseline wander), §8.11 (the diagnostic decision framework)."
+      ],
+      "lite": "full",
+      "ml": false,
+      "pilot": false
+    },
+    {
+      "num": 9,
+      "kind": "chapter",
+      "slug": "ch09_filter_design",
+      "file": "notebooks/ch09_filter_design.ipynb",
+      "title": "Digital Filter Design (1-D & 2-D)",
+      "question": "How do we keep the spindles and drop the hum — and why is despiking an image the same trick as despiking an ECG?",
+      "concepts": [
+        "LTI systems and convolution (the impulse response slid along)",
+        "IIR (Butterworth) design as second-order sections for stability",
+        "Zero-phase filtfilt vs a real-time causal filter",
+        "Linear vs non-linear: median/Savitzky-Golay beat the mean on outliers",
+        "2-D spatial filtering and the Pan–Tompkins QRS detector"
+      ],
+      "lite": "reduced",
+      "ml": false,
+      "pilot": false
+    },
+    {
+      "num": 9,
+      "kind": "lab",
+      "slug": "lab09_eeg_bandpass_notch_preserve_delta",
+      "file": "labs/lab09_eeg_bandpass_notch_preserve_delta/lab09_eeg_bandpass_notch_preserve_delta.ipynb",
+      "title": "Lab 09 — Filter an EEG — and prove delta survived",
+      "question": "Can I remove drift, muscle, and mains from sleep EEG without damaging the delta rhythm that defines deep sleep?",
+      "concepts": [
+        "Chapter 9 — §9.4–§9.6 (FIR vs IIR, zero-phase filtering and edge transients, the EEG band-pass + 50 Hz notch)."
+      ],
+      "lite": "reduced",
+      "ml": false,
+      "pilot": false
+    },
+    {
+      "num": 10,
+      "kind": "chapter",
+      "slug": "ch10_noise_reduction",
+      "file": "notebooks/ch10_noise_reduction.ipynb",
+      "title": "Noise Reduction & Signal Enhancement",
+      "question": "When a filter can't separate signal from noise because they overlap in frequency, what else works?",
+      "concepts": [
+        "Ensemble averaging and the √N SNR law",
+        "Adaptive filtering (LMS) with a reference channel",
+        "Wavelet-threshold denoising",
+        "ICA / PCA for artifact removal",
+        "Matching the enhancement to the noise type"
+      ],
+      "lite": "reduced",
+      "ml": false,
+      "pilot": false
+    },
+    {
+      "num": 10,
+      "kind": "lab",
+      "slug": "lab10_enhancement_failure_modes",
+      "file": "labs/lab10_enhancement_failure_modes/lab10_enhancement_failure_modes.ipynb",
+      "title": "Lab 10 — Enhancement failure modes: did I recover the signal or manufacture one?",
+      "question": "Did my enhancement recover the *true* signal, or manufacture a plausible-looking one?",
+      "concepts": [
+        "Chapter 10 — §10.3 (the √N law and its assumptions), §10.5 (LMS adaptive filtering), §10.7 (ICA/PCA unmixing), §10.8 (method-selection guidelines)."
+      ],
+      "lite": "reduced",
+      "ml": false,
+      "pilot": false
+    },
+    {
+      "num": 11,
+      "kind": "chapter",
+      "slug": "ch11_features",
+      "file": "notebooks/ch11_features.ipynb",
+      "title": "Feature Engineering & Selection",
+      "question": "A classifier can't read a waveform — what numbers summarise a 30-s epoch well enough to name its sleep stage?",
+      "concepts": [
+        "Time and frequency features from an epoch (RMS, Hjorth, band power)",
+        "Spectral entropy; the feature-scaling leakage trap",
+        "Ranking features by mutual information; a 2-D LDA projection",
+        "ECG fiducial-point features; early vs late multi-channel fusion"
+      ],
+      "lite": "reduced",
+      "ml": true,
+      "pilot": false
+    },
+    {
+      "num": 11,
+      "kind": "lab",
+      "slug": "lab11_features_and_leakage_controls",
+      "file": "labs/lab11_features_and_leakage_controls/lab11_features_and_leakage_controls.ipynb",
+      "title": "Lab 11 — Features & selection with leakage controls",
+      "question": "Which features separate the sleep stages — and does my feature / selection / scaling pipeline secretly *leak*?",
+      "concepts": [
+        "Chapter 11 — §11.3–§11.4 (feature families; features that separate sleep stages), §11.6–§11.7 (scaling and the leakage it hides; selection)."
+      ],
+      "lite": "reduced",
+      "ml": true,
+      "pilot": false
+    },
+    {
+      "num": 11,
+      "kind": "clinic",
+      "slug": "lab_design_clinic",
+      "file": "labs/lab_design_clinic_no_single_best/lab_design_clinic.ipynb",
+      "title": "Lab — The design clinic — several good answers, and some wrong ones",
+      "question": "Which feature design should a wearable sleep stager use — and can you *defend* it against a reasonable alternative *and* recognise the choices that would be simply wrong?",
+      "concepts": [
+        "Chapter 11 — §11.3–§11.4 (feature families; features that separate sleep stages), §11.7 (selection and the curse of dimensionality) — drawing on Chapter 4 §4.4–§4.5 (window main-lobe width and the resolution↔leakage trade) and Chapter 7 §7.5 (Welch: resolution traded against variance). A **synthesis exercise, positioned after Chapter 11**, not tied to any single chapter's lecture."
+      ],
+      "lite": "reduced",
+      "ml": true,
+      "pilot": false
+    },
+    {
+      "num": 12,
+      "kind": "chapter",
+      "slug": "ch12_validation_leakage",
+      "file": "notebooks/ch12_validation_leakage.ipynb",
+      "title": "The ML Pipeline: Validation & Leakage",
+      "question": "How do we know a 90%-accurate sleep scorer isn't fooling us — and will it work on a patient it has never seen?",
+      "concepts": [
+        "Train/val/test, bias–variance, and overfitting",
+        "Subject-independent validation: LOSO / GroupKFold",
+        "The six canonical data-leakage failures and their fixes",
+        "Class imbalance; kappa, macro-F1, balanced accuracy",
+        "Calibration, abstention, and 'labels are measurements too'"
+      ],
+      "lite": "reduced",
+      "ml": true,
+      "pilot": true
+    },
+    {
+      "num": 12,
+      "kind": "lab",
+      "slug": "lab12_leakage_clinic_honest_validation",
+      "file": "labs/lab12_leakage_clinic_honest_validation/lab12_leakage_clinic_honest_validation.ipynb",
+      "title": "Lab 12 — Imbalance & the accuracy illusion — the metric that cannot be fooled",
+      "question": "My sleep scorer is 79% accurate. Is it any good — and would I notice if it had never once detected N1?",
+      "concepts": [
+        "Chapter 12 — §12.5 (class imbalance and honest metrics), §12.4 (the failure-case clinic, Failure 5)."
+      ],
+      "lite": "reduced",
+      "ml": true,
+      "pilot": false
+    },
+    {
+      "num": 13,
+      "kind": "chapter",
+      "slug": "ch13_classical_learning",
+      "file": "notebooks/ch13_classical_learning.ipynb",
+      "title": "Classical Learning & Unsupervised Analysis",
+      "question": "Given a clean feature matrix, which learner should score the sleep — and can structure be found without labels?",
+      "concepts": [
+        "k-NN, SVM (kernel trick), decision trees, random forests",
+        "Bagging and out-of-bag error",
+        "k-means and hierarchical clustering",
+        "PCA vs feature selection",
+        "The 'fair fight': same split, same features, same metrics"
+      ],
+      "lite": "reduced",
+      "ml": true,
+      "pilot": false
+    },
+    {
+      "num": 13,
+      "kind": "lab",
+      "slug": "lab13_fair_learner_comparison",
+      "file": "labs/lab13_fair_learner_comparison/lab13_fair_learner_comparison.ipynb",
+      "title": "Lab 13 — A fair learner comparison — which classifier really wins on a new subject?",
+      "question": "Which classifier is really best for new subjects — and did I compare them fairly?",
+      "concepts": [
+        "Chapter 13 — §13.3–§13.4 (four ways to draw a fence; three learners on the same folds)."
+      ],
+      "lite": "reduced",
+      "ml": true,
+      "pilot": false
+    },
+    {
+      "num": 14,
+      "kind": "chapter",
+      "slug": "ch14_deep_learning",
+      "file": "notebooks/ch14_deep_learning.ipynb",
+      "title": "Deep Learning & Foundation Models",
+      "question": "What if the model learned its own features — and had already 'read' millions of hours of signals first?",
+      "concepts": [
+        "Neurons, layers, loss, backpropagation",
+        "The CNN convolution IS Chapter 9's convolution, learned",
+        "Sequence models and attention across epochs",
+        "Self-supervised pretraining & time-series foundation models",
+        "Transfer learning and a fair comparison with the forest"
+      ],
+      "lite": "colab",
+      "ml": true,
+      "pilot": false
+    },
+    {
+      "num": 14,
+      "kind": "lab",
+      "slug": "lab14_cnn_spectrogram_vs_forest",
+      "file": "labs/lab14_cnn_spectrogram_vs_forest/lab14_cnn_spectrogram_vs_forest.ipynb",
+      "title": "Lab 14 — A learned model on spectrograms vs a well-featured forest — fairly",
+      "question": "Does a model that *learns* from the raw time–frequency image beat a hand-featured forest here — and is the comparison **fair**?",
+      "concepts": [
+        "Chapter 14 — §14.4 (CNNs), §14.7 (practical reality: a fair fight with the forest)."
+      ],
+      "lite": "colab",
+      "ml": true,
+      "pilot": false
+    },
+    {
+      "num": 15,
+      "kind": "chapter",
+      "slug": "ch15_deployment",
+      "file": "notebooks/ch15_deployment.ipynb",
+      "title": "Deployment: Edge, Embedded & Cloud",
+      "question": "A sleep scorer in a notebook helps nobody — how does it become a wristband, a service, or a cloud API?",
+      "concepts": [
+        "The edge → embedded → server → cloud spectrum",
+        "What leaves the device: raw signal vs features vs decision",
+        "Quantization and pruning: measured size/latency trade-offs",
+        "MLOps, privacy, and regulatory pathways (discussed in the book text; not modelled in this notebook)"
+      ],
+      "lite": "colab",
+      "ml": false,
+      "pilot": false
+    },
+    {
+      "num": 16,
+      "kind": "chapter",
+      "slug": "ch16_capstone",
+      "file": "notebooks/ch16_capstone.ipynb",
+      "title": "Capstone: Automatic Sleep Scoring",
+      "question": "How do all the earlier threads become one working, defensible system?",
+      "concepts": [
+        "The end-to-end pipeline as reusable modules",
+        "Iterative build: baseline → tuned ensemble",
+        "Subject-independent (LOSO) evaluation, kappa & macro-F1",
+        "Confusion matrix, hypnogram, and clinical summaries",
+        "Reproducibility, and honest reporting of illustrative numbers"
+      ],
+      "lite": "reduced",
+      "ml": true,
+      "pilot": true
+    },
+    {
+      "num": 16,
+      "kind": "lab",
+      "slug": "lab16_capstone_scaffold",
+      "file": "labs/lab16_capstone_scaffold/lab16_capstone_scaffold.ipynb",
+      "title": "Lab 16 — Capstone scaffold — build, validate, defend",
+      "question": "Can I deliver an honest end-to-end sleep-staging system and defend every design choice?",
+      "concepts": [
+        "Chapter 16 — §16.2 (the pipeline as reusable modules), §16.4 (design decisions and their justification), §16.5 (evaluation in practice)."
+      ],
+      "lite": "reduced",
+      "ml": true,
+      "pilot": false
+    },
+    {
+      "num": 17,
+      "kind": "track",
+      "slug": "track_har",
+      "file": "notebooks/track_har.ipynb",
+      "title": "Real-data track — Human activity (UCI-HAR, IMU)",
+      "question": "Can self-built features tell static from walking from stairs, and why subject-wise split?",
+      "concepts": [
+        "UCI-HAR raw inertial end-to-end (the gentle on-ramp)",
+        "Windowing + per-axis + dominant-frequency features",
+        "Split by subject; GroupKFold; walk↔stairs confusion"
+      ],
+      "lite": "colab",
+      "ml": true,
+      "pilot": true,
+      "real_data": true
+    },
+    {
+      "num": 18,
+      "kind": "track",
+      "slug": "track_sleep_edf",
+      "file": "notebooks/track_sleep_edf.ipynb",
+      "title": "Real-data track — Sleep staging (Sleep-EDF)",
+      "question": "Does the pipeline hold up on real overnight EEG with messy labels and a subject split?",
+      "concepts": [
+        "Sleep-EDF Expanded end-to-end (PhysioNet, ODC-BY)",
+        "R&K → AASM labels; split by subject, not night",
+        "Honest panel (κ, macro-F1, confusion) under LOSO + hypnogram"
+      ],
+      "lite": "colab",
+      "ml": true,
+      "pilot": true,
+      "real_data": true
+    },
+    {
+      "num": 19,
+      "kind": "track",
+      "slug": "track_ecg_cinc2017",
+      "file": "notebooks/track_ecg_cinc2017.ipynb",
+      "title": "Real-data track — ECG rhythm/AF (CinC-2017)",
+      "question": "Can R–R irregularity and signal-quality features separate Normal/AF/Other/Noisy ECG?",
+      "concepts": [
+        "PhysioNet/CinC-2017 single-lead ECG end-to-end (open)",
+        "Band-pass, QRS detection, R–R/HRV, signal-quality index",
+        "Split by record; GroupKFold; macro-F1 / per-class recall"
+      ],
+      "lite": "colab",
+      "ml": true,
+      "pilot": true,
+      "real_data": true
+    },
+    {
+      "num": 20,
+      "kind": "track",
+      "slug": "track_ctg_ctu_uhb",
+      "file": "notebooks/track_ctg_ctu_uhb.ipynb",
+      "title": "Real-data track — CTG / fetal (CTU-UHB)",
+      "question": "Can FHR + contractions flag a pathological delivery — and why is this honestly hard?",
+      "concepts": [
+        "CTU-UHB intrapartum CTG end-to-end (ODC-BY)",
+        "Dropout removal + interpolation, baseline/variability, decel detection",
+        "Label from umbilical pH; split by recording"
+      ],
+      "lite": "colab",
+      "ml": true,
+      "pilot": true,
+      "real_data": true
+    },
+    {
+      "num": 21,
+      "kind": "track",
+      "slug": "track_emg_ninapro",
+      "file": "notebooks/track_emg_ninapro.ipynb",
+      "title": "Real-data track — EMG gesture (Ninapro, 2 modes)",
+      "question": "Why does a gesture classifier at 0.78 within-subject collapse to 0.19 on a new subject?",
+      "concepts": [
+        "Ninapro DB1 surface-EMG end-to-end (CC BY-NC-ND)",
+        "Two eval modes: within-subject vs new-subject, side by side",
+        "Wrong-then-right: a leaky random split inflates the score"
+      ],
+      "lite": "colab",
+      "ml": true,
+      "pilot": true,
+      "real_data": true
+    },
+    {
+      "num": 22,
+      "kind": "track",
+      "slug": "track_bci_eegmmidb",
+      "file": "notebooks/track_bci_eegmmidb.ipynb",
+      "title": "Real-data track — BCI motor imagery (EEGMMIDB, 2 modes)",
+      "question": "Why does a naive band-power baseline barely beat chance, and what would CSP add?",
+      "concepts": [
+        "EEGMMIDB 64-ch motor imagery end-to-end (ODC-BY)",
+        "mu/beta ERD at C3/C4; two eval modes; chance = 0.50",
+        "An honest near-chance baseline (the advanced track's point)"
+      ],
+      "lite": "colab",
+      "ml": true,
+      "pilot": true,
+      "real_data": true
+    }
+  ]
+}

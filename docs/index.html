@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>CM2013 — Notebook Gallery</title>
+<meta name="description" content="Demo notebooks, labs, and capstone tracks for CM2013 — Signal Processing and Data Analytics in Biomedical Engineering."/>
+<style>
+:root{
+  --blue:#0072B2; --orange:#E69F00; --green:#009E73; --ink:#1f2733;
+  --muted:#5b6675; --line:#e4e8ef; --bg:#f6f8fb; --card:#ffffff;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  color:var(--ink);background:var(--bg);line-height:1.5}
+a{color:var(--blue);text-decoration:none}
+.wrap{max-width:1100px;margin:0 auto;padding:0 20px}
+header{background:linear-gradient(135deg,#0b355e,#0072B2);color:#fff;padding:46px 0 34px}
+header .kicker{text-transform:uppercase;letter-spacing:.14em;font-size:12px;opacity:.85;margin:0}
+header h1{margin:.15em 0 .1em;font-size:30px;font-weight:800}
+header .sub{font-size:16px;opacity:.92;margin:0 0 16px}
+header .links a{display:inline-block;color:#fff;border:1px solid rgba(255,255,255,.5);
+  padding:7px 13px;border-radius:8px;margin:6px 8px 0 0;font-size:14px}
+header .links a:hover{background:rgba(255,255,255,.15)}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:22px 0 6px}
+.toolbar input{flex:1;min-width:220px;padding:9px 12px;border:1px solid var(--line);border-radius:8px;font-size:14px;background:#fff}
+.toolbar .filter{font-size:13px;color:var(--muted)}
+.toolbar select{padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;font-size:14px}
+.count{color:var(--muted);font-size:13px;margin:4px 0 14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:18px;padding-bottom:40px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 18px 16px;
+  display:flex;flex-direction:column;box-shadow:0 1px 2px rgba(20,40,80,.04)}
+.card:hover{box-shadow:0 6px 18px rgba(20,40,80,.09);transform:translateY(-1px);transition:.15s}
+.chip{display:inline-block;font-size:11px;font-weight:700;color:var(--blue);background:#eaf3fb;
+  border-radius:20px;padding:3px 10px}
+.chip.ml{color:#7a3ea1;background:#f2ebf8}
+.chip.pilot{color:#0a7d52;background:#e7f6ef}
+.chip.real{color:#a15a00;background:#fbf0e2}
+.chip.lab{color:#0a6a7d;background:#e2f4f8}
+.chip.clinic{color:#9a3b12;background:#fbeae2}
+.card h3{margin:12px 0 6px;font-size:17px}
+.card .q{color:var(--muted);font-size:13.5px;font-style:italic;margin:0 0 12px}
+.card .demo-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#8a94a3;margin:2px 0 6px}
+.card ul{margin:0 0 14px;padding-left:18px}
+.card li{font-size:13.5px;margin:2px 0}
+.lite{font-size:11.5px;color:var(--muted);margin:0 0 12px}
+.lite b{color:var(--ink)}
+.btns{display:flex;flex-wrap:wrap;gap:7px;margin-top:auto}
+.btn{font-size:12.5px;font-weight:600;padding:6px 10px;border-radius:8px;border:1px solid var(--line);
+  background:#fff;color:var(--ink);display:inline-flex;align-items:center;gap:5px}
+.btn:hover{border-color:var(--blue)}
+.btn.colab{background:#fef7e6;border-color:#f6d580;color:#8a5a00}
+.btn.view{background:#eef6ff}
+.btn.lite{background:#eefaf4}
+.btn.dl{background:#f3f4f7}
+footer{border-top:1px solid var(--line);padding:26px 0 40px;color:var(--muted);font-size:13px;text-align:center}
+.legend{font-size:12px;color:var(--muted);margin:6px 0 0}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <p class="kicker">CM2013 Notebook Gallery</p>
+    <h1 id="bookTitle">Signal Processing and Data Analytics in Biomedical Engineering</h1>
+    <p class="sub" id="bookSub">Demo notebooks, labs, and capstone tracks</p>
+    <div class="links" id="topLinks"></div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="toolbar">
+    <input id="search" type="search" placeholder="Search chapters, labs, and concepts…"/>
+    <span class="filter">Kind:</span>
+    <select id="kindFilter">
+      <option value="all">all</option>
+      <option value="chapter">book demos</option>
+      <option value="lab">labs</option>
+      <option value="clinic">design clinic</option>
+      <option value="track">capstone tracks</option>
+    </select>
+    <span class="filter">Browser-run:</span>
+    <select id="liteFilter">
+      <option value="all">all</option>
+      <option value="full">JupyterLite: full</option>
+      <option value="reduced">JupyterLite: reduced</option>
+      <option value="colab">Colab-first</option>
+    </select>
+  </div>
+  <p class="count" id="count"></p>
+  <div class="grid" id="grid"></div>
+</div>
+
+<footer class="wrap">
+  <p>Capstone track notebooks download real data (PhysioNet / UCI / Ninapro) directly from the
+     source the first time you run them — nothing is bundled in this repo. See each track's
+     dataset card for license and citation.</p>
+  <p class="legend">Buttons: <b>Colab</b> runs the full notebook · <b>View</b>/<b>nbviewer</b> is read-only ·
+     <b>JupyterLite</b> runs in your browser (where supported) · <b>Download</b> gets the .ipynb.</p>
+  <p id="footLinks"></p>
+</footer>
+
+<script>
+const LITE_LABEL = {
+  full: "full (synthetic data, NumPy/SciPy/sklearn)",
+  reduced: "reduced browser path",
+  colab: "conceptual only — use Colab"
+};
+const KIND_LABEL = { chapter: "Chapter", lab: "Lab", clinic: "Design clinic", track: "Capstone track" };
+function colabURL(repo,branch,file){return `https://colab.research.google.com/github/${repo}/blob/${branch}/${file}`;}
+function nbviewerURL(repo,branch,file){return `https://nbviewer.org/github/${repo}/blob/${branch}/${file}`;}
+function rawURL(repo,branch,file){return `https://raw.githubusercontent.com/${repo}/${branch}/${file}`;}
+function liteURL(repo,slug){const[u,r]=repo.split("/");return `https://${u}.github.io/${r}/lite/lab/index.html?path=${slug}.ipynb`;}
+function viewURL(slug){return `nb/${slug}.html`;}
+
+let DATA=null;
+function render(){
+  const q=document.getElementById("search").value.toLowerCase().trim();
+  const lf=document.getElementById("liteFilter").value;
+  const kf=document.getElementById("kindFilter").value;
+  const grid=document.getElementById("grid"); grid.innerHTML="";
+  let n=0;
+  for(const nb of DATA.notebooks){
+    const hay=(nb.title+" "+nb.question+" "+nb.concepts.join(" ")).toLowerCase();
+    if(q && !hay.includes(q)) continue;
+    if(lf!=="all" && nb.lite!==lf) continue;
+    if(kf!=="all" && nb.kind!==kf) continue;
+    n++;
+    const el=document.createElement("div"); el.className="card";
+    const kindChip = nb.kind==="track" ? `<span class="chip real">${KIND_LABEL[nb.kind]}</span>`
+                    : nb.kind==="clinic" ? `<span class="chip clinic">${KIND_LABEL[nb.kind]}</span>`
+                    : nb.kind==="lab" ? `<span class="chip lab">Lab ${nb.num}</span>`
+                    : `<span class="chip">Chapter ${nb.num}</span>`;
+    const chips = kindChip
+      + (nb.pilot?` <span class="chip pilot">pilot</span>`:``)
+      + (nb.ml?` <span class="chip ml">machine learning</span>`:``);
+    el.innerHTML=`
+      <div>${chips}</div>
+      <h3>${nb.title}</h3>
+      <p class="q">${nb.question}</p>
+      <p class="demo-title">Covers</p>
+      <ul>${nb.concepts.map(c=>`<li>${c}</li>`).join("")}</ul>
+      <p class="lite">Runs in browser (JupyterLite): <b>${LITE_LABEL[nb.lite]}</b></p>
+      <div class="btns">
+        <a class="btn colab" href="${colabURL(DATA.repo,DATA.branch,nb.file)}" target="_blank" rel="noopener">▶ Colab</a>
+        <a class="btn view" href="${viewURL(nb.slug)}" target="_blank" rel="noopener">👁 View</a>
+        <a class="btn view" href="${nbviewerURL(DATA.repo,DATA.branch,nb.file)}" target="_blank" rel="noopener">nbviewer</a>
+        ${nb.lite!=="colab"?`<a class="btn lite" href="${liteURL(DATA.repo,nb.slug)}" target="_blank" rel="noopener">⚡ JupyterLite</a>`:``}
+        <a class="btn dl" href="${rawURL(DATA.repo,DATA.branch,nb.file)}" download>↓ .ipynb</a>
+      </div>`;
+    grid.appendChild(el);
+  }
+  document.getElementById("count").textContent=`${n} notebook${n===1?"":"s"}`;
+}
+fetch("notebooks.json").then(r=>r.json()).then(d=>{
+  DATA=d;
+  document.getElementById("bookTitle").textContent=d.book_title;
+  document.getElementById("bookSub").textContent=d.book_subtitle;
+  const gh=`https://github.com/${d.repo}`;
+  document.getElementById("topLinks").innerHTML=
+    `<a href="${d.book_url}" target="_blank" rel="noopener">→ Book</a>`+
+    `<a href="${gh}" target="_blank" rel="noopener">→ GitHub repository</a>`;
+  document.getElementById("footLinks").innerHTML=
+    `Companion code for <em>${d.book_title}</em> · <a href="${gh}">GitHub</a>`;
+  document.getElementById("search").addEventListener("input",render);
+  document.getElementById("liteFilter").addEventListener("change",render);
+  document.getElementById("kindFilter").addEventListener("change",render);
+  render();
+}).catch(e=>{document.getElementById("grid").innerHTML="<p>Could not load notebooks.json.</p>";});
+</script>
+</body>
+</html>
