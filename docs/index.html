@@ -22,7 +22,12 @@ header .sub{font-size:16px;opacity:.92;margin:0 0 16px}
 header .links a{display:inline-block;color:#fff;border:1px solid rgba(255,255,255,.5);
   padding:7px 13px;border-radius:8px;margin:6px 8px 0 0;font-size:14px}
 header .links a:hover{background:rgba(255,255,255,.15)}
-.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:22px 0 6px}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 14px}
+.tab{font-family:Arial, Helvetica, sans-serif;font-size:14px;font-weight:700;padding:9px 16px;
+  border-radius:9px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer}
+.tab:hover{border-color:var(--blue)}
+.tab.active{background:var(--blue);border-color:var(--blue);color:#fff}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:0 0 6px}
 .toolbar input{flex:1;min-width:220px;padding:9px 12px;border:1px solid var(--line);border-radius:8px;font-size:14px;background:#fff}
 .toolbar .filter{font-size:13px;color:var(--muted)}
 .toolbar select{padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;font-size:14px}
@@ -68,16 +73,9 @@ footer{border-top:1px solid var(--line);padding:26px 0 40px;color:var(--muted);f
 </header>
 
 <div class="wrap">
+  <nav class="tabs" id="tabs"></nav>
   <div class="toolbar">
     <input id="search" type="search" placeholder="Search chapters, labs, and concepts…"/>
-    <span class="filter">Kind:</span>
-    <select id="kindFilter">
-      <option value="all">all</option>
-      <option value="chapter">book demos</option>
-      <option value="lab">labs</option>
-      <option value="clinic">design clinic</option>
-      <option value="track">capstone tracks</option>
-    </select>
     <span class="filter">Browser-run:</span>
     <select id="liteFilter">
       <option value="all">all</option>
@@ -106,6 +104,8 @@ const LITE_LABEL = {
   colab: "conceptual only — use Colab"
 };
 const KIND_LABEL = { chapter: "Chapter", lab: "Lab", clinic: "Design clinic", track: "Capstone track" };
+const TAB_LABEL = { all: "All", chapter: "Book demos", lab: "Labs", clinic: "Design clinic", track: "Capstone tracks" };
+let currentKind = (location.hash||"").replace("#","") || "all";
 function colabURL(repo,branch,file){return `https://colab.research.google.com/github/${repo}/blob/${branch}/${file}`;}
 function nbviewerURL(repo,branch,file){return `https://nbviewer.org/github/${repo}/blob/${branch}/${file}`;}
 function rawURL(repo,branch,file){return `https://raw.githubusercontent.com/${repo}/${branch}/${file}`;}
@@ -113,17 +113,30 @@ function liteURL(repo,slug){const[u,r]=repo.split("/");return `https://${u}.gith
 function viewURL(slug){return `nb/${slug}.html`;}
 
 let DATA=null;
+function renderTabs(){
+  const order=["all","chapter","lab","clinic","track"];
+  const counts={all:DATA.notebooks.length};
+  for(const nb of DATA.notebooks) counts[nb.kind]=(counts[nb.kind]||0)+1;
+  const tabs=document.getElementById("tabs");
+  tabs.innerHTML=order.filter(k=>k==="all"||counts[k]).map(k=>
+    `<button class="tab${k===currentKind?" active":""}" data-kind="${k}">${TAB_LABEL[k]} (${counts[k]||0})</button>`
+  ).join("");
+  tabs.querySelectorAll(".tab").forEach(btn=>btn.addEventListener("click",()=>{
+    currentKind=btn.dataset.kind;
+    location.hash=currentKind==="all"?"":currentKind;
+    renderTabs(); render();
+  }));
+}
 function render(){
   const q=document.getElementById("search").value.toLowerCase().trim();
   const lf=document.getElementById("liteFilter").value;
-  const kf=document.getElementById("kindFilter").value;
   const grid=document.getElementById("grid"); grid.innerHTML="";
   let n=0;
   for(const nb of DATA.notebooks){
     const hay=(nb.title+" "+nb.question+" "+nb.concepts.join(" ")).toLowerCase();
     if(q && !hay.includes(q)) continue;
     if(lf!=="all" && nb.lite!==lf) continue;
-    if(kf!=="all" && nb.kind!==kf) continue;
+    if(currentKind!=="all" && nb.kind!==currentKind) continue;
     n++;
     const el=document.createElement("div"); el.className="card";
     const kindChip = nb.kind==="track" ? `<span class="chip real">${KIND_LABEL[nb.kind]}</span>`
@@ -163,7 +176,7 @@ fetch("notebooks.json").then(r=>r.json()).then(d=>{
     `Companion code for <em>${d.book_title}</em> · <a href="${gh}">GitHub</a>`;
   document.getElementById("search").addEventListener("input",render);
   document.getElementById("liteFilter").addEventListener("change",render);
-  document.getElementById("kindFilter").addEventListener("change",render);
+  renderTabs();
   render();
 }).catch(e=>{document.getElementById("grid").innerHTML="<p>Could not load notebooks.json.</p>";});
 </script>
