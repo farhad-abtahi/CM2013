@@ -45,14 +45,20 @@ jobs:
       - name: Run the regression test suite
         run: python -m pytest tests/ -q
 
-      - name: Execute notebooks (embed outputs)
+      - name: Execute demo/track notebooks (embed outputs)
+        # Labs are NOT executed here: they are unsolved Type-2 scaffolds (each
+        # has `# TODO` cells that raise NotImplementedError until a student
+        # fills them in), so --execute would always fail on them by design.
         run: |
           mkdir -p docs/nb
-          for nb in notebooks/*.ipynb labs/*/*.ipynb; do
+          for nb in notebooks/*.ipynb; do
             jupyter nbconvert --to notebook --execute --inplace "$nb" || exit 1
           done
 
-      - name: Export executed notebooks to HTML
+      - name: Export notebooks to HTML
+        # Demo/track notebooks export with their freshly-executed outputs.
+        # Labs export as-is (no --execute) — read-only preview of the
+        # unsolved scaffold, same as opening it fresh.
         run: |
           python -m nbconvert --to html --template lab --output-dir docs/nb notebooks/*.ipynb
           python -m nbconvert --to html --template lab --output-dir docs/nb labs/*/*.ipynb
