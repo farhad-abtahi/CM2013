@@ -1,0 +1,86 @@
+name: build-and-deploy
+
+# Runs the test suite and track smoke tests, executes the committed notebooks
+# to embed fresh outputs, exports HTML (nbviewer-style) and a JupyterLite
+# in-browser site, then publishes docs/ to Pages.
+#
+# This repo does not carry the notebook-authoring pipeline (the scripts that
+# generate notebooks from source definitions) — notebooks here are committed
+# in their final, student-facing form and this workflow only validates and
+# packages them.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install nbclient nbconvert ipykernel pytest
+          pip install jupyterlite-core jupyterlite-pyodide-kernel
+
+      - name: Tracks smoke (synthetic, offline — the capstone-track CI gate)
+        run: |
+          for t in sleep_edf ecg_cinc2017 har ctg_ctu_uhb emg_ninapro bci_eegmmidb; do
+            echo "::group::track $t"; python tracks/$t.py || exit 1; echo "::endgroup::"
+          done
+
+      - name: Run the regression test suite
+        run: python -m pytest tests/ -q
+
+      - name: Execute notebooks (embed outputs)
+        run: |
+          mkdir -p docs/nb
+          for nb in notebooks/*.ipynb labs/*/*.ipynb; do
+            jupyter nbconvert --to notebook --execute --inplace "$nb" || exit 1
+          done
+
+      - name: Export executed notebooks to HTML
+        run: |
+          python -m nbconvert --to html --template lab --output-dir docs/nb notebooks/*.ipynb
+          python -m nbconvert --to html --template lab --output-dir docs/nb labs/*/*.ipynb
+
+      - name: Stage flattened content for JupyterLite
+        # JupyterLite badges link by bare filename (?path=<name>.ipynb), so every
+        # notebook — demo/track and lab — is staged at the content root. Filenames
+        # are verified unique across notebooks/ and labs/ (see repo history).
+        run: |
+          mkdir -p _lite_content
+          cp notebooks/*.ipynb _lite_content/
+          cp labs/*/*.ipynb _lite_content/
+
+      - name: Build JupyterLite site (in-browser notebooks)
+        run: |
+          jupyter lite build --contents _lite_content --output-dir docs/lite || \
+            echo "JupyterLite build skipped/failed; HTML exports still work without it."
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,479 @@
+{
+  "schema": "bsp-dataset-manifest/v1",
+  "note": "Provenance for the real-data tracks. Per dataset: source version, licence, URL, citation, leakage split-unit, the documented smoke-test record IDs, and — for the local data_cache — a total size + aggregate sha256 fingerprint of every cached file plus per-file checksums for the smoke-test records that are present. `smoke_record_files` is empty where the local cache holds a different subset than the documented smoke IDs (e.g. ECG here) or a non-per-record layout (HAR); the aggregate fingerprint still covers the whole cache. Full datasets are downloaded on demand. Toolchain pins are in requirements-real.txt. Regenerate with tools/build_dataset_manifest.py; check integrity with --verify.",
+  "toolchain": {
+    "mne": "1.10.1",
+    "wfdb": "4.3.0"
+  },
+  "datasets": {
+    "sleep_edf": {
+      "name": "Sleep staging",
+      "dataset": "Sleep-EDF Expanded",
+      "dataset_version": "1.0.0",
+      "license": "Open Data Commons Attribution (ODC-BY)",
+      "access": "open-direct",
+      "url": "https://physionet.org/content/sleep-edfx/1.0.0/",
+      "citation": "Kemp B, et al. (2000); Goldberger AL, et al. PhysioNet (2000).",
+      "signals": [
+        "EEG Fpz-Cz",
+        "EEG Pz-Oz",
+        "EOG horizontal",
+        "EMG submental"
+      ],
+      "task_type": "multiclass",
+      "classes": [
+        "W",
+        "N1",
+        "N2",
+        "N3",
+        "REM"
+      ],
+      "split_unit": "subject",
+      "default_metrics": [
+        "cohens_kappa",
+        "macro_f1"
+      ],
+      "eval_modes": [
+        "new-subject"
+      ],
+      "smoke_test_records": [
+        "SC4001",
+        "SC4011",
+        "SC4021"
+      ],
+      "difficulty": 3,
+      "cache": {
+        "dir": "data_cache/sleep_edf",
+        "status": "cached",
+        "n_files": 16,
+        "total_bytes": 405782718,
+        "aggregate_sha256": "8d062420d78abe7d5d69e101695635904ba1cce09f9336628681b92fe938e8fb",
+        "smoke_record_files": [
+          {
+            "record": "SC4001",
+            "path": "data_cache/sleep_edf/physionet-sleep-data/SC4001E0-PSG.edf",
+            "bytes": 48338048,
+            "sha256": "2b40a18adf76af69a42d6db1f30f31d26b369f6d27ca0050ef30147ef892b131",
+            "cached": "2026-07-04"
+          },
+          {
+            "record": "SC4001",
+            "path": "data_cache/sleep_edf/physionet-sleep-data/SC4001EC-Hypnogram.edf",
+            "bytes": 4620,
+            "sha256": "a4cf67694ade1b52a0ddd06d5817fd45d2d3e8bac5302f640f3e9cfbbf12a996",
+            "cached": "2026-07-04"
+          },
+          {
+            "record": "SC4011",
+            "path": "data_cache/sleep_edf/physionet-sleep-data/SC4011E0-PSG.edf",
+            "bytes": 51110528,
+            "sha256": "9e4c34f3f631275990fd7a2d61a24e998c7b03eb9b37ebe5cd7c8323d8310a15",
+            "cached": "2026-07-04"
+          },
+          {
+            "record": "SC4011",
+            "path": "data_cache/sleep_edf/physionet-sleep-data/SC4011EH-Hypnogram.edf",
+            "bytes": 3896,
+            "sha256": "5bbf7b4ed8a95c8d20e4347b08c2ded2ee21e2dac4680dedf629795adc2edc83",
+            "cached": "2026-07-04"
+          },
+          {
+            "record": "SC4021",
+            "path": "data_cache/sleep_edf/physionet-sleep-data/SC4021E0-PSG.edf",
+            "bytes": 51147008,
+            "sha256": "810adaedf42621e389ca767274045fbafb123bbc5d99bc15ce2c5bacb52e378c",
+            "cached": "2026-07-04"
+          },
+          {
+            "record": "SC4021",
+            "path": "data_cache/sleep_edf/physionet-sleep-data/SC4021EH-Hypnogram.edf",
+            "bytes": 4804,
+            "sha256": "62b49b26bf08941cb0e974cfeeb0a820bf7dd43fb0c66dd89b4c3a6c0ee45dd8",
+            "cached": "2026-07-04"
+          }
+        ]
+      }
+    },
+    "ecg_cinc2017": {
+      "name": "ECG rhythm (AF)",
+      "dataset": "PhysioNet/CinC Challenge 2017 (single-lead ECG)",
+      "dataset_version": "1.0.0",
+      "license": "Open (PhysioNet Challenge)",
+      "access": "open-direct",
+      "url": "https://physionet.org/content/challenge-2017/1.0.0/",
+      "citation": "Clifford GD, et al. PhysioNet/CinC Challenge 2017.",
+      "signals": [
+        "single-lead ECG @ 300 Hz"
+      ],
+      "task_type": "multiclass",
+      "classes": [
+        "N",
+        "A",
+        "O",
+        "~"
+      ],
+      "split_unit": "record",
+      "default_metrics": [
+        "macro_f1",
+        "cohens_kappa"
+      ],
+      "eval_modes": [
+        "new-record"
+      ],
+      "smoke_test_records": [
+        "A00001",
+        "A00004",
+        "A00006"
+      ],
+      "difficulty": 3,
+      "cache": {
+        "dir": "data_cache/ecg_cinc2017",
+        "status": "cached",
+        "n_files": 1497,
+        "total_bytes": 14699236,
+        "aggregate_sha256": "befe59ee164665df0039028a48e427d1ce255fbe56221e267511e49b8907e6ac",
+        "smoke_record_files": []
+      }
+    },
+    "ctg_ctu_uhb": {
+      "name": "CTG (fetal)",
+      "dataset": "CTU-UHB Intrapartum Cardiotocography",
+      "dataset_version": "1.0.0",
+      "license": "Open Data Commons Attribution (ODC-BY)",
+      "access": "open-direct",
+      "url": "https://physionet.org/content/ctu-uhb-ctgdb/1.0.0/",
+      "citation": "Chudáček V, et al. (2014); Goldberger AL, et al. PhysioNet (2000).",
+      "signals": [
+        "FHR @ 4 Hz",
+        "uterine contraction (toco) @ 4 Hz"
+      ],
+      "task_type": "binary",
+      "classes": [
+        "normal",
+        "pathological"
+      ],
+      "split_unit": "recording",
+      "default_metrics": [
+        "macro_f1",
+        "cohens_kappa"
+      ],
+      "eval_modes": [
+        "new-recording"
+      ],
+      "smoke_test_records": [
+        "1001",
+        "1002",
+        "1004"
+      ],
+      "difficulty": 3,
+      "cache": {
+        "dir": "data_cache/ctg_ctu_uhb",
+        "status": "cached",
+        "n_files": 300,
+        "total_bytes": 10898264,
+        "aggregate_sha256": "b6de4423d1027c6de7e9e6852b1c4c39a04cd96e55f135812ac098b3d59cf85b",
+        "smoke_record_files": [
+          {
+            "record": "1001",
+            "path": "data_cache/ctg_ctu_uhb/1001.dat",
+            "bytes": 76800,
+            "sha256": "4fd2604993def78137d02b4f338aa225f7df9bcf21960aa0994745377b03d409",
+            "cached": "2026-07-04"
+          },
+          {
+            "record": "1001",
+            "path": "data_cache/ctg_ctu_uhb/1001.hea",
+            "bytes": 926,
+            "sha256": "93cb95d6f47f9f334ba4997c41cb5eba6c2e343322eb98653d88fecab4377ced",
+            "cached": "2026-07-04"
+          },
+          {
+            "record": "1002",
+            "path": "data_cache/ctg_ctu_uhb/1002.dat",
+            "bytes": 76800,
+            "sha256": "1373bc769556657c86acb0fb7bab0879fe93e761d1fb99b1989c6b80246212b0",
+            "cached": "2026-07-04"
+          },
+          {
+            "record": "1002",
+            "path": "data_cache/ctg_ctu_uhb/1002.hea",
+            "bytes": 922,
+            "sha256": "6b829cf17b8965ddea6da65ce1735ad6cbb87cfeaab9da733ad7bb5a90bd39de",
+            "cached": "2026-07-04"
+          },
+          {
+            "record": "1004",
+            "path": "data_cache/ctg_ctu_uhb/1004.dat",
+            "bytes": 67200,
+            "sha256": "1d5c609687740b5b4080fc217b6a3329538ec0d9cd0ee76aeb2fc74e3641d5fb",
+            "cached": "2026-07-04"
+          },
+          {
+            "record": "1004",
+            "path": "data_cache/ctg_ctu_uhb/1004.hea",
+            "bytes": 926,
+            "sha256": "1442cf71bda1457bb746ddd50e953d932a014c83ce5977f96c6b7c8413fcac95",
+            "cached": "2026-07-04"
+          }
+        ]
+      }
+    },
+    "emg_ninapro": {
+      "name": "EMG gesture",
+      "dataset": "Ninapro DB1 (surface EMG, exercise E1)",
+      "dataset_version": "1.0",
+      "license": "CC BY-NC-ND — cite Atzori et al. (2014)",
+      "access": "open-direct",
+      "url": "https://ninapro.hevs.ch/instructions/DB1.html",
+      "citation": "Atzori M, et al. Sci Data (2014). Ninapro DB1.",
+      "signals": [
+        "10-channel surface EMG envelope @ 100 Hz"
+      ],
+      "task_type": "multiclass",
+      "classes": [
+        "g01",
+        "g02",
+        "g03",
+        "g04",
+        "g05",
+        "g06",
+        "g07",
+        "g08",
+        "g09",
+        "g10",
+        "g11",
+        "g12"
+      ],
+      "split_unit": "subject",
+      "default_metrics": [
+        "macro_f1",
+        "cohens_kappa"
+      ],
+      "eval_modes": [
+        "within-subject",
+        "new-subject"
+      ],
+      "smoke_test_records": [
+        "S1",
+        "S2",
+        "S3"
+      ],
+      "difficulty": 3,
+      "cache": {
+        "dir": "data_cache/emg_ninapro",
+        "status": "cached",
+        "n_files": 15,
+        "total_bytes": 122331355,
+        "aggregate_sha256": "4a0b1dfe9ede6ee528417a1f4b9cab03ea19b6955fc9a5096b5b4d361576ab2d",
+        "smoke_record_files": [
+          {
+            "record": "S1",
+            "path": "data_cache/emg_ninapro/S1_A1_E1.mat",
+            "bytes": 2891171,
+            "sha256": "cf439f96c4327094ae9f4a6acdef8527523faa6f67b1bb021d3f00ee41d9b971",
+            "cached": "2026-07-04"
+          },
+          {
+            "record": "S1",
+            "path": "data_cache/emg_ninapro/S1_A1_E2.mat",
+            "bytes": 6439822,
+            "sha256": "bcf8b25e81fce225d969e5161da04b04adc00cc9ff236c9eac1d7317c349ee79",
+            "cached": "2026-07-04"
+          },
+          {
+            "record": "S1",
+            "path": "data_cache/emg_ninapro/S1_A1_E3.mat",
+            "bytes": 11533699,
+            "sha256": "69a7d70f23b6b1d70615706fa016528506a47f3daf383d0dd13a2cdf7edb557f",
+            "cached": "2026-07-04"
+          },
+          {
+            "record": "S2",
+            "path": "data_cache/emg_ninapro/S2_A1_E1.mat",
+            "bytes": 3916780,
+            "sha256": "e34f43ee718b2a641201f72763bcdd8e5d7b292507410c96a9bd697cd77ae3cd",
+            "cached": "2026-07-04"
+          },
+          {
+            "record": "S2",
+            "path": "data_cache/emg_ninapro/S2_A1_E2.mat",
+            "bytes": 8784039,
+            "sha256": "c7c0cea692bcf590c66ca7b55453696400fe651054960c8ed140f156b1837ca4",
+            "cached": "2026-07-04"
+          },
+          {
+            "record": "S2",
+            "path": "data_cache/emg_ninapro/S2_A1_E3.mat",
+            "bytes": 13193562,
+            "sha256": "91e7e3e11049fc019b546454a7ffd211439c0083295c0be9699cace8081fcc88",
+            "cached": "2026-07-04"
+          },
+          {
+            "record": "S3",
+            "path": "data_cache/emg_ninapro/S3_A1_E1.mat",
+            "bytes": 3207304,
+            "sha256": "b669a8d8634aeeaa6051d050267310fd77955e8008fb834c962157f7538af0f0",
+            "cached": "2026-07-04"
+          },
+          {
+            "record": "S3",
+            "path": "data_cache/emg_ninapro/S3_A1_E2.mat",
+            "bytes": 8033360,
+            "sha256": "37e9d8e321d019a1f017d13c563e9a53b865c33e3b0d2f8e4a288d72cde8f8fb",
+            "cached": "2026-07-04"
+          },
+          {
+            "record": "S3",
+            "path": "data_cache/emg_ninapro/S3_A1_E3.mat",
+            "bytes": 12041233,
+            "sha256": "e18563b44be4ed9be139a0fb8cfcb39e3ca5bc1a3a325a0831e4c270fca58496",
+            "cached": "2026-07-04"
+          }
+        ]
+      }
+    },
+    "har": {
+      "name": "Human activity (IMU)",
+      "dataset": "UCI HAR (raw inertial signals)",
+      "dataset_version": "1.0",
+      "license": "Open (UCI ML Repository)",
+      "access": "open-direct",
+      "url": "https://archive.ics.uci.edu/dataset/341/",
+      "citation": "Anguita D, et al. UCI HAR dataset (2013).",
+      "signals": [
+        "tri-axial accelerometer (total_acc)"
+      ],
+      "task_type": "multiclass",
+      "classes": [
+        "static",
+        "walk",
+        "stairs"
+      ],
+      "split_unit": "subject",
+      "default_metrics": [
+        "macro_f1",
+        "balanced_accuracy"
+      ],
+      "eval_modes": [
+        "new-subject"
+      ],
+      "smoke_test_records": [
+        "subj_1",
+        "subj_2"
+      ],
+      "difficulty": 2,
+      "cache": {
+        "dir": "data_cache/har",
+        "status": "cached",
+        "n_files": 29,
+        "total_bytes": 282560938,
+        "aggregate_sha256": "0ea2c82d6e4c657ebd6275fb2432cd6c3f31c5ef3d4ed76df40d66a8d944c95f",
+        "smoke_record_files": []
+      }
+    },
+    "bci_eegmmidb": {
+      "name": "BCI motor imagery",
+      "dataset": "EEG Motor Movement/Imagery (EEGMMIDB)",
+      "dataset_version": "1.0.0",
+      "license": "Open Data Commons Attribution (ODC-BY)",
+      "access": "open-direct",
+      "url": "https://physionet.org/content/eegmmidb/1.0.0/",
+      "citation": "Schalk G, et al. (2004); Goldberger AL, et al. PhysioNet (2000).",
+      "signals": [
+        "64-channel EEG @ 160 Hz"
+      ],
+      "task_type": "binary",
+      "classes": [
+        "L",
+        "R"
+      ],
+      "split_unit": "subject",
+      "default_metrics": [
+        "macro_f1",
+        "cohens_kappa"
+      ],
+      "eval_modes": [
+        "within-subject",
+        "new-subject"
+      ],
+      "smoke_test_records": [
+        "S001",
+        "S002",
+        "S003"
+      ],
+      "difficulty": 4,
+      "cache": {
+        "dir": "data_cache/bci_eegmmidb",
+        "status": "cached",
+        "n_files": 24,
+        "total_bytes": 61706304,
+        "aggregate_sha256": "6da697dc463e8feda6c2fef76c7008643f364be13b8a66b2287b3bcd04f71d95",
+        "smoke_record_files": [
+          {
+            "record": "S001",
+            "path": "data_cache/bci_eegmmidb/MNE-eegbci-data/files/eegmmidb/1.0.0/S001/S001R04.edf",
+            "bytes": 2596896,
+            "sha256": "3d161f88e1c00632585287d2ce584c2bc0f08862438eb255ea8723e00fac693d",
+            "cached": "2026-07-04"
+          },
+          {
+            "record": "S001",
+            "path": "data_cache/bci_eegmmidb/MNE-eegbci-data/files/eegmmidb/1.0.0/S001/S001R08.edf",
+            "bytes": 2596896,
+            "sha256": "358fb5189220725141968ae285fbe9e3f36210b834ffba71d940af308e3aca68",
+            "cached": "2026-07-04"
+          },
+          {
+            "record": "S001",
+            "path": "data_cache/bci_eegmmidb/MNE-eegbci-data/files/eegmmidb/1.0.0/S001/S001R12.edf",
+            "bytes": 2596896,
+            "sha256": "2b281c9b687b4c4176e83251d74743721f2d6ebd76656a972a3b9c44d9d88cd5",
+            "cached": "2026-07-04"
+          },
+          {
+            "record": "S002",
+            "path": "data_cache/bci_eegmmidb/MNE-eegbci-data/files/eegmmidb/1.0.0/S002/S002R04.edf",
+            "bytes": 2555616,
+            "sha256": "fcd37831378c411d50c223d97ffbc00949be2271d093f1d8e56bbe7c02bd1539",
+            "cached": "2026-07-04"
+          },
+          {
+            "record": "S002",
+            "path": "data_cache/bci_eegmmidb/MNE-eegbci-data/files/eegmmidb/1.0.0/S002/S002R08.edf",
+            "bytes": 2555616,
+            "sha256": "02d64941f6bcd1635bc7dd187a9553331b73933e9771f4e7c59249dfc5632c5a",
+            "cached": "2026-07-04"
+          },
+          {
+            "record": "S002",
+            "path": "data_cache/bci_eegmmidb/MNE-eegbci-data/files/eegmmidb/1.0.0/S002/S002R12.edf",
+            "bytes": 2555616,
+            "sha256": "a3d166b23375942a5ccf352924f7766f0ca9cfd1bac7951175e710d978f5239f",
+            "cached": "2026-07-04"
+          },
+          {
+            "record": "S003",
+            "path": "data_cache/bci_eegmmidb/MNE-eegbci-data/files/eegmmidb/1.0.0/S003/S003R04.edf",
+            "bytes": 2596896,
+            "sha256": "7d0732eea963488a53153835524e55c2b68220b0a0c7c5be99e535a9f5367e7f",
+            "cached": "2026-07-04"
+          },
+          {
+            "record": "S003",
+            "path": "data_cache/bci_eegmmidb/MNE-eegbci-data/files/eegmmidb/1.0.0/S003/S003R08.edf",
+            "bytes": 2596896,
+            "sha256": "0f50978bb972e693b8c758a9223a2d9fa35c7f117226391090bcc32a83ce765d",
+            "cached": "2026-07-04"
+          },
+          {
+            "record": "S003",
+            "path": "data_cache/bci_eegmmidb/MNE-eegbci-data/files/eegmmidb/1.0.0/S003/S003R12.edf",
+            "bytes": 2596896,
+            "sha256": "bbf7137bfa7905724741e95359fa090439d4422c07bdba16c792acb09ebd6421",
+            "cached": "2026-07-04"
+          }
+        ]
+      }
+    }
+  }
+}

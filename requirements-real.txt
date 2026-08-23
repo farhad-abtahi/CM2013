@@ -1,0 +1,9 @@
+# Real-data extras (Colab / local only) — NOT needed for the synthetic notebooks or CI smoke.
+# Install alongside requirements-lock.txt when validating the track load() paths.
+#
+# Pinned to the versions the tracks were validated with (see tracks/dataset_manifest.json).
+# Loosen deliberately, not by habit: a silent MNE/WFDB upgrade can change EDF scaling or
+# record parsing and quietly shift a baseline. Re-run tools/build_dataset_manifest.py --verify
+# after any bump.
+mne==1.10.1          # Sleep-EDF PSG/hypnogram EDF reading
+wfdb==4.3.0          # PhysioNet WFDB records (ECG CinC-2017, CTG, BCI)

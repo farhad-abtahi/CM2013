@@ -1,0 +1,10 @@
+# Exact, known-good versions the notebooks were built and executed against.
+# Reproducible runs: pip install -r requirements-lock.txt
+# (PyWavelets<1.6 is NOT numpy-2 ABI compatible — do not downgrade below the pin.)
+numpy==2.2.6
+scipy==1.15.3
+matplotlib==3.10.9
+scikit-learn==1.7.2
+PyWavelets==1.8.0
+pillow==12.2.0
+imbalanced-learn==0.14.2   # tracks/adapter.py imbalance="smote"|"adasyn" only
