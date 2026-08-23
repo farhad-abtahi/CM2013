@@ -128,21 +128,30 @@ contact/process here.)*
 
 ## The tracks
 
-| Track | Signal | Task | Split | Modes | ★ |
-|-------|--------|------|-------|-------|---|
-| `har` | tri-axial accelerometer | activity (3-class) | subject | new-subject | ★★ (gentle on-ramp) |
-| `sleep_edf` | EEG + EOG + EMG | sleep stage (5-class) | subject | new-subject | ★★★ (reference) |
-| `ecg_cinc2017` | single-lead ECG | rhythm N/A/O/~ | record | new-record | ★★★ |
-| `ctg_ctu_uhb` | FHR + uterine contraction | normal / pathological | recording | new-recording | ★★★ (hard, honest) |
-| `emg_ninapro` | 10-ch surface EMG | hand gesture (12-class) | subject / repetition | **within + new-subject** | ★★★ |
-| `bci_eegmmidb` | 64-ch EEG | L/R motor imagery | subject / trial | **within + new-subject** | ★★★★ (advanced) |
+Three default tracks, matched on their *honest* baseline metric (not just a nominal difficulty
+star) so every team faces a comparable challenge:
 
-**Two evaluation modes** (EMG, BCI): report **within-subject** *and* **new-subject** — they answer
+| Track | Signal | Task | Split | Modes | Baseline (honest) |
+|-------|--------|------|-------|-------|---|
+| `sleep_edf` | EEG + EOG + EMG | sleep stage (5-class) | subject | new-subject | κ 0.84 (reference) |
+| `ecg_cinc2017` | single-lead ECG | rhythm N/A/O/~ | record | new-record | κ 0.52 |
+| `emg_ninapro` | 10-ch surface EMG | hand gesture (12-class) | subject / repetition | **within + new-subject** | κ 0.77 within / **0.12 new-subject** |
+
+**Two evaluation modes** (EMG): report **within-subject** *and* **new-subject** — they answer
 different deployment claims, and cross-subject is much harder. Do not hide a weak cross-subject number.
+
+**Opt-in stretch track — `bci_eegmmidb`** (64-ch EEG, L/R motor imagery, subject/trial split,
+within + new-subject modes, near-chance naive baseline). Available only by explicit request with
+instructor sign-off — it's meaningfully harder than the three defaults, and its honest baseline is
+close to chance until you add a spatial filter (CSP). That's the point of the track, not a flaw.
+
+*(`har` and `ctg_ctu_uhb` are not offered this year — CTG's honest baseline sits far below the other
+tracks, closer to a floor than a moderate challenge.)*
 
 ## Reality check (this is a feature, not a bug)
 
-Real data is messy and some tracks are genuinely hard: **CTG** cord-pH prediction has low sensitivity,
-and the naive **BCI** baseline is near chance until you add a spatial filter (CSP). Your dataset card's
-**yardstick** line tells you what "good" actually is for that domain — read your result against it, not
-against 100 %. Honest, well-motivated work on a hard signal beats a leaky 0.99 on an easy one.
+Real data is messy and some tracks are genuinely hard: **EMG**'s cross-subject accuracy collapses far
+below its within-subject number, and the naive **BCI** baseline (if you take the opt-in) is near chance
+until you add a spatial filter (CSP). Your dataset card's **yardstick** line tells you what "good"
+actually is for that domain — read your result against it, not against 100 %. Honest, well-motivated
+work on a hard signal beats a leaky 0.99 on an easy one.

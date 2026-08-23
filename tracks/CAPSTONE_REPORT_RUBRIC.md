@@ -31,7 +31,7 @@ not supported (a metric stated with no confusion matrix, a split described but n
 shown in code/config) — evidence, not assertion, earns points throughout. This mirrors
 the book's own §1.8 principle: no result without a diagnostic.
 
-## The 7 common criteria (identical across all 6 tracks) — 23 points
+## The 7 common criteria (identical across all 4 tracks) — 23 points
 
 Criteria 2 and 5 absorbed the 2 points that used to be the team-level Opposition
 criterion (now an individual essay, see above) — signal-processing rigor and the
@@ -137,33 +137,7 @@ The point value is unchanged at **4**, and the sheet still totals **30**.
 
 ---
 
-## Track 3 — Human activity recognition (UCI HAR, raw inertial)
-
-`default_metrics`: macro-F1, balanced accuracy · `split_unit`: **subject** · `eval_modes`: new-subject · classes: static/walk/stairs · difficulty 2/4
-
-| # | Criterion | Points | Instrument | Full marks | Partial | Minimal | Missing |
-|---|---|:---:|---|---|---|---|---|
-| 7 | **Improvement on the baseline — evidence-based** | 4 | Report (+ `RESULTS.md`) | A **controlled comparison** against `default_baseline()` under the correct subject-level split: ≥2 alternatives tried one at a time (the gravity decision and a windowing/feature choice are the obvious two), reported with macro-F1 or balanced accuracy **and its per-subject spread**, with at least one alternative **falsified**. The final pipeline is justified either by a gain attributed to a specific feature/windowing/gravity choice, **or** by a defended decision to keep a lower/equal-scoring pipeline (e.g. leaving gravity in because it carries the posture cue, at a stated cost in cross-subject spread) | Real comparison but thin, or several changes bundled, or the gain is only weakly attributed | Final and baseline numbers reported side by side with no controlled comparison and no stated reason for the final configuration | No comparison to the supplied baseline, not reported, or computed under a window-level (not subject-level) split |
-| 8 | **Track-specific execution: windowing & subject leakage** | 3 | Report (2) + Presentation (1) | Report shows the windowing scheme (window length/overlap) and explicitly confirms adjacent windows from one subject never span train and test | Windowing is described but the leakage check is only implied, not stated | Windowing parameters are unclear or unjustified | Overlapping windows from the same subject/session appear on both sides of the split |
-
-**Total: ___ / 30**
-
----
-
-## Track 4 — CTG / fetal monitoring (CTU-UHB Intrapartum Cardiotocography)
-
-`default_metrics`: macro-F1, Cohen's κ · `split_unit`: **recording** · `eval_modes`: new-recording · classes: normal/pathological (binary) · difficulty 3/4
-
-| # | Criterion | Points | Instrument | Full marks | Partial | Minimal | Missing |
-|---|---|:---:|---|---|---|---|---|
-| 7 | **Improvement on the baseline — evidence-based** | 4 | Report (+ `RESULTS.md`) | A **controlled comparison** against `default_baseline()` under the correct recording-level split: ≥2 imbalance/feature alternatives tried one at a time, reported with macro-F1/κ **and pathological-class recall and precision separately** plus the fold spread, at least one alternative **falsified**. The final pipeline is justified either by a gain whose source is named, **or** by a defended operating-point decision that *lowers* macro-F1 on purpose — e.g. a moved threshold bought pathological recall at a stated false-alarm cost, and the report says why that side of the trade is the clinically right one. **A threshold or resampling choice must be stated as a number, and must not have been tuned on the reported folds** | Real comparison but thin or bundled, or pathological-class recall/precision not shown separately | Final and baseline numbers side by side with no controlled comparison, or reported only as accuracy on this severely imbalanced task | No comparison to the supplied baseline, not reported, or computed under an invalid split |
-| 8 | **Track-specific execution: signal dropout & imbalance** | 3 | Report (2) + Presentation (1) | Report addresses FHR signal dropout/artifact handling (interpolation or exclusion, stated explicitly) *and* the severe class imbalance (pathological cases are rare) | Addresses one of the two (dropout handling *or* imbalance) but not both | Mentions the difficulty of the task but does not show a concrete handling of either | Neither dropout nor imbalance is addressed; report treats this as a routine balanced binary problem |
-
-**Total: ___ / 30**
-
----
-
-## Track 5 — EMG gesture recognition (Ninapro DB1, exercise E1)
+## Track 3 — EMG gesture recognition (Ninapro DB1, exercise E1)
 
 `default_metrics`: macro-F1, Cohen's κ · `split_unit`: **subject** · `eval_modes`: **within-subject AND new-subject (both required)** · classes: 12 finger gestures · difficulty 3/4
 
@@ -176,9 +150,9 @@ The point value is unchanged at **4**, and the sheet still totals **30**.
 
 ---
 
-## Track 6 — BCI motor imagery (EEGMMIDB)
+## Track 4 — BCI motor imagery (EEGMMIDB) — opt-in stretch track
 
-`default_metrics`: macro-F1, Cohen's κ · `split_unit`: **subject** · `eval_modes`: **within-subject AND new-subject (both required)** · classes: L/R (binary) · difficulty 4/4 (hardest track; naive baseline is near chance)
+`default_metrics`: macro-F1, Cohen's κ · `split_unit`: **subject** · `eval_modes`: **within-subject AND new-subject (both required)** · classes: L/R (binary) · difficulty 4/4 (hardest track; naive baseline is near chance). **Opt-in only** — a team must request this track explicitly with instructor sign-off; it is not in the default assignment pool.
 
 | # | Criterion | Points | Instrument | Full marks | Partial | Minimal | Missing |
 |---|---|:---:|---|---|---|---|---|
