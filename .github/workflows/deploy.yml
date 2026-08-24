@@ -34,7 +34,14 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install nbclient nbconvert ipykernel pytest
-          pip install jupyterlite-core jupyterlite-pyodide-kernel
+          # jupyter_server is required by jupyterlite-core's "contents" addon,
+          # which builds the api/contents index the JupyterLab UI reads to
+          # resolve ?path=<name>.ipynb. Without it, `jupyter lite build` still
+          # copies the raw .ipynb files (served fine at lite/files/...) but
+          # silently fails to index them -- badges then 404 with "File Load
+          # Error / Could not find content with path" even though the file
+          # itself is reachable.
+          pip install jupyterlite-core jupyterlite-pyodide-kernel jupyter_server
 
       - name: Tracks smoke (synthetic, offline — the capstone-track CI gate)
         run: |
