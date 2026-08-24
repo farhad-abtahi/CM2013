@@ -1,0 +1,8 @@
+{
+  "@jupyterlab/notebook-extension:tracker": {
+    "windowingMode": "none"
+  },
+  "@jupyterlab/fileeditor-extension:plugin": {
+    "windowingMode": "none"
+  }
+}
