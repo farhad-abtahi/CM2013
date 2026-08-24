@@ -92,7 +92,7 @@ footer{border-top:1px solid var(--line);padding:26px 0 40px;color:var(--muted);f
   <p>Capstone track notebooks download real data (PhysioNet / UCI / Ninapro) directly from the
      source the first time you run them — nothing is bundled in this repo. See each track's
      dataset card for license and citation.</p>
-  <p class="legend">Buttons: <b>Colab</b> runs the full notebook · <b>View</b>/<b>nbviewer</b> is read-only ·
+  <p class="legend">Buttons: <b>Colab</b> runs the full notebook · <b>View</b> is read-only ·
      <b>JupyterLite</b> runs in your browser (where supported) · <b>Download</b> gets the .ipynb.</p>
   <p id="footLinks"></p>
 </footer>
@@ -107,7 +107,6 @@ const KIND_LABEL = { chapter: "Chapter", lab: "Lab", clinic: "Design clinic", tr
 const TAB_LABEL = { all: "All", chapter: "Book demos", lab: "Labs", clinic: "Design clinic", track: "Capstone tracks" };
 let currentKind = (location.hash||"").replace("#","") || "all";
 function colabURL(repo,branch,file){return `https://colab.research.google.com/github/${repo}/blob/${branch}/${file}`;}
-function nbviewerURL(repo,branch,file){return `https://nbviewer.org/github/${repo}/blob/${branch}/${file}`;}
 function rawURL(repo,branch,file){return `https://raw.githubusercontent.com/${repo}/${branch}/${file}`;}
 function liteURL(repo,slug){const[u,r]=repo.split("/");return `https://${u}.github.io/${r}/lite/lab/index.html?path=${slug}.ipynb`;}
 function viewURL(slug){return `nb/${slug}.html`;}
@@ -156,7 +155,6 @@ function render(){
       <div class="btns">
         <a class="btn colab" href="${colabURL(DATA.repo,DATA.branch,nb.file)}" target="_blank" rel="noopener">▶ Colab</a>
         <a class="btn view" href="${viewURL(nb.slug)}" target="_blank" rel="noopener">👁 View</a>
-        <a class="btn view" href="${nbviewerURL(DATA.repo,DATA.branch,nb.file)}" target="_blank" rel="noopener">nbviewer</a>
         ${nb.lite!=="colab"?`<a class="btn lite" href="${liteURL(DATA.repo,nb.slug)}" target="_blank" rel="noopener">⚡ JupyterLite</a>`:``}
         <a class="btn dl" href="${rawURL(DATA.repo,DATA.branch,nb.file)}" download>↓ .ipynb</a>
       </div>`;

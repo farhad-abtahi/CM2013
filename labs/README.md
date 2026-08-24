@@ -11,6 +11,6 @@ handful of `# TODO` cells (they `raise NotImplementedError` until filled in), an
 closes with a sanity-check cell and a reflection prompt. Fill in the TODOs, rerun
 top to bottom, and use the reflection cell for your own practice.
 
-Every lab carries three badges (Colab / nbviewer / JupyterLite) in its second cell.
+Every lab carries three badges (Colab / View / JupyterLite) in its second cell.
 Browse all of them, alongside the book demo notebooks and capstone tracks, in the
 [notebook gallery](https://farhad-abtahi.github.io/CM2013/).

@@ -4,7 +4,7 @@ Published to GitHub Pages at https://farhad-abtahi.github.io/CM2013/.
 
 **Committed here (source):**
 - `index.html` — the notebook gallery page: searchable/filterable cards for every
-  demo, lab, and capstone-track notebook, each with Colab/nbviewer/JupyterLite/
+  demo, lab, and capstone-track notebook, each with Colab/View/JupyterLite/
   download links.
 - `notebooks.json` — the manifest `index.html` reads to render those cards (title,
   question, concepts, and JupyterLite-viability per notebook).

@@ -6,7 +6,7 @@ Learning*. Contains the demo notebooks, the graded labs, and the capstone
 project scaffold.
 
 **→ [Notebook gallery](https://farhad-abtahi.github.io/CM2013/)** — every demo, lab, and
-capstone-track notebook in one searchable, filterable page, each with its Colab/nbviewer/
+capstone-track notebook in one searchable, filterable page, each with its Colab/View/
 JupyterLite/download links already wired up.
 
 ## Structure
@@ -33,7 +33,7 @@ Every notebook (demo, track, and lab) carries three badges:
 | Badge | What it gives you | Best for |
 |---|---|---|
 | **Open in Colab** | A real, runnable Jupyter environment in the cloud (free Google account) | Actually running/editing the code |
-| **nbviewer** | A fast, static rendered view with all outputs already shown | Reading without running anything |
+| **View** | A fast, self-hosted static rendered view with all outputs already shown | Reading without running anything |
 | **JupyterLite** | An in-browser Jupyter environment — no install, no account, runs entirely client-side (Pyodide) | Quick interactive runs without leaving the browser |
 
 You can also clone the repo and run notebooks locally — see **Local setup** below.
