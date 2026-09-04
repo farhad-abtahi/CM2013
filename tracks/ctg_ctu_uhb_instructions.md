@@ -1,5 +1,10 @@
 # Track instructions — CTG (fetal), CTU-UHB
 
+> ⚠️ **Not offered this year.** This track isn't one of the options for CM2013 HT26 — its honest
+> baseline sits far below the other tracks, closer to a floor than a moderate challenge. See
+> [`START_HERE.md`](START_HERE.md) for the tracks actually on offer. Kept here as reference / for
+> future years.
+
 *Attach the dataset card (`ctg_ctu_uhb_card.md`). Adapter: `ctg_ctu_uhb.py`.*
 
 > **Before you build — background & literature review.** Refresh the methods and do a short literature

@@ -1,5 +1,7 @@
 # Dataset card — CTG (fetal)
 
+> ⚠️ **Not offered this year.** See [`START_HERE.md`](START_HERE.md) for the current tracks.
+
 | Field | Value |
 |---|---|
 | Dataset | CTU-UHB Intrapartum Cardiotocography (v1.0.0) |

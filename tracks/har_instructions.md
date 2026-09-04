@@ -1,5 +1,9 @@
 # Track instructions — Human activity (IMU), UCI-HAR
 
+> ⚠️ **Not offered this year.** This track isn't one of the options for CM2013 HT26 — see
+> [`START_HERE.md`](START_HERE.md) for the tracks actually on offer. Kept here as reference /
+> for future years.
+
 *Attach the dataset card (`har_card.md`). Adapter: `har.py`. **The gentle on-ramp track.***
 
 > **Before you build — background & literature review.** Refresh the methods and do a short literature

@@ -113,8 +113,8 @@ good report can hide an unequal team — it's not there to catch you out, it's t
 share is worth exactly as much as it should be.
 
 **If you think a score is wrong:** point to the specific rubric criterion and the specific evidence you
-believe was misread, and ask for a regrade on that criterion. *(Instructor: fill in the actual
-contact/process here.)*
+believe was misread, and ask for a regrade on that criterion — email the instructor or raise it during
+a project session, within one week of the grade being posted.
 
 ## The three golden rules (you will be graded on these)
 

@@ -1,5 +1,5 @@
 > ⚠️ **SUPERSEDED — do not grade from this file.** The live rubric is
-> **[`CAPSTONE_REPORT_RUBRIC.md`](CAPSTONE_REPORT_RUBRIC.md)** (30 points, 8 criteria, one sheet
+> **[`CAPSTONE_REPORT_RUBRIC.md`](CAPSTONE_REPORT_RUBRIC.md)** (30 points, 9 criteria, one sheet
 > per track) plus [`INDIVIDUAL_ASSESSMENT.md`](INDIVIDUAL_ASSESSMENT.md) (10 points, individual).
 > This first draft is kept only as design history — its percentage weights and its team-level
 > Opposition line are no longer in force.

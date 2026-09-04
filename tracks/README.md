@@ -21,7 +21,7 @@ behave differently on EEG vs ECG vs IMU vs EMG.
    known pitfalls (auto-rendered from metadata by `TrackAdapter.dataset_card()`; see `*_card.md`).
 3. A **smoke-test subset** — a synthetic `smoke()` path so CI / offline / Colab-sanity runs green.
 4. A **declared leakage unit** (`SPLIT_UNIT`) enforced on every fold.
-5. A **common rubric** (`CAPSTONE_REPORT_RUBRIC.md`, 30 pts) — same 8 criteria on every track, only the two
+5. A **common rubric** (`CAPSTONE_REPORT_RUBRIC.md`, 30 pts) — same 9 criteria on every track, only the two
    domain-specific ones differ. (`RUBRIC.md` is the superseded first draft, kept for history.)
 6. **Two evaluation modes** where relevant (BCI/EMG): `new-subject` and `within-subject`.
 7. An **iteration results log** (`results_log_TEMPLATE.md`) students copy into their own team repo —
@@ -66,7 +66,7 @@ behave differently on EEG vs ECG vs IMU vs EMG.
 - `HOLDOUT_EVALUATION.md`, `TRACK_INSTRUCTIONS_TEMPLATE.md`, `dataset_card_TEMPLATE.md`, `results_log_TEMPLATE.md`,
   `readiness_matrix_TEMPLATE.md` — the hold-out evaluation mechanics + templates for each new track.
 - `CAPSTONE_REPORT_RUBRIC.md` — `RUBRIC.md`'s common/domain-specific split made concrete: a
-  30-point (code + report + presentation), 8-criterion **team** grading sheet **per track**, each
+  30-point (code + report + presentation), 9-criterion **team** grading sheet **per track**, each
   with 4-tier point-band descriptors, so grading is transparent to students and consistent across
   tracks and graders.
 - `INDIVIDUAL_ASSESSMENT.md` — the critical-comparison essay and teamwork/contribution component
