@@ -19,7 +19,8 @@
       ],
       "lite": "full",
       "ml": false,
-      "pilot": false
+      "pilot": false,
+      "task": "You'll generate synthetic ECG, EEG, and EMG signals, compare their amplitude/bandwidth/rhythm \"fingerprints,\" and practice identifying each from its signature alone — predicting the change before you run each cell."
     },
     {
       "num": 1,
@@ -33,7 +34,8 @@
       ],
       "lite": "full",
       "ml": false,
-      "pilot": false
+      "pilot": false,
+      "task": "You'll load a synthetic ECG, name what's visible in the raw trace, then build a one-page acquisition-audit checklist (clipping, flatline, bandwidth-vs-task detectors) and prove it fires only on defective recordings — the first thing to run on any new signal."
     },
     {
       "num": 2,
@@ -51,7 +53,8 @@
       ],
       "lite": "full",
       "ml": false,
-      "pilot": true
+      "pilot": true,
+      "task": "You'll sample a tone below and above the Nyquist rate to watch aliasing appear (and see why it can't be undone), check quantization SNR against the 6.02·N + 1.76 dB rule, and explore spatial undersampling (moiré, CT streaks)."
     },
     {
       "num": 2,
@@ -65,7 +68,8 @@
       ],
       "lite": "full",
       "ml": false,
-      "pilot": false
+      "pilot": false,
+      "task": "You'll predict then confirm an aliased 40 Hz tone's fold-down frequency, show that more ADC bits never fix an alias, and track how a 0.1% clock-rate mismatch between two channels produces a timing drift no fixed resample can remove."
     },
     {
       "num": 3,
@@ -83,7 +87,8 @@
       ],
       "lite": "full",
       "ml": false,
-      "pilot": false
+      "pilot": false,
+      "task": "You'll rebuild a square wave from harmonics to see the Gibbs phenomenon, compare zero-padding against a genuinely longer record to see which one actually improves resolution, build a spectrogram, and reconstruct an image from FFT magnitude vs. phase alone."
     },
     {
       "num": 3,
@@ -97,7 +102,8 @@
       ],
       "lite": "full",
       "ml": false,
-      "pilot": false
+      "pilot": false,
+      "task": "You'll compute a signal's global spectrum, then its spectrogram, then sweep the STFT window length to measure — not just claim — the time/frequency uncertainty trade-off, confirming a real alpha-to-spindle frequency shift only a windowed view can reveal."
     },
     {
       "num": 4,
@@ -115,7 +121,8 @@
       ],
       "lite": "full",
       "ml": false,
-      "pilot": false
+      "pilot": false,
+      "task": "You'll compare five window functions on the same two-tone signal, measure their main-lobe/side-lobe trade-off directly, and sweep a Kaiser window's β to watch resolution and leakage move in opposite directions."
     },
     {
       "num": 4,
@@ -129,7 +136,8 @@
       ],
       "lite": "full",
       "ml": false,
-      "pilot": false
+      "pilot": false,
+      "task": "You'll test whether five windows can resolve two close equal-amplitude tones, then whether they can reveal a tone 60 dB weaker than its neighbour, and show numerically that the window that wins one task always loses the other."
     },
     {
       "num": 5,
@@ -147,7 +155,8 @@
       ],
       "lite": "reduced",
       "ml": false,
-      "pilot": false
+      "pilot": false,
+      "task": "You'll localize a K-complex with the DWT and check which decomposition level it lands on, pull an EMG envelope out with the Hilbert transform, and run wavelet compression and denoising on a 2-D image via its subbands."
     },
     {
       "num": 5,
@@ -161,7 +170,8 @@
       ],
       "lite": "reduced",
       "ml": false,
-      "pilot": false
+      "pilot": false,
+      "task": "You'll localise a transient's exact instant with a CWT, find which DWT detail level carries it, and recover an AM burst's amplitude envelope with the Hilbert transform — then check each transform actually answered the question it was built for."
     },
     {
       "num": 6,
@@ -179,7 +189,8 @@
       ],
       "lite": "reduced",
       "ml": false,
-      "pilot": false
+      "pilot": false,
+      "task": "You'll compare the autocorrelation of a periodic signal against noise, read an AR model's order straight off an ACF/PACF pair, then sweep the AR order on an EEG spectrum and watch it go from under- to over-fit."
     },
     {
       "num": 6,
@@ -193,7 +204,8 @@
       ],
       "lite": "reduced",
       "ml": false,
-      "pilot": false
+      "pilot": false,
+      "task": "You'll fit AR models by hand via Yule-Walker at growing orders to see under- and over-fitting, pick the order objectively with an information criterion, and use residual whiteness — not a pretty spectrum — to decide whether the fit is trustworthy."
     },
     {
       "num": 7,
@@ -211,7 +223,8 @@
       ],
       "lite": "reduced",
       "ml": false,
-      "pilot": true
+      "pilot": true,
+      "task": "You'll watch a periodogram's variance fail to shrink as the record gets longer, then compare Welch, multitaper, and parametric AR estimates on the same epoch, finishing with an HRV LF/HF band-power worked example."
     },
     {
       "num": 7,
@@ -225,7 +238,8 @@
       ],
       "lite": "reduced",
       "ml": false,
-      "pilot": false
+      "pilot": false,
+      "task": "You'll watch the periodogram's variance refuse to shrink with more data while Welch's does, then run a robust-peak checklist on a real 10 Hz rhythm and a fake periodogram bump to see it correctly pass one and fail the other."
     },
     {
       "num": 8,
@@ -243,7 +257,8 @@
       ],
       "lite": "full",
       "ml": false,
-      "pilot": false
+      "pilot": false,
+      "task": "You'll build a noise \"line-up\" (white/pink/brown) and classify each by its PSD slope, then identify powerline interference and impulsive/salt-and-pepper artifacts by their signatures before picking a fix."
     },
     {
       "num": 8,
@@ -257,7 +272,8 @@
       ],
       "lite": "full",
       "ml": false,
-      "pilot": false
+      "pilot": false,
+      "task": "You'll build detectors for mains hum, baseline wander, and motion bursts, classify each as remove/mark/source/failed before touching a filter, then prove a proper notch preserves the ECG's ST level while a naive high-pass destroys it."
     },
     {
       "num": 9,
@@ -275,7 +291,8 @@
       ],
       "lite": "reduced",
       "ml": false,
-      "pilot": false
+      "pilot": false,
+      "task": "You'll compare zero-phase filtfilt against a real-time causal filter, watch a median filter beat a mean filter on outlier removal, and run the Pan–Tompkins QRS detector end to end on a synthetic ECG."
     },
     {
       "num": 9,
@@ -289,7 +306,8 @@
       ],
       "lite": "reduced",
       "ml": false,
-      "pilot": false
+      "pilot": false,
+      "task": "You'll design a band-pass-plus-notch EEG filter, measure how filtfilt's two-pass response squares the one-pass attenuation at the cutoff, and confirm delta band-power survives filtering — then watch a naive 2 Hz high-pass destroy it instead."
     },
     {
       "num": 10,
@@ -307,7 +325,8 @@
       ],
       "lite": "reduced",
       "ml": false,
-      "pilot": false
+      "pilot": false,
+      "task": "You'll verify the √N ensemble-averaging law directly, cancel a correlated artifact with an LMS adaptive filter, and compare wavelet-threshold denoising against ICA/PCA for pulling out unwanted components."
     },
     {
       "num": 10,
@@ -321,7 +340,8 @@
       ],
       "lite": "reduced",
       "ml": false,
-      "pilot": false
+      "pilot": false,
+      "task": "You'll confirm the √N averaging law empirically across N=1 to 64, use an LMS adaptive filter to cancel a motion artifact correlated with a reference channel, and unmix two ICA sources — checking each time whether the signal was recovered or merely manufactured."
     },
     {
       "num": 11,
@@ -338,7 +358,8 @@
       ],
       "lite": "reduced",
       "ml": true,
-      "pilot": false
+      "pilot": false,
+      "task": "You'll compute time- and frequency-domain features (RMS, Hjorth parameters, band power, spectral entropy) from an epoch, rank them by mutual information, and see directly how fitting a scaler on the wrong data leaks information."
     },
     {
       "num": 11,
@@ -352,7 +373,8 @@
       ],
       "lite": "reduced",
       "ml": true,
-      "pilot": false
+      "pilot": false,
+      "task": "You'll rank features by mutual information on training data only, then deliberately leak by fitting a scaler and selector on the whole dataset with a random split, and measure the exact accuracy gap against the honest, subject-grouped alternative."
     },
     {
       "num": 11,
@@ -366,7 +388,8 @@
       ],
       "lite": "reduced",
       "ml": true,
-      "pilot": false
+      "pilot": false,
+      "task": "You'll compare two feature-stage designs against a wearable sleep-stager spec, use the real segment-length trade-off to justify a Welch setting, and identify two feature designs that are simply wrong for the spec — not imperfect — because they can't see what the classes need distinguished."
     },
     {
       "num": 12,
@@ -384,7 +407,8 @@
       ],
       "lite": "reduced",
       "ml": true,
-      "pilot": true
+      "pilot": true,
+      "task": "You'll compare a naive random split against subject-independent LOSO validation on the same data to see the leakage gap directly, then work through the ROC/PR trade-off and calibration under class imbalance."
     },
     {
       "num": 12,
@@ -398,7 +422,8 @@
       ],
       "lite": "reduced",
       "ml": true,
-      "pilot": false
+      "pilot": false,
+      "task": "You'll read a class-imbalanced cohort's prevalence, score a real classifier on a four-metric panel (accuracy, balanced accuracy, macro-F1, kappa), then shift the decision rule by dividing by class priors and watch the model ranking flip depending on which metric you trust."
     },
     {
       "num": 13,
@@ -416,7 +441,8 @@
       ],
       "lite": "reduced",
       "ml": true,
-      "pilot": false
+      "pilot": false,
+      "task": "You'll train k-NN, an SVM, and a random forest on the identical split and features — the \"fair fight\" — and compare their decision boundaries, then run k-means, hierarchical clustering, and PCA on the same data."
     },
     {
       "num": 13,
@@ -430,7 +456,8 @@
       ],
       "lite": "reduced",
       "ml": true,
-      "pilot": false
+      "pilot": false,
+      "task": "You'll fit a random forest and score it on its own training rows to see a worthless ~1.00, then compare k-NN, SVM, and a forest fairly on identical subject-independent folds against a majority-class floor to find which model really wins on a new subject."
     },
     {
       "num": 14,
@@ -448,7 +475,8 @@
       ],
       "lite": "colab",
       "ml": true,
-      "pilot": false
+      "pilot": false,
+      "task": "You'll see a CNN's convolution laid directly against Chapter 9's classical convolution, train a tiny CNN on spectrogram images, and run a fair, same-split comparison against the Chapter 13 random forest."
     },
     {
       "num": 14,
@@ -462,7 +490,8 @@
       ],
       "lite": "colab",
       "ml": true,
-      "pilot": false
+      "pilot": false,
+      "task": "You'll train an MLP directly on raw spectrogram pixels against a random forest on 12 hand-chosen band-power features, score both on identical folds, then sweep training-subject count to see whether the learned model's gap is a real ceiling or just data-starvation."
     },
     {
       "num": 15,
@@ -479,7 +508,8 @@
       ],
       "lite": "colab",
       "ml": false,
-      "pilot": false
+      "pilot": false,
+      "task": "You'll measure the actual size and latency trade-off from quantizing and pruning a model, and work through what data leaves the device at each point on the edge-to-cloud spectrum."
     },
     {
       "num": 16,
@@ -497,7 +527,8 @@
       ],
       "lite": "reduced",
       "ml": true,
-      "pilot": true
+      "pilot": true,
+      "task": "You'll assemble the sleep-scoring pipeline's modules end to end, run an iterative baseline-to-tuned-ensemble build, and evaluate it with subject-independent LOSO kappa, a confusion matrix, and a hypnogram."
     },
     {
       "num": 16,
@@ -511,7 +542,8 @@
       ],
       "lite": "reduced",
       "ml": true,
-      "pilot": false
+      "pilot": false,
+      "task": "You'll fill in a design-justification matrix and a what-must-survive audit for your own capstone pipeline (resampling, filter, features, split, metric) as a planning worksheet — no code here; you build the real pipeline afterward in ch16_capstone.ipynb."
     },
     {
       "num": 17,
@@ -528,7 +560,8 @@
       "lite": "colab",
       "ml": true,
       "pilot": true,
-      "real_data": true
+      "real_data": true,
+      "task": "You'll run the full UCI-HAR pipeline on real raw accelerometer data — window it, extract per-axis features, classify six activities with a subject-aware split, and see exactly where walk and stairs get confused."
     },
     {
       "num": 18,
@@ -545,7 +578,8 @@
       "lite": "colab",
       "ml": true,
       "pilot": true,
-      "real_data": true
+      "real_data": true,
+      "task": "You'll stage real Sleep-EDF PSG recordings end to end — extract EEG/EOG/EMG features, classify sleep stages with leave-one-subject-out validation, and read Cohen's kappa against the human inter-rater ceiling (≈ 0.76)."
     },
     {
       "num": 19,
@@ -562,7 +596,8 @@
       "lite": "colab",
       "ml": true,
       "pilot": true,
-      "real_data": true
+      "real_data": true,
+      "task": "You'll run the PhysioNet CinC-2017 single-lead ECG pipeline — Pan–Tompkins QRS detection, R-R/HRV features, and a signal-quality index — to classify normal, AF, other, and noisy rhythms with a record-level split."
     },
     {
       "num": 20,
@@ -579,7 +614,8 @@
       "lite": "colab",
       "ml": true,
       "pilot": true,
-      "real_data": true
+      "real_data": true,
+      "task": "You'll clean real CTU-UHB fetal heart-rate recordings (dropout removal, baseline, variability), build features toward a pH-based outcome label, and confront a deliberately hard, clinically realistic problem where the positive class is barely detected."
     },
     {
       "num": 21,
@@ -596,7 +632,8 @@
       "lite": "colab",
       "ml": true,
       "pilot": true,
-      "real_data": true
+      "real_data": true,
+      "task": "You'll classify real Ninapro surface-EMG gestures two ways — within-subject and new-subject — side by side, then watch a randomly-split baseline lie to you about how well it actually generalizes."
     },
     {
       "num": 22,
@@ -613,7 +650,8 @@
       "lite": "colab",
       "ml": true,
       "pilot": true,
-      "real_data": true
+      "real_data": true,
+      "task": "You'll decode real EEGMMIDB motor-imagery EEG from mu/beta power at C3/C4, see an honest near-chance baseline, and find out why the fix is a leakage-safe CSP spatial filter, not more features."
     }
   ]
 }
