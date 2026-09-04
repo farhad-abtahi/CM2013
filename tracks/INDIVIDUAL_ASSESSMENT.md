@@ -26,8 +26,8 @@ also folds in what used to be a separate team-level **Opposition** criterion in
 submission.
 
 **Mechanism — shadow pairing:** every team is paired once, early (at track assignment,
-before the first project session — see `Course_PM_HT26.md`), with exactly one other
-team working a **different track**. Students should look in on their shadow partner's
+before the first project session — see the "Course PM" page on Canvas for the schedule),
+with exactly one other team working a **different track**. Students should look in on their shadow partner's
 project informally around the project's mid-point (no deliverable required then — just
 enough exposure that the final essay isn't written from a cold read).
 
@@ -62,8 +62,8 @@ single team member's self-report alone:
    (who owns which module — data loading, features, validation, report, etc.) and kept
    updated. This is the reference point for "did you do the share you signed up for,"
    not a retrospective claim. In practice this is the team's **ClickUp workspace** —
-   see `../../CM2013 HT26/Project_Management_Guide.md` — whose task history, tags, and
-   standup comments serve as this log directly, rather than a separate document.
+   see the "Project Management & ClickUp" page on Canvas — whose task history, tags,
+   and standup comments serve as this log directly, rather than a separate document.
 2. **A private peer-evaluation form**, completed individually by every team member at
    submission, rating every teammate (and briefly themselves) on the three criteria
    below with one sentence of justification per rating. Scores are combined across

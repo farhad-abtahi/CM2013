@@ -1,5 +1,7 @@
 # Dataset card — Human activity (IMU)
 
+> ⚠️ **Not offered this year.** See [`START_HERE.md`](START_HERE.md) for the current tracks.
+
 | Field | Value |
 |---|---|
 | Dataset | UCI HAR (raw inertial signals) (v1.0) |

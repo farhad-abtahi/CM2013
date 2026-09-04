@@ -23,7 +23,7 @@ here: every student personally reads and critiques a shadow-paired (different-tr
 team's project, rather than the team delegating one piece of feedback to whoever
 volunteers to write it. Teams are still shadow-paired (cross-track, assigned once at
 track-assignment time) so every student knows which project to compare against — see
-`Course_PM_HT26.md`'s track-assignment section.
+the "Course PM" page on Canvas for the schedule.
 
 **How to grade:** for each criterion, match the evidence to the row that best fits and
 record that many points. Half-points are fine. Do not award points for a claim made but
@@ -186,9 +186,9 @@ The point value is unchanged at **4**, and the sheet still totals **30**.
   individually, outside this 30-point sheet — see `INDIVIDUAL_ASSESSMENT.md`. The essay
   is what used to be Opposition; it's now personal, not delegated to one team member.
 - **Shadow pairing needs assigning once, early.** Pair each team with one other team on
-  a different track at track-assignment time (`Course_PM_HT26.md`), not near the
-  showcase — students need to have actually followed the other project to write a real
-  comparison, not a cold read on the day.
+  a different track at track-assignment time (see the "Course PM" page on Canvas for
+  the schedule), not near the showcase — students need to have actually followed the
+  other project to write a real comparison, not a cold read on the day.
 - **Same rubric, six sheets.** Because criteria 1–6 and 9 and their point values are identical
   across tracks, a grader handling multiple tracks does not need to re-learn the scale
   per team — only criteria 7–8 change, and only in what counts as evidence, not in how
