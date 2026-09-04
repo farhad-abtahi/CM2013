@@ -44,7 +44,9 @@ header .links a:hover{background:rgba(255,255,255,.15)}
 .chip.lab{color:#0a6a7d;background:#e2f4f8}
 .chip.clinic{color:#9a3b12;background:#fbeae2}
 .card h3{margin:12px 0 6px;font-size:17px}
-.card .q{color:var(--muted);font-size:13.5px;font-style:italic;margin:0 0 12px}
+.card .q{color:var(--muted);font-size:13.5px;font-style:italic;margin:0 0 10px}
+.card .task{color:var(--ink);font-size:13.5px;margin:0 0 12px;padding:9px 11px;background:#f6f8fb;
+  border-left:3px solid var(--blue);border-radius:4px}
 .card .demo-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#8a94a3;margin:2px 0 6px}
 .card ul{margin:0 0 14px;padding-left:18px}
 .card li{font-size:13.5px;margin:2px 0}
@@ -132,7 +134,7 @@ function render(){
   const grid=document.getElementById("grid"); grid.innerHTML="";
   let n=0;
   for(const nb of DATA.notebooks){
-    const hay=(nb.title+" "+nb.question+" "+nb.concepts.join(" ")).toLowerCase();
+    const hay=(nb.title+" "+nb.question+" "+(nb.task||"")+" "+nb.concepts.join(" ")).toLowerCase();
     if(q && !hay.includes(q)) continue;
     if(lf!=="all" && nb.lite!==lf) continue;
     if(currentKind!=="all" && nb.kind!==currentKind) continue;
@@ -149,6 +151,7 @@ function render(){
       <div>${chips}</div>
       <h3>${nb.title}</h3>
       <p class="q">${nb.question}</p>
+      ${nb.task?`<p class="task">${nb.task}</p>`:``}
       <p class="demo-title">Covers</p>
       <ul>${nb.concepts.map(c=>`<li>${c}</li>`).join("")}</ul>
       <p class="lite">Runs in browser (JupyterLite): <b>${LITE_LABEL[nb.lite]}</b></p>
