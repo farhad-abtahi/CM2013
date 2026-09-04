@@ -189,7 +189,7 @@ The point value is unchanged at **4**, and the sheet still totals **30**.
   a different track at track-assignment time (see the "Course PM" page on Canvas for
   the schedule), not near the showcase — students need to have actually followed the
   other project to write a real comparison, not a cold read on the day.
-- **Same rubric, six sheets.** Because criteria 1–6 and 9 and their point values are identical
+- **Same rubric, four sheets.** Because criteria 1–6 and 9 and their point values are identical
   across tracks, a grader handling multiple tracks does not need to re-learn the scale
   per team — only criteria 7–8 change, and only in what counts as evidence, not in how
   many points they're worth.
