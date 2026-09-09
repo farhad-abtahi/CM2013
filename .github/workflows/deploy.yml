@@ -78,6 +78,7 @@ jobs:
           mkdir -p _lite_content
           cp notebooks/*.ipynb _lite_content/
           cp labs/*/*.ipynb _lite_content/
+          cp -r src _lite_content/src
 
       - name: Build JupyterLite site (in-browser notebooks)
         run: |

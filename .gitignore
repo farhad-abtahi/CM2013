@@ -14,3 +14,9 @@ _lite_content/
 # local dataset cache for the capstone tracks — students download real data
 # themselves (see each track's dataset card); never committed here
 data_cache/
+
+# instructor-only lab solutions must never land in this public student repo —
+# the real source of truth lives outside this repo entirely (companion-course/);
+# this entry is a defensive backstop in case a solutions/ dir is ever added here
+labs/solutions/
+**/solutions/
