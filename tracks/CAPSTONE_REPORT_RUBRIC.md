@@ -56,9 +56,9 @@ does the most good.
 |---|---|:---:|---|---|---|---|---|
 | 1 | **Pipeline integrity** | 3 | Code | The submitted code shows all seven modules — load → preprocess → features → selection → classification → inference → report — as separable, reusable stages | Pipeline runs end to end but 1–2 stages are entangled or undocumented (e.g. feature extraction hard-coded inside training) | Pipeline is a single script; stages exist implicitly but are not separable | No coherent pipeline; ad hoc / notebook-only exploration |
 | 2 | **Signal processing rigor** | 5 | Code (3) + Report (2) | Real DSP performed on the raw signal in the code (filtering, transforms, spectral estimation, denoising, or fiducial detection as appropriate); the report justifies each choice against the track's `dsp_focus`; features are *constructed*, not just handed to a classifier | DSP is present and correct but under-justified in the report (right method, no rationale for parameters) | Minimal DSP; mostly relies on the signal's raw amplitude/statistics or the supplied baseline's features unchanged | No signal processing — classifier applied directly to raw or pre-given features |
-| 3 | **Validation honesty** | 6 | Code (3) + Report (2) + Presentation (1) | The code enforces the correct **split unit** everywhere (see Criterion 8 for what that means on this track) and fits any scaler/selector inside the training fold only; the report states the split unit and shows the full metric panel — confusion matrix + the track's default metric(s) + at least one more (e.g. balanced accuracy); the team can explain the leakage risk live | Split unit is correct in code but one leakage risk is present elsewhere (e.g. feature selection fit on the whole set), or the report doesn't state it clearly | Split unit is inconsistently applied in code, or only a single metric (often bare accuracy) is reported | No group-aware split in the code (random/epoch-level split on grouped data) — a hard fail on this criterion regardless of the reported number |
+| 3 | **Validation honesty** | 6 | Code (3) + Report (2) + Presentation (1) | The code enforces the correct **split unit** everywhere (stated per track in the `split_unit` line above each track's sheet below — on Sleep-EDF specifically this is also what Criterion 8 grades) and fits any scaler/selector inside the training fold only; the report states the split unit and shows the full metric panel — confusion matrix + the track's default metric(s) + at least one more (e.g. balanced accuracy); the team can explain the leakage risk live | Split unit is correct in code but one leakage risk is present elsewhere (e.g. feature selection fit on the whole set), or the report doesn't state it clearly | Split unit is inconsistently applied in code, or only a single metric (often bare accuracy) is reported | No group-aware split in the code (random/epoch-level split on grouped data) — a hard fail on this criterion regardless of the reported number |
 | 4 | **Reproducibility & engineering** | 2 | Code | Fixed seed, config-driven run, environment pinned (`requirements.txt`/lock file), and the track's `smoke()` path passes — a grader can re-run the submitted code and get the same numbers | Reproducible in spirit but missing one element (e.g. seed fixed, but no pinned environment) | Runs, but re-running plausibly gives different numbers (unseeded randomness) | Not reproducible from what's submitted |
-| 5 | **Report quality & defence** | 3 | Presentation | Design decisions are justified against the spec; results are read against a meaningful ceiling (chance, the supplied baseline, or an inter-rater/label-noise ceiling where relevant); limitations are stated honestly, including a concrete "what would go wrong on new data" | Clear report, but justification or limitations section is thin | Report describes *what* was done but rarely *why*; no honest limitations | Report does not explain the pipeline well enough to follow |
+| 5 | **Defence of the report's decisions (oral)** | 3 | Presentation | Design decisions are justified against the spec; results are read against a meaningful ceiling (chance, the supplied baseline, or an inter-rater/label-noise ceiling where relevant); limitations are stated honestly, including a concrete "what would go wrong on new data" | Clear report, but justification or limitations section is thin | Report describes *what* was done but rarely *why*; no honest limitations | Report does not explain the pipeline well enough to follow |
 | 6 | **Deadlines** | 1 | Process | Report, code, `predictions.csv`, and the presentation slot are all delivered on time, no extension needed | Late by less than 48h with prior notice, no disruption to grading | — | Late without notice, or a deliverable is missing entirely |
 | 9 | **Iteration & revision history** | 3 | `RESULTS.md` (2) + Presentation (1) | `RESULTS.md` (from `results_log_TEMPLATE.md`) shows a dated iteration log with the primary metric **and its spread** per row, a decision log naming the alternatives rejected, **and at least one decision that was explicitly revisited and changed because of a later result** — with the downstream symptom that triggered it named (e.g. "worst-subject κ 0.14 vs mean 0.61 → went back to stage 2 and added per-subject normalisation"). The team can walk through that reversal live | An iteration log with spreads and a decision log, but every change moves *forward* — no earlier decision is ever revisited, or a revision happened but the triggering result isn't named | `RESULTS.md` exists but is a bare list of numbers: no spreads, no reasons, no alternatives, no revisions | No iteration record; the pipeline is presented as if it arrived finished — which no honest pipeline does |
 
@@ -113,7 +113,7 @@ The point value is unchanged at **4**, and the sheet still totals **30**.
 
 ## Track 1 — Sleep staging (Sleep-EDF Expanded)
 
-`default_metrics`: Cohen's κ, macro-F1 · `split_unit`: **subject** · `eval_modes`: new-subject · difficulty 3/4
+`default_metrics`: Cohen's κ, macro-F1 · `split_unit`: **subject** · `eval_modes`: new-subject · difficulty 3/5
 
 | # | Criterion | Points | Instrument | Full marks | Partial | Minimal | Missing |
 |---|---|:---:|---|---|---|---|---|
@@ -126,7 +126,7 @@ The point value is unchanged at **4**, and the sheet still totals **30**.
 
 ## Track 2 — ECG rhythm classification (PhysioNet/CinC 2017)
 
-`default_metrics`: macro-F1, Cohen's κ · `split_unit`: **record** · `eval_modes`: new-record · classes: N/A/O/~ (Normal/AFib/Other/Noisy) · difficulty 3/4
+`default_metrics`: macro-F1, Cohen's κ · `split_unit`: **record** · `eval_modes`: new-record · classes: N/A/O/~ (Normal/AFib/Other/Noisy) · difficulty 3/5
 
 | # | Criterion | Points | Instrument | Full marks | Partial | Minimal | Missing |
 |---|---|:---:|---|---|---|---|---|
@@ -139,7 +139,7 @@ The point value is unchanged at **4**, and the sheet still totals **30**.
 
 ## Track 3 — EMG gesture recognition (Ninapro DB1, exercise E1)
 
-`default_metrics`: macro-F1, Cohen's κ · `split_unit`: **subject** · `eval_modes`: **within-subject AND new-subject (both required)** · classes: 12 finger gestures · difficulty 3/4
+`default_metrics`: macro-F1, Cohen's κ · `split_unit`: **subject** · `eval_modes`: **within-subject AND new-subject (both required)** · classes: 12 finger gestures · difficulty 3/5
 
 | # | Criterion | Points | Instrument | Full marks | Partial | Minimal | Missing |
 |---|---|:---:|---|---|---|---|---|
@@ -152,7 +152,7 @@ The point value is unchanged at **4**, and the sheet still totals **30**.
 
 ## Track 4 — BCI motor imagery (EEGMMIDB) — opt-in stretch track
 
-`default_metrics`: macro-F1, Cohen's κ · `split_unit`: **subject** · `eval_modes`: **within-subject AND new-subject (both required)** · classes: L/R (binary) · difficulty 4/4 (hardest track; naive baseline is near chance). **Opt-in only** — a team must request this track explicitly with instructor sign-off; it is not in the default assignment pool.
+`default_metrics`: macro-F1, Cohen's κ · `split_unit`: **subject** · `eval_modes`: **within-subject AND new-subject (both required)** · classes: L/R (binary) · difficulty 4/5 (hardest track; naive baseline is near chance). **Opt-in only** — a team must request this track explicitly with instructor sign-off; it is not in the default assignment pool.
 
 | # | Criterion | Points | Instrument | Full marks | Partial | Minimal | Missing |
 |---|---|:---:|---|---|---|---|---|

@@ -44,6 +44,6 @@ detection, richer HRV/morphology features, and explicit Noisy-class signal-quali
 ## Known pitfalls
 - **Single lead, variable length (9–60 s), 300 Hz** — pad/segment consistently.
 - **AF signature is R–R irregularity**, not a single feature; the `~` (Noisy) class is a *signal-quality* problem, not a rhythm.
-- **Strong class imbalance** (Normal ≫ AF ≫ Other ≫ Noisy) — score macro-F1 / κ, never accuracy.
+- **Strong class imbalance** (Normal ≫ Other > AF ≈ Noisy — measured subset 238/113/40/40) — score macro-F1 / κ, never accuracy.
 - **Split by record**; the official metric is per-record — the hold-out submission uses `record,label`.
 - Robust **QRS detection under noise** is half the battle; a bad detector wrecks the R–R features.

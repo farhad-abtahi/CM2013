@@ -28,8 +28,10 @@ per recording, derived from umbilical-artery **pH**.
 
 ## 3. What you are given (do not rebuild these)
 - The **modular pipeline** and a **working baseline** (`tracks.adapter.default_baseline`).
-- The adapter (`ctg_ctu_uhb.py`) with `smoke()`, `preprocess()` (identity by default — dropout handling
-  belongs here once you choose a strategy), `extract_features()` (dropout cleaning + baseline/variability
+- The adapter (`ctg_ctu_uhb.py`) with `smoke()`, `preprocess()` (inherited identity — **not** a
+  `cfg`-wired stage on this track, so `cfg={"preprocess": ...}` is rejected; dropout handling
+  belongs here once you choose a strategy, but you get there by **overriding the method**, not
+  by passing a cfg key — see §4c), `extract_features()` (dropout cleaning + baseline/variability
   + accel/decel + UC features on the **last 30 min**), and a `wfdb` `download()/load()` that parses pH.
 - The shared leakage-safe **evaluator** (`TrackAdapter.evaluate`, GroupKFold by record).
 - The **seven pipeline stages**, separable on the adapter (rubric Criterion 1): `download`/`load`/`smoke` → `preprocess()` → `extract_features()` → `select_features()` → `baseline()` → `infer()` → `report()`. Selection is fit **inside** every CV fold; `infer()` is the frozen, no-refit path used for `predictions.csv`.
@@ -68,12 +70,16 @@ mistake this track punishes.
 
 ### Stage 2 — the Chapter 8 noise-type menu · **available as functions, not wired into this track's `cfg`**
 
-`CTGTrack` has no `preprocess()` stage at all — dropout handling (`_clean_fhr`) is called from `extract_features()`, which is exactly the misplacement this track asks you to argue about — so `cfg={"preprocess": "denoise", ...}` is **rejected** with an `UnsupportedCfgKey` error rather than silently ignored.
+`CTGTrack` does not wire `preprocess` into `cfg` at all — dropout handling (`_clean_fhr`) is
+called from `extract_features()` by default, which is exactly the misplacement this track asks
+you to argue about — so `cfg={"preprocess": "denoise", ...}` is **rejected** with an
+`UnsupportedCfgKey` error rather than silently ignored. Moving it is a code change (override
+`preprocess()` yourself, as §3 says), not a cfg toggle.
 
 The functions themselves are real and importable, and the table below is the decision you should still be making — you just have to **call them yourself** from a `preprocess()` you write (`from adapter import denoise, bandpass_notch, wavelet_denoise`). Once you have, register the knobs so they become first-class config options:
 
 ```python
-track = <YourTrack>()
+track = CTGTrack()
 track.declare_cfg_keys("preprocess", "impulsive", "baseline", "powerline", "broadband")
 ```
 
@@ -165,8 +171,9 @@ and record both numbers in `RESULTS.md`.
 - A **results log**: copy `results_log_TEMPLATE.md` into your team repo as `RESULTS.md` and add one row per iteration — what changed and why, the metric **with its spread**, whether it beat the previous iteration (or why you kept it anyway), and the commit. **This file is graded** (rubric Criterion 9, 3 pts) and it asks specifically for at least one decision you went back and **revised because of a downstream result** — the notebook's "Decision points on this track" section has a symptom → stage table to diagnose from, and prints an A/B of several options so you can see the numbers move.
 
 ## 6. Rules
-- Beat the supplied baseline **honestly**. State the **split unit (recording)**, the **pH threshold**,
-  and the evaluation mode with every number. Never report smoke/CI numbers as results. Report the metric **with its spread** across folds (`rep["summary"]`), not a lone pooled number. Grading: [`CAPSTONE_REPORT_RUBRIC.md`](CAPSTONE_REPORT_RUBRIC.md) (team) + [`INDIVIDUAL_ASSESSMENT.md`](INDIVIDUAL_ASSESSMENT.md) (individual).
+- Compare against the supplied baseline **honestly** — beating it is not required; a defended
+  decision to keep a lower-scoring pipeline earns full marks (Criterion 7). State the **split
+  unit (recording)**, the **pH threshold**, and the evaluation mode with every number. Never report smoke/CI numbers as results. Report the metric **with its spread** across folds (`rep["summary"]`), not a lone pooled number. Grading: [`CAPSTONE_REPORT_RUBRIC.md`](CAPSTONE_REPORT_RUBRIC.md) (team) + [`INDIVIDUAL_ASSESSMENT.md`](INDIVIDUAL_ASSESSMENT.md) (individual).
 
 ## 7. Known pitfalls
 See the card: raw FHR is full of signal-loss zeros/spikes (clean first), strong class imbalance, the

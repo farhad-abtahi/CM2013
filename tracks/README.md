@@ -108,10 +108,13 @@ re-verified on every CI run. Two artifacts make that layer auditable:
 4. Score it on `readiness_matrix_TEMPLATE.md`; write the human pitfalls into its `*_card.md`;
    hand students `TRACK_INSTRUCTIONS_TEMPLATE.md`.
 
-## First-pass scope (do not start ten tracks)
-**Built:** Sleep-EDF (reference) and **ECG / CinC-2017** (second track) — two different signals,
-one adapter interface, one rubric, one hold-out evaluation harness. That proves the architecture; the
-remaining tracks (HAR, CTG, EMG, BCI, …) are now a config/data-card addition, not new architecture.
+## Track status
+All six tracks are built and validated on real data (see each `*_card.md` for measured
+numbers): Sleep-EDF (reference), ECG/CinC-2017, EMG-Ninapro, BCI-EEGMMIDB, HAR, and CTG-CTU-UHB —
+one adapter interface, one rubric, one hold-out evaluation harness. **This cohort's capstone
+pool is narrower than the repo:** three default tracks (Sleep-EDF, ECG, EMG) plus one opt-in
+stretch track (BCI); HAR and CTG ship for self-study/reference but are not offered this year —
+see Canvas "Pick your track" for the current pool.
 
 ## Hold-out evaluation
 Every track runs a per-track hold-out evaluation (submit `predictions.csv`, instructor scores it

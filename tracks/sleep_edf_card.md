@@ -10,7 +10,7 @@
 | Evaluation modes | new-subject |
 | Default metrics | cohens_kappa, macro_f1 |
 | Smoke-test records | SC4001, SC4011, SC4021 |
-| Expected runtime | ~3–6 min on a Sleep-Cassette subset (Colab, CPU) |
+| Expected runtime | ~33 min one-time download (PhysioNet, cached after) + ~1–2 min compute (Colab, CPU) |
 | DSP focus | band power, spindle STFT/wavelet, EOG/EMG artifact handling |
 | Hold-out submission | epoch-level `predictions.csv` |
 | Difficulty (1–5) | 3 |

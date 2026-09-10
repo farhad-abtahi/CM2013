@@ -114,6 +114,13 @@ class TrackMeta:
     eval_modes: tuple = ("new-subject",)   # add "within-subject" where relevant
     difficulty: int = 3             # 1..5, feeds the weighted rubric
     submission_granularity: str = "epoch"  # "epoch" (row per epoch) | "record" (row per record)
+    holdout_ids: tuple = ()         # this track's held-out `group` ids (instructor-set; see below)
+    # Every dataset this repo ships is PUBLIC, so there is no technically unlabelled file to
+    # hand out — `load()` always returns fully labelled recordings. The hold-out split is an
+    # HONESTY check, not a blinding mechanism: `holdout_ids` names the `group`s a team must
+    # train on nothing from and predict blind, exactly like the leakage-safe split everywhere
+    # else in this scaffold. Populate it per track before the assignment goes live (it is
+    # empty by default, which means no split is defined yet); see HOLDOUT_EVALUATION.md.
 
 
 @dataclass
@@ -344,7 +351,7 @@ def make_selector(kind: str = "none", k: int = 20, seed: int = 0, threshold="med
     """Feature-selection stage (module 4) — **an unfitted transformer you must fit
     inside the training fold only** (§16.2: "never before").
 
-    Five honest options, none of them "the right answer":
+    Six honest options, none of them "the right answer":
 
     | `kind`          | Family   | Picks features by | Good when | Watch out |
     |-----------------|----------|-------------------|-----------|-----------|
@@ -1795,6 +1802,12 @@ class TrackAdapter:
         """
         from sklearn.base import clone
         from sklearn.model_selection import LeaveOneGroupOut, GroupKFold
+        if clf is not None and cfg and "imbalance" in cfg:
+            self.note(
+                "evaluate(): cfg['imbalance'] is only applied inside the shipped "
+                "self._baseline(cfg) — it has no effect on the custom clf= you passed. "
+                "A custom classifier is responsible for its own class-imbalance handling "
+                "(e.g. its own class_weight, or wrap it in the same Pipeline denoise() uses).")
         cfg = self._cfg(cfg)
         clf = clf or self._baseline(cfg)
         groups = np.asarray(groups)
@@ -1844,7 +1857,14 @@ class TrackAdapter:
         Like `infer()`, this reuses **the cfg the model was trained under** when
         `cfg` is omitted, and refuses a cfg that conflicts with it. A submission
         generated from a different pipeline than the one you validated is the one
-        mistake here that no held-out score can reveal to you."""
+        mistake here that no held-out score can reveal to you.
+
+        The `record` column is `rec.meta["record"]` when a track sets it, else
+        `rec.group` — on every track except Sleep-EDF the two are the same thing
+        (one `Recording` per subject). Sleep-EDF has two nights per subject
+        sharing one leakage `group`, so it carries the true per-night id in
+        `meta["record"]`; without that, both nights would write identical
+        `(record, epoch)` keys and silently collide in the graded file."""
         import csv
         gran = getattr(self.meta, "submission_granularity", "epoch")
         with open(path, "w", newline="") as f:
@@ -1852,17 +1872,82 @@ class TrackAdapter:
             w.writerow(["record", "epoch", "label"] if gran == "epoch" else ["record", "label"])
             for rec in test_recs:
                 preds = self.infer(model, rec, cfg, allow_cfg_mismatch=allow_cfg_mismatch)
+                rid = rec.meta.get("record", rec.group)
                 if gran == "epoch":
                     for i, p in enumerate(preds):
-                        w.writerow([rec.group, i, p])
+                        w.writerow([rid, i, p])
                 else:
-                    w.writerow([rec.group, preds[0]])
+                    w.writerow([rid, preds[0]])
         return path
 
+    def score_submission(self, csv_path, holdout_recs):
+        """Instructor hold-out scoring: score an ACTUAL submitted `predictions.csv`
+        against the true labels on `holdout_recs` — the counterpart to
+        `write_submission()` and the thing `HOLDOUT_EVALUATION.md` describes.
+
+        This does **not** retrain anything. It reads the submitted file, aligns
+        each row to the matching `Recording` by the same `(record[, epoch])` key
+        `write_submission()` wrote, and reports the track's metrics on exactly
+        what the team predicted — unlike `holdout_score()` below, which fits a
+        *fresh* model and so never actually looks at a team's submission.
+
+        Raises `ValueError` naming the missing/unexpected keys rather than
+        silently scoring a partial or misaligned file — a short file should be a
+        loud grading error, not a quietly-inflated metric."""
+        import csv as csv_mod
+        gran = getattr(self.meta, "submission_granularity", "epoch")
+        with open(csv_path, newline="") as f:
+            rows = list(csv_mod.reader(f))
+        header, rows = rows[0], rows[1:]
+        preds = {}
+        for row in rows:
+            if gran == "epoch":
+                rid, epoch, label = row[0], int(row[1]), row[2]
+                preds[(rid, epoch)] = label
+            else:
+                rid, label = row[0], row[1]
+                preds[(rid, 0)] = label
+
+        yt, yp, gg = [], [], []
+        missing = []
+        for rec in holdout_recs:
+            rid = rec.meta.get("record", rec.group)
+            n = 1 if gran == "record" else len(rec.labels)
+            for i in range(n):
+                key = (rid, i if gran == "epoch" else 0)
+                if key not in preds:
+                    missing.append(f"{rid},{i}")
+                    continue
+                yt.append(rec.labels[i] if gran == "epoch" else rec.labels[0])
+                yp.append(preds[key])
+                gg.append(rec.group)
+        if missing:
+            shown = ", ".join(missing[:10])
+            more = f" (+{len(missing) - 10} more)" if len(missing) > 10 else ""
+            raise ValueError(
+                f"{csv_path} is missing {len(missing)} of {len(missing) + len(yt)} "
+                f"expected (record{',epoch' if gran == 'epoch' else ''}) rows: {shown}{more}")
+        extra = set(preds) - {(rec.meta.get('record', rec.group), i if gran == 'epoch' else 0)
+                              for rec in holdout_recs
+                              for i in range(1 if gran == 'record' else len(rec.labels))}
+        if extra:
+            self.note(f"score_submission: {csv_path} has {len(extra)} row(s) with no matching "
+                      "hold-out record/epoch — ignored, but check for a stale or mismatched file.")
+        return self._make_report(yt, yp, groups=gg, folds=None)
+
     def holdout_score(self, train_recs, holdout_recs, clf=None, cfg=None):
-        """Instructor hold-out scoring: fit on train, score on a LABELED hold-out.
-        Reports per-held-out-group results too, so the hold-out number also
-        carries its spread rather than one pooled figure.
+        """Reproducibility check: RE-FIT `clf`/`cfg` on `train_recs` from scratch
+        and score the result on a LABELED hold-out. Reports per-held-out-group
+        results too, so the hold-out number also carries its spread rather than
+        one pooled figure.
+
+        **This is not "grade a team's submission."** Call it with no `clf`/`cfg`
+        and it silently scores the shipped default baseline — a team's actual
+        trained model and choices are never consulted unless you pass their
+        exact `clf` and `cfg` back in, which re-runs their whole pipeline rather
+        than checking what they submitted. To grade a submitted `predictions.csv`
+        against the hold-out labels, use `score_submission()` instead — it reads
+        the file the team actually handed in.
 
         On record-level tracks (one label per recording) a per-group metric is
         undefined — each group holds a single label — so `spread` comes back NaN
@@ -2164,11 +2249,15 @@ def default_baseline(seed: int = 0, n_estimators: int = 200,
     page — and "improve" may mean a different learner, better features, or both;
     the scaffold does not decide which.
 
-    **CLASS IMBALANCE IS A CHOICE, NOT A DEFAULT.** Four of the six tracks are
-    imbalanced (CTG's pathological class, ECG's AF/Noisy, HAR's postures, sleep's
-    N1), and the rubric explicitly grades *how* you addressed it — so it must not
-    be a hidden constructor argument nobody sees. Pick with the config, e.g.
-    ``cfg={"imbalance": "threshold", "threshold": 0.35}``:
+    **CLASS IMBALANCE IS A CHOICE YOU MUST REPORT, NOT A DEFAULT NOBODY SEES.**
+    Four of the six tracks are imbalanced (CTG's pathological class, ECG's
+    AF/Noisy, HAR's postures, sleep's N1), and the rubric explicitly grades
+    *how* you addressed it. The shipped default is `"balanced"` (class-weighted
+    loss) — not `"none"` — precisely so the baseline is not silently
+    majority-biased; that means every measured baseline number already includes
+    this choice, and reporting it (or trying `"none"` as your own controlled
+    comparison) is part of the criterion, not optional. Pick with the config,
+    e.g. ``cfg={"imbalance": "threshold", "threshold": 0.35}``:
 
     | `imbalance` | What it does | Good when | Watch out |
     |---|---|---|---|

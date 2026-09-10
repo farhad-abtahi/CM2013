@@ -168,7 +168,9 @@ and record both numbers in `RESULTS.md`.
 - A **results log**: copy `results_log_TEMPLATE.md` into your team repo as `RESULTS.md` and add one row per iteration — what changed and why, the metric **with its spread**, whether it beat the previous iteration (or why you kept it anyway), and the commit. **This file is graded** (rubric Criterion 9, 3 pts) and it asks specifically for at least one decision you went back and **revised because of a downstream result** — the notebook's "Decision points on this track" section has a symptom → stage table to diagnose from, and prints an A/B of several options so you can see the numbers move.
 
 ## 6. Rules
-- Beat the supplied baseline **honestly**. State the **split unit (record)** with every number. Never
+- Compare against the supplied baseline **honestly** — beating it is not required; a defended
+  decision to keep a lower-scoring pipeline earns full marks (Criterion 7). State the **split
+  unit (record)** with every number. Never
   report smoke/CI numbers as results. Report the metric **with its spread** across folds (`rep["summary"]`), not a lone pooled number. Grading: [`CAPSTONE_REPORT_RUBRIC.md`](CAPSTONE_REPORT_RUBRIC.md) (team) + [`INDIVIDUAL_ASSESSMENT.md`](INDIVIDUAL_ASSESSMENT.md) (individual).
 
 ## 7. Known pitfalls

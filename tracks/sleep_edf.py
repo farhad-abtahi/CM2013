@@ -62,8 +62,13 @@ class SleepEDFTrack(TrackAdapter):
         artifacts and scorer label noise, so LOSO lands around κ ≈ 0.6 with a real
         per-subject spread — and choices start to *cost* or *earn* something you
         can measure. Pass `difficulty="easy"` if you want the old separable cohort
-        for a plotting sanity-check, or `"hard"` for a dress rehearsal for real
-        Sleep-EDF (κ collapses to ~0.15 there; that is also honest)."""
+        for a plotting sanity-check, or `"hard"` to stress-test a pipeline against
+        heavier subject variability and noise (κ drops further, to roughly 0.2-0.3
+        here -- that is also honest). **Do not use the "hard" number as a preview of
+        the real Sleep-EDF κ**: the real baseline measures *higher* (~0.84, see
+        `sleep_edf_card.md`), inflated by Wake-epoch dominance and a tiny 4-subject
+        LOSO rather than by anything this synthetic cohort rehearses -- "hard" tests
+        robustness, it does not predict the real-data number."""
         recs = []
         for night in sp.cohort(n_subjects=n_subjects, n_epochs=n_epochs, seed=seed,
                                difficulty=difficulty):
@@ -302,9 +307,15 @@ class SleepEDFTrack(TrackAdapter):
                         ep[k].append(segs[k])
                     labels.append(stage)
             subj = os.path.basename(psg)[:5]         # 'SC4ss' -> subject id
+            # the leakage GROUP is the subject (both nights must stay together across
+            # train/test), but two nights share that group -- write_submission() needs a
+            # per-RECORDING id that does not collide, so carry the night's own file stem
+            # (e.g. 'SC4001E0') separately in meta["record"].
+            night_id = os.path.basename(psg).split("-")[0]
             recs.append(Recording(group=subj, fs=fs,
                                   epochs={k: np.array(v) for k, v in ep.items()},
-                                  labels=np.array(labels)))
+                                  labels=np.array(labels),
+                                  meta={"record": night_id}))
         return recs
 
 

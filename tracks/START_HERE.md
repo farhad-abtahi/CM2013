@@ -123,17 +123,21 @@ a project session, within one week of the grade being posted.
 2. **Honest metrics.** Never accuracy alone — report Cohen's κ, macro-F1, and the confusion matrix.
    State the **split unit** (and evaluation mode) with **every** number, and quote the metric **with
    its spread** ("mean κ 0.61, range 0.34–0.73 across 8 subjects"), never the pooled number alone.
-3. **Beat the *supplied* baseline, honestly.** A small honest gain beats a large leaky one. Smoke/CI
-   numbers are plumbing checks — never report them as results.
+3. **Compare against the *supplied* baseline, honestly.** Beating it is not required — a
+   defended decision to keep a lower-scoring pipeline earns full marks (Criterion 7); an
+   unexplained gain does not. A small honest gain beats a large leaky one. Smoke/CI numbers
+   are plumbing checks — never report them as results.
 
 ## The tracks
 
-Three default tracks, matched on their *honest* baseline metric (not just a nominal difficulty
-star) so every team faces a comparable challenge:
+Three default tracks, matched on difficulty (all ★★★, roughly comparable engineering lift) —
+**not** on the raw baseline number below, which differs hugely by design (a sleep-staging κ and
+an ECG-rhythm κ are not the same claim). Read each track's own card for what "good" looks like
+on that domain:
 
 | Track | Signal | Task | Split | Modes | Baseline (honest) |
 |-------|--------|------|-------|-------|---|
-| `sleep_edf` | EEG + EOG + EMG | sleep stage (5-class) | subject | new-subject | κ 0.84 (reference) |
+| `sleep_edf` | EEG + EOG + EMG | sleep stage (5-class) | subject | new-subject | κ 0.84 (reference) — **inflated**: above the κ≈0.76 human-rater ceiling; see `sleep_edf_card.md` before treating this as a target |
 | `ecg_cinc2017` | single-lead ECG | rhythm N/A/O/~ | record | new-record | κ 0.52 |
 | `emg_ninapro` | 10-ch surface EMG | hand gesture (12-class) | subject / repetition | **within + new-subject** | κ 0.77 within / **0.12 new-subject** |
 
