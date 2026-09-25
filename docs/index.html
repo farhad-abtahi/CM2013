@@ -43,6 +43,8 @@ header .links a:hover{background:rgba(255,255,255,.15)}
 .chip.real{color:#a15a00;background:#fbf0e2}
 .chip.lab{color:#0a6a7d;background:#e2f4f8}
 .chip.clinic{color:#9a3b12;background:#fbeae2}
+.chip.not-offered{color:#a11313;background:#fbe4e4}
+.chip.opt-in{color:#8a6d00;background:#fff7de}
 .card h3{margin:12px 0 6px;font-size:17px}
 .card .q{color:var(--muted);font-size:13.5px;font-style:italic;margin:0 0 10px}
 .card .task{color:var(--ink);font-size:13.5px;margin:0 0 12px;padding:9px 11px;background:#f6f8fb;
@@ -146,7 +148,9 @@ function render(){
                     : `<span class="chip">Chapter ${nb.num}</span>`;
     const chips = kindChip
       + (nb.pilot?` <span class="chip pilot">pilot</span>`:``)
-      + (nb.ml?` <span class="chip ml">machine learning</span>`:``);
+      + (nb.ml?` <span class="chip ml">machine learning</span>`:``)
+      + (nb.status==="not_offered"?` <span class="chip not-offered">not offered this year</span>`:``)
+      + (nb.status==="opt_in"?` <span class="chip opt-in">opt-in · sign-off required</span>`:``);
     el.innerHTML=`
       <div>${chips}</div>
       <h3>${nb.title}</h3>

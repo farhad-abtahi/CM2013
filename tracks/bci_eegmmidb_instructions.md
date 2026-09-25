@@ -1,6 +1,6 @@
 # Track instructions — BCI motor imagery, EEGMMIDB
 
-*Attach the dataset card (`bci_eegmmidb_card.md`). Adapter: `bci_eegmmidb.py`. **Advanced track.***
+*Attach the dataset card (`bci_eegmmidb_card.md`). Adapter: `bci_eegmmidb.py`. **Advanced track — opt-in only this year, instructor sign-off required; not in the default assignment pool.***
 
 > **Before you build — background & literature review.** Refresh the methods and do a short literature
 > review of the application domain using **[`BACKGROUND_MAP.md`](BACKGROUND_MAP.md)** (the "BCI motor

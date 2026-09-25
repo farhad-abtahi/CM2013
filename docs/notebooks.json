@@ -561,7 +561,8 @@
       "ml": true,
       "pilot": true,
       "real_data": true,
-      "task": "You'll run the full UCI-HAR pipeline on real raw accelerometer data — window it, extract per-axis features, classify six activities with a subject-aware split, and see exactly where walk and stairs get confused."
+      "task": "You'll run the full UCI-HAR pipeline on real raw accelerometer data — window it, extract per-axis features, classify six activities with a subject-aware split, and see exactly where walk and stairs get confused.",
+      "status": "not_offered"
     },
     {
       "num": 18,
@@ -615,7 +616,8 @@
       "ml": true,
       "pilot": true,
       "real_data": true,
-      "task": "You'll clean real CTU-UHB fetal heart-rate recordings (dropout removal, baseline, variability), build features toward a pH-based outcome label, and confront a deliberately hard, clinically realistic problem where the positive class is barely detected."
+      "task": "You'll clean real CTU-UHB fetal heart-rate recordings (dropout removal, baseline, variability), build features toward a pH-based outcome label, and confront a deliberately hard, clinically realistic problem where the positive class is barely detected.",
+      "status": "not_offered"
     },
     {
       "num": 21,
@@ -651,7 +653,8 @@
       "ml": true,
       "pilot": true,
       "real_data": true,
-      "task": "You'll decode real EEGMMIDB motor-imagery EEG from mu/beta power at C3/C4, see an honest near-chance baseline, and find out why the fix is a leakage-safe CSP spatial filter, not more features."
+      "task": "You'll decode real EEGMMIDB motor-imagery EEG from mu/beta power at C3/C4, see an honest near-chance baseline, and find out why the fix is a leakage-safe CSP spatial filter, not more features.",
+      "status": "opt_in"
     }
   ]
 }

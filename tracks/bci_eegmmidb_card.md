@@ -1,5 +1,7 @@
 # Dataset card — BCI motor imagery
 
+> ⚠️ **Opt-in stretch track this year — instructor sign-off required, not in the default assignment pool.** See [`START_HERE.md`](START_HERE.md) for the current default tracks.
+
 | Field | Value |
 |---|---|
 | Dataset | EEG Motor Movement/Imagery (EEGMMIDB) (v1.0.0) |
