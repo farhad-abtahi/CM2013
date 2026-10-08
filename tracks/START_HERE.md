@@ -106,7 +106,7 @@ just whoever on your team wrote the best report:
 | | Points | What it checks |
 |---|:-:|---|
 | **Critical-comparison essay** | 5 | You're shadow-paired with one other team on a different track — after the showcase, write a short, specific comparison of your project against theirs: what they did differently, what you'd borrow, what you'd change |
-| **Teamwork & contribution** | 5 | Fair workload split, communication, and how your team handled disagreements — via a task log, peer evaluation, and a short individual reflection |
+| **Teamwork & contribution** | 5 | Fair workload split, communication, and how your team handled disagreements — via a private peer evaluation and a short individual reflection (ClickUp is expected but not graded) |
 
 Full format and criteria for both: `INDIVIDUAL_ASSESSMENT.md`. The teamwork component exists because a
 good report can hide an unequal team — it's not there to catch you out, it's there so doing your fair

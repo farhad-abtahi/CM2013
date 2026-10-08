@@ -68,13 +68,13 @@ single team member's self-report alone:
    genuinely had no friction, the student should say so and describe how they kept it
    that way — a well-run team is not penalized for having nothing to report.
 
-**Your project-management tool is not graded.** ClickUp (see the "Project Management &
-ClickUp" page on Canvas) is a recommended aid, not a requirement, and nothing is
-submitted from it. We do not score how you used it, how many tasks you created, or
-whether you used it at all. If peer ratings and reflections disagree about who did what,
-we may look at the team's task history (ClickUp or any other record you kept) as
-background evidence of how the team worked together — for example, whether the work
-was shared or carried by one person. A team that kept no such record is not penalized.
+**ClickUp is expected, but it is not graded.** We expect your team to use ClickUp (see the
+"Project Management & ClickUp" page on Canvas) to define tasks and follow up on them.
+Nothing is submitted from it, and we do not score how you used it: how detailed your
+tasks are, how you set up iterations, and which tags you use are all up to you. Its
+only role is as evidence. If peer ratings and reflections disagree about who contributed,
+we may look at the task history to see whether the work was shared across the team over
+time, or done by one person in a short burst. A thin or messy workspace is not penalized.
 
 ### Criteria
 
