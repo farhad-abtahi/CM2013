@@ -16,9 +16,55 @@ they behave differently on EEG vs ECG vs IMU vs EMG vs CTG.
 |------|-------------|-------|
 | **1. Pick a track** | Read its **dataset card** (task, signals, split unit, known pitfalls, measured baseline + yardstick) and **instructions**. | `<track>_card.md`, `<track>_instructions.md` |
 | **2. Refresh + literature review** | Skim the **book sections** that cover each method (a refresher — you already learned them), then do a short (~5–8 source) **literature review** of the *application* to **motivate** your design. This is course outcome **L5** and is graded. | **`BACKGROUND_MAP.md`** |
-| **3. Run the baseline** | Open the track's notebook. It runs on **synthetic data offline** by default; set `USE_REAL = True` in **Colab** for the real dataset. Read the **honest metric panel** (κ / macro-F1 / confusion), not accuracy. | `notebooks/track_<name>.ipynb` |
+| **3. Run the baseline** | Open the track's notebook. It runs on **synthetic data offline** by default; set `USE_REAL = True` in **Colab or on your own machine** (see *Running locally* below) for the real dataset. Read the **honest metric panel** (κ / macro-F1 / confusion), not accuracy. | `notebooks/track_<name>.ipynb` |
 | **4. Improve the baseline** | Do **real DSP** — better preprocessing and **feature construction** (the point of the course), then a better model. Validate **inside the folds**, keep the **declared split unit**. Log each iteration as you go. | **`DESIGN_MENUS.md`** (the options at each stage and what each costs); the adapter's `preprocess()` and `extract_features()` are where you work; `results_log_TEMPLATE.md` is where you log it |
 | **5. Report + submit** | Write up your design (justified, read against the **yardstick**), submit `predictions.csv` for hold-out evaluation, and take a slot in the **cross-track showcase**. | `HOLDOUT_EVALUATION.md`, `CAPSTONE_REPORT_RUBRIC.md`, `report.py` |
+
+## Running locally, and getting the same numbers every time
+
+Colab and your own machine both work, so use whichever suits your team. For a local run you need
+Python 3.10 or newer (the course CI uses 3.11):
+
+```bash
+git clone https://github.com/farhad-abtahi/CM2013.git
+cd CM2013
+python -m venv .venv && source .venv/bin/activate      # Windows: .venv\Scripts\activate
+pip install -r requirements-lock.txt -r requirements-real.txt
+```
+
+Any virtual-environment tool is fine. The three common ones:
+
+- **`venv`** (comes with Python): `python -m venv .venv`, then activate it (`source .venv/bin/activate`, or
+  `.venv\Scripts\Activate.ps1` in Windows PowerShell).
+- **conda:** `conda create -n cm2013 python=3.11`, then `conda activate cm2013`.
+- **`uv`** (optional, faster): `uv venv --python 3.11`, then `uv pip install -r ...`.
+
+In VS Code, pick that environment with *Python: Select Interpreter* and as the notebook kernel. Check it
+with `python -c "import numpy, scipy, sklearn; print(numpy.__version__, scipy.__version__, sklearn.__version__)"`;
+you should see `2.2.6 1.15.3 1.7.2`. If it breaks, delete the environment and recreate it from the lock
+file. Never commit `.venv`.
+
+If your team keeps its own repository, copy in `tracks/`, `src/` and both requirements files.
+Real data downloads into `data_cache/` the first time you run with `USE_REAL = True` and is
+ignored by git, so **do not commit it**. Rough sizes of what the scaffold fetches: ECG ~15 MB
+(about a minute), EMG ~120 MB, Sleep-EDF ~400 MB.
+
+To get the same numbers on every run and every teammate's machine:
+
+1. **Set `cfg["seed"]`** and make sure it reaches every random step: the classifier, any splitting,
+   resampling and feature selection.
+2. **Use the same environment.** Install from `requirements-lock.txt` on every machine and write
+   the Python version in your README. Different library versions are the usual cause of
+   differences between machines.
+3. **Expect tiny differences.** Floating-point results can differ in the last digits across
+   machines. A difference smaller than the fold-to-fold spread in `rep["summary"]` is noise, not
+   an improvement or a regression.
+4. **Record what produced each number** (seed, code revision, environment) in `RESULTS.md`.
+
+Your team repository has no prescribed layout. A grader should be able to clone it, install from
+your lock file, and reproduce your reported numbers from the commands in your README. It needs
+`RESULTS.md`, your pinned environment, and that README. You submit the report PDF, a
+`predictions.csv` written with `write_submission()` (never by hand), and the repository link.
 
 ## The seven modules (this is what "pipeline integrity" means)
 
