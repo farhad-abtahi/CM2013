@@ -2,7 +2,7 @@
 
 Course code repository for **CM2013** (KTH, HT26), the companion course to
 *Biomedical Signal Processing & Data Analytics: From Physiology to Machine
-Learning*. Contains the demo notebooks, the graded labs, and the capstone
+Learning*. Contains the demo notebooks, the formative labs, and the capstone
 project scaffold.
 
 **→ [Notebook gallery](https://farhad-abtahi.github.io/CM2013/)** — every demo, lab, and
