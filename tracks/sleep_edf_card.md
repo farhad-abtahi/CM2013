@@ -13,6 +13,7 @@
 | Expected runtime | ~33 min one-time download (PhysioNet, cached after) + ~1–2 min compute (Colab, CPU) |
 | DSP focus | band power, spindle STFT/wavelet, EOG/EMG artifact handling |
 | Hold-out submission | epoch-level `predictions.csv` |
+| Hold-out set | 10 subjects: `SC408, SC416, …, SC480` (every 8th mne index); see `HOLDOUT_EVALUATION.md` |
 | Difficulty (1–5) | 3 |
 
 **Citation.** Kemp B, et al. (2000); Goldberger AL, et al. PhysioNet (2000).

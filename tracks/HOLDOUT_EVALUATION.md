@@ -34,21 +34,58 @@ matches the CM2013 sleep convention (`record,epoch,label`) and generalises it.
 hold-out only — the honest deployment claim. Your report must still show both modes
 side by side (Criterion 8).
 
-## How a group produces a submission
-```python
-from ecg_cinc2017 import ECGCinC2017Track
-trk = ECGCinC2017Track()
-all_recs = trk.load("data")                                     # every labelled record (public dataset)
-train   = [r for r in all_recs if r.group not in trk.meta.holdout_ids]
-holdout = [r for r in all_recs if r.group in trk.meta.holdout_ids]   # predict blind on these
+## The hold-out sets (HT26)
 
-model = trk.train_baseline(train)        # or the group's improved model
-trk.write_submission(holdout, "predictions.csv", model)   # holdout's labels are never read
+These ids are fixed for the whole course. They are also in the code as `trk.meta.holdout_ids`.
+
+| Track | Split unit | Hold-out | Size |
+|---|---|---|---|
+| Sleep-EDF | subject | `SC408, SC416, SC424, SC432, SC440, SC448, SC456, SC464, SC472, SC480` (mne subject indices 8, 16, …, 80; both nights) | 10 subjects |
+| ECG CinC-2017 | record | 120 records, 30 per class (N / A / O / ~): `HOLDOUT_RECORDS` in `ecg_cinc2017.py` | 120 records |
+| EMG Ninapro DB1 | subject | `S23, S24, S25, S26, S27` | 5 subjects |
+| BCI EEGMMIDB (opt-in) | subject | `S015, S025, S035, S045, S055, S065, S075, S085, S095, S105` | 10 subjects |
+
+None of them is a smoke-test record or part of a track's default download, and every `download()` now
+**skips hold-out ids automatically**, so they cannot end up in your training data by accident. If you
+downloaded data with your own settings before these ids were published, check with
+`trk.assert_no_holdout(recs)`, remove any hold-out recordings you find, and say so in `RESULTS.md`.
+
+## How a group produces a submission
+
+**1. Develop on training data only.** All your cross-validation, tuning and design decisions use data
+without the hold-out ids:
+```python
+from sleep_edf import SleepEDFTrack
+trk = SleepEDFTrack()
+trk.download("data/train", subset=range(0, 30))      # hold-out subjects are skipped automatically
+recs = trk.load("data/train")
+trk.assert_no_holdout(recs)                          # raises if a hold-out recording slipped in
 ```
-`trk.meta.holdout_ids` is set by the instructor before the assignment goes live (see
-`dataset_manifest.json` / each track's card). Training on a `group` in `holdout_ids` — even by
-accident, e.g. by loading `"data"` and forgetting to filter — is a leakage violation exactly
-like ignoring the split unit, and is caught the same way: `RESULTS.md` + `git log`.
+
+**2. Register your expected score — before you look at the hold-out.** When your final model is
+frozen, commit a file `EXPECTED_SCORE.md` to your team repository containing:
+- the track's default metric from your cross-validation, as **mean ± SD across folds**;
+- the split unit and number of folds;
+- the commit of the frozen final model.
+
+The commit time is your registration: it must come **before** the hold-out data appears in your
+repository's history. This turns the hold-out into a test of your own estimate. Scoring within or
+below your CV range is the normal, honest outcome; a hold-out score far above it is a question we
+will ask.
+
+**3. Predict the hold-out once.** Download the hold-out set into a **separate folder** and write
+the submission with the frozen model:
+```python
+trk.download_holdout("data/holdout")                 # only the hold-out ids
+holdout = trk.load("data/holdout")
+trk.write_submission(holdout, "predictions.csv", model)   # labels are never read
+```
+Submit `predictions.csv` with your report. Do not score it yourself, and do not change the model
+afterwards: the hold-out is used once.
+
+Training, tuning or selecting features on a `group` in `holdout_ids` — even by accident — is a
+leakage violation exactly like ignoring the split unit, and is caught the same way: `RESULTS.md`,
+`EXPECTED_SCORE.md` and `git log`.
 
 ## How the instructor scores it
 ```python

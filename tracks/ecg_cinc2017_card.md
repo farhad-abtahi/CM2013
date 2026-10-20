@@ -13,6 +13,7 @@
 | Expected runtime | ~2–5 min on a subset (Colab, CPU) |
 | DSP focus | band-pass + notch, Pan–Tompkins QRS, R–R irregularity/HRV, signal quality |
 | Hold-out submission | record-level `predictions.csv` |
+| Hold-out set | 120 records, 30 per class (`HOLDOUT_RECORDS`); see `HOLDOUT_EVALUATION.md` |
 | Difficulty (1–5) | 3 |
 
 **Citation.** Clifford GD, et al. PhysioNet/CinC Challenge 2017.

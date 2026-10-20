@@ -69,6 +69,11 @@ def _synth_mi_trial(cls, fs, dur, rng, mu_peak=10.0, decodability=0.35, mixing=N
     return src if mixing is None else np.asarray(mixing) @ src
 
 
+
+#: Hold-out subjects (EEGMMIDB, 1-based). Never train, tune or select on them; predict them once at
+#: the end. See HOLDOUT_EVALUATION.md.
+HOLDOUT_SUBJECTS = (15, 25, 35, 45, 55, 65, 75, 85, 95, 105)
+
 class BCIEEGMMIDBTrack(TrackAdapter):
     meta = TrackMeta(
         name="BCI motor imagery",
@@ -83,6 +88,7 @@ class BCIEEGMMIDBTrack(TrackAdapter):
         split_unit="subject",
         default_metrics=["macro_f1", "cohens_kappa"],
         smoke_test_records=["S001", "S002", "S003"],
+        holdout_ids=tuple(f"S{i:03d}" for i in HOLDOUT_SUBJECTS),  # see HOLDOUT_EVALUATION.md
         expected_runtime="~3–6 min on a subject subset (Colab, CPU)",
         dsp_focus="band-pass, mu/beta ERD at C3/C4/Cz, C3–C4 laterality, CSP (extension)",
         difficulty=4,
@@ -316,12 +322,18 @@ class BCIEEGMMIDBTrack(TrackAdapter):
         return {"within_subject": within_subject, "new_subject": new_subject}
 
     # ---- REAL data: EEGMMIDB via mne.datasets.eegbci ----
-    def download(self, cache_dir, subset=range(1, 11)):
+    def download(self, cache_dir, subset=range(1, 11), include_holdout=False):
         """Fetch EEGMMIDB imagery runs (R04/R08/R12) for `subset` subjects into
         cache_dir. Needs network + `mne`. Subjects are 1-based (1..109)."""
         import os, glob
         os.makedirs(cache_dir, exist_ok=True)
         subs = list(subset)
+        if not include_holdout:
+            skipped = [s for s in subs if s in HOLDOUT_SUBJECTS]
+            subs = [s for s in subs if s not in HOLDOUT_SUBJECTS]
+            if skipped:
+                print(f"[bci_eegmmidb] skipping hold-out subjects {skipped}: fetch them only for the final "
+                      "prediction, with download_holdout() into a separate folder.")
 
         def _present():
             return {os.path.splitext(os.path.basename(f))[0]
@@ -351,6 +363,11 @@ class BCIEEGMMIDBTrack(TrackAdapter):
             print(f"[bci_eegmmidb] proceeding without subjects {failed}; "
                   f"{len(_present())} EDFs available in cache.")
         return cache_dir
+
+    def download_holdout(self, cache_dir):
+        """Fetch ONLY the hold-out subjects into cache_dir. Use a separate folder from your training
+        data, and only for the final prediction (see HOLDOUT_EVALUATION.md)."""
+        return self.download(cache_dir, subset=HOLDOUT_SUBJECTS, include_holdout=True)
 
     def load(self, cache_dir, tmax=4.0):
         """Read the imagery-run EDFs into one Recording per subject (trials = L/R

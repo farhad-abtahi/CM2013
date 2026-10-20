@@ -13,6 +13,7 @@
 | Expected runtime | ~3–6 min on a subject subset (Colab, CPU) |
 | DSP focus | windowing, MAV/RMS/waveform-length/variance + mean-frequency per channel |
 | Hold-out submission | epoch-level `predictions.csv` |
+| Hold-out set | 5 subjects: `S23–S27`; see `HOLDOUT_EVALUATION.md` |
 | Difficulty (1–5) | 3 |
 
 **Citation.** Atzori M, et al. Sci Data (2014). Ninapro DB1.

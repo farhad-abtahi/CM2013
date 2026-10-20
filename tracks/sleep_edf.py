@@ -22,6 +22,11 @@ RK_TO_AASM = {
 DROP = {"Sleep stage ?", "Movement time"}
 
 
+
+#: Hold-out subjects (mne Sleep-Cassette indices; group ids SC408, SC416, ... SC480). Never train,
+#: tune or select on them; predict them once at the end. See HOLDOUT_EVALUATION.md.
+HOLDOUT_SUBJECTS = (8, 16, 24, 32, 40, 48, 56, 64, 72, 80)
+
 class SleepEDFTrack(TrackAdapter):
     meta = TrackMeta(
         name="Sleep staging",
@@ -40,6 +45,7 @@ class SleepEDFTrack(TrackAdapter):
         dsp_focus="band power, spindle STFT/wavelet, EOG/EMG artifact handling",
         difficulty=3,
         eval_modes=("new-subject",),
+        holdout_ids=tuple(f"SC4{i:02d}" for i in HOLDOUT_SUBJECTS),   # see HOLDOUT_EVALUATION.md
     )
 
     #: Capability declaration (see `TrackAdapter.SUPPORTED_CFG_KEYS`). This is the
@@ -231,7 +237,7 @@ class SleepEDFTrack(TrackAdapter):
                                 smote_k=int(cfg.get("smote_k", 5)))
 
     # ---- REAL data (Colab): Sleep-EDF via mne ----
-    def download(self, cache_dir, subset=None):
+    def download(self, cache_dir, subset=None, include_holdout=False):
         """Fetch a subset of Sleep-Cassette PSG+Hypnogram EDFs into cache_dir.
 
         Needs network + `mne`. `subset` is an iterable of subject indices
@@ -243,7 +249,15 @@ class SleepEDFTrack(TrackAdapter):
         import os
         import mne
         subjects = list(subset) if subset is not None else [0, 1, 2, 3]
+        if not include_holdout:
+            skipped = [s for s in subjects if s in HOLDOUT_SUBJECTS]
+            subjects = [s for s in subjects if s not in HOLDOUT_SUBJECTS]
+            if skipped:
+                print(f"[sleep_edf] skipping hold-out subjects {skipped}: fetch them only for the final "
+                      "prediction, with download_holdout() into a separate folder.")
         os.makedirs(cache_dir, exist_ok=True)
+        if not subjects:
+            return cache_dir
         # Download straight into cache_dir (a single, reusable home — e.g. a
         # Dropbox-backed folder). mne lays the EDFs out under a
         # `physionet-sleep-data/` subfolder; load() globs recursively for them.
@@ -251,6 +265,11 @@ class SleepEDFTrack(TrackAdapter):
             subjects=subjects, recording=[1, 2], path=cache_dir,
             on_missing="warn", verbose="ERROR")
         return cache_dir
+
+    def download_holdout(self, cache_dir):
+        """Fetch ONLY the hold-out subjects (both nights) into cache_dir. Use a separate folder from
+        your training data, and only for the final prediction (see HOLDOUT_EVALUATION.md)."""
+        return self.download(cache_dir, subset=HOLDOUT_SUBJECTS, include_holdout=True)
 
     def load(self, cache_dir, fs_target=100.0, epoch_s=30.0):
         """Read Sleep-EDF PSG + Hypnogram pairs into Recordings.

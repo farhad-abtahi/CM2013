@@ -106,6 +106,25 @@ def _rpeaks(ecg, fs):
     return pk
 
 
+
+#: Hold-out records: 30 per class (N/A/O/~), drawn with a fixed seed from records that none of the
+#: default downloads fetch. Never train, tune or select on them; predict them once at the end.
+#: See HOLDOUT_EVALUATION.md.
+HOLDOUT_RECORDS = (
+    "A00015", "A00236", "A00308", "A00370", "A00445", "A00482", "A00592", "A00711", "A00722", "A00766",
+    "A00774", "A00858", "A01020", "A01063", "A01116", "A01405", "A01406", "A01461", "A01499", "A01507",
+    "A01578", "A01591", "A01607", "A01805", "A01941", "A02119", "A02212", "A02346", "A02375", "A02400",
+    "A02470", "A02475", "A02676", "A02771", "A02841", "A02924", "A02926", "A02945", "A03003", "A03004",
+    "A03043", "A03081", "A03103", "A03128", "A03162", "A03319", "A03403", "A03443", "A03580", "A03596",
+    "A03756", "A03792", "A03860", "A03934", "A03976", "A04186", "A04220", "A04276", "A04427", "A04576",
+    "A04652", "A04685", "A04771", "A04816", "A04899", "A04941", "A04984", "A05017", "A05263", "A05267",
+    "A05299", "A05331", "A05387", "A05507", "A05816", "A05960", "A05977", "A05989", "A06002", "A06053",
+    "A06156", "A06217", "A06259", "A06261", "A06262", "A06297", "A06304", "A06537", "A06583", "A06614",
+    "A06774", "A06776", "A06804", "A06830", "A06841", "A06918", "A06958", "A07110", "A07139", "A07193",
+    "A07198", "A07256", "A07388", "A07595", "A07664", "A07708", "A07744", "A07763", "A07786", "A07859",
+    "A07901", "A07903", "A07904", "A07983", "A08043", "A08176", "A08195", "A08228", "A08361", "A08493",
+)
+
 class ECGCinC2017Track(TrackAdapter):
     meta = TrackMeta(
         name="ECG rhythm (AF)",
@@ -120,6 +139,7 @@ class ECGCinC2017Track(TrackAdapter):
         split_unit="record",
         default_metrics=["macro_f1", "cohens_kappa"],
         smoke_test_records=["A00001", "A00004", "A00006"],
+        holdout_ids=HOLDOUT_RECORDS,                            # see HOLDOUT_EVALUATION.md
         expected_runtime="~2–5 min on a subset (Colab, CPU)",
         dsp_focus="band-pass + notch, Pan–Tompkins QRS, R–R irregularity/HRV, signal quality",
         difficulty=3,
@@ -324,6 +344,8 @@ class ECGCinC2017Track(TrackAdapter):
             if "," not in line:
                 continue
             rid, lab = line.split(",", 1)
+            if os.path.basename(rid) in HOLDOUT_RECORDS:      # hold-out records are never part of training
+                continue
             by_cls.setdefault(lab, []).append(rid)
         # stratified pick: proportional share of `subset`, but >= floor per class
         rng = np.random.default_rng(seed)
@@ -357,6 +379,28 @@ class ECGCinC2017Track(TrackAdapter):
             for _ in ex.map(_grab, picks):
                 got += 1
         print(f"[ecg_cinc2017] downloaded {got} records into {cache_dir}")
+        return cache_dir
+
+    def download_holdout(self, cache_dir, workers=8):
+        """Fetch ONLY the hold-out records into cache_dir. Use a separate folder from your training
+        data, and only for the final prediction (see HOLDOUT_EVALUATION.md)."""
+        import os, urllib.request, concurrent.futures as cf
+        os.makedirs(cache_dir, exist_ok=True)
+        ref_dst = os.path.join(cache_dir, "REFERENCE-v3.csv")
+        if not os.path.exists(ref_dst):
+            urllib.request.urlretrieve(self._PN_BASE + "REFERENCE-v3.csv", ref_dst)
+        full = {os.path.basename(l.split(",")[0]): l.split(",")[0] for l in open(ref_dst) if "," in l}
+
+        def _grab(rid):
+            for ext in (".hea", ".mat"):
+                dst = os.path.join(cache_dir, rid + ext)
+                if not (os.path.exists(dst) and os.path.getsize(dst) > 0):
+                    urllib.request.urlretrieve(self._PN_BASE + full[rid] + ext, dst)
+            return rid
+
+        with cf.ThreadPoolExecutor(max_workers=workers) as ex:
+            got = list(ex.map(_grab, HOLDOUT_RECORDS))
+        print(f"[ecg_cinc2017] downloaded {len(got)} hold-out records into {cache_dir}")
         return cache_dir
 
     def load(self, cache_dir):
