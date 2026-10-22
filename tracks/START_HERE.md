@@ -175,7 +175,7 @@ literature review should decide what is worth comparing:
 |---|---|
 | Preprocessing | baseline wander: high-pass vs detrend vs wavelet; powerline: notch vs adaptive; broadband noise: low-pass vs Savitzky–Golay vs wavelet denoising |
 | Spectral estimation | non-parametric (periodogram, Welch, multitaper) vs parametric (AR) |
-| Features | features from at least two domains, e.g. frequency band powers plus time-domain, wavelet (e.g. sub-band energies), time–frequency or nonlinear features |
+| Features | features from at least two domains, e.g. frequency band powers plus time-domain, wavelet (e.g. sub-band energies), Hilbert envelope (e.g. a QRS envelope in ECG), time–frequency or nonlinear features |
 | Classifier | two models, e.g. random forest vs logistic regression, SVM or gradient boosting |
 
 Not every noise type is present in every track: Sleep-EDF EEG is sampled at 100 Hz, so 50 Hz sits at
