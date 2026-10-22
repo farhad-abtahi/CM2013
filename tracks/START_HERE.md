@@ -149,6 +149,44 @@ history (its numbers are explicitly simulated), not a route you must walk: a tea
 learner and spends every iteration on features has an equally defensible story, provided each rung is
 measured under the same honest harness.
 
+## The code is a starting point, not a lab instruction
+
+The adapter, the track files and the menus give you a **working baseline and a set of common
+options**, not the boundary of the project. You are expected to develop the code further and to
+change or replace any part of it when you have a better idea: write your own preprocessing and
+feature functions, try other classifiers than the random forest, change the number of folds, cut
+recordings to the relevant period (e.g. the sleep period of a night), and so on. The menus in
+`DESIGN_MENUS.md` are shortcuts, not a list you must choose from. Feature extraction and the
+classifier have no menu at all — they are meant to be your own work.
+
+What is **not** open is the honesty of the evaluation: keep the declared split unit, fit every
+scaler/selector/model inside the training fold, report the full metric panel with its spread, and
+never tune on the hold-out set (`HOLDOUT_EVALUATION.md`).
+
+**Compare, don't just pick.** At each stage of the pipeline, try **two or three different
+approaches** — from the menu, from the literature, or your own — and keep the comparison in
+`RESULTS.md`. Change one thing at a time against your current best and work stage by stage; you do
+not need a full grid of every combination (roughly 10–15 runs, not hundreds).
+
+*One example of how a team could do this* — an illustration, not a checklist; your track and your
+literature review should decide what is worth comparing:
+
+| Stage | Example comparison |
+|---|---|
+| Preprocessing | baseline wander: high-pass vs detrend vs wavelet; powerline: notch vs adaptive; broadband noise: low-pass vs Savitzky–Golay vs wavelet denoising |
+| Spectral estimation | non-parametric (periodogram, Welch, multitaper) vs parametric (AR) |
+| Features | features from at least two domains, e.g. frequency band powers plus time-domain, time–frequency or nonlinear features |
+| Classifier | two models, e.g. random forest vs logistic regression, SVM or gradient boosting |
+
+Not every noise type is present in every track: Sleep-EDF EEG is sampled at 100 Hz, so 50 Hz sits at
+the Nyquist frequency, and Ninapro DB1 ships a rectified, low-pass EMG envelope rather than raw EMG. Look at
+the spectrum first; if a noise is not there, show that and say so rather than filtering it.
+
+What earns the marks is not the winning option but the evidence: the alternatives you tried, their
+numbers with the spread across subjects/records, at least one idea that did not help (reported as
+such), and at least one earlier decision you went back and changed because of a later result
+(`CAPSTONE_REPORT_RUBRIC.md`, criteria 7 and 9). Also report how many configurations you compared.
+
 These seven modules are units of **work**, not a headcount: one person may own several, two people
 may share one, and ownership can rotate between iterations. Divide them however your team's size and
 strengths suggest, and record who actually did what (`results_log_TEMPLATE.md` has a place for it).

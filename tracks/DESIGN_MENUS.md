@@ -9,6 +9,12 @@ trade-off* and no blessed answer; the rubric grades the reasoning (criteria 2 an
 you land on. Your notebook's "Decision points on this track" section runs several of them side by
 side so you can watch the numbers move.
 
+**The menus are shortcuts, not the boundary.** They cover common options so you can compare quickly;
+you are free — and expected — to add your own methods at any stage, and feature extraction and the
+classifier (which have no menu here) are meant to be your own work. At each stage, compare two or three
+approaches, one change at a time. See *The code is a starting point, not a lab instruction* in
+`START_HERE.md` for what is expected and what stays fixed (the validation scheme, below).
+
 ---
 
 ## Stage 2 — preprocessing, indexed by noise type · `cfg["preprocess"] = "denoise"`
