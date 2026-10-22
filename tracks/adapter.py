@@ -1231,6 +1231,44 @@ class FittedModel:
 
 
 # --------------------------------------------------------------- base track
+def data_fingerprint(data_dir):
+    """Short hash of the data files in `data_dir` (relative names and sizes; cache files excluded).
+    Put it in a cache key so the cache is rebuilt when the data changes."""
+    import hashlib, json
+    files = []
+    for root, _, names in os.walk(data_dir):
+        for n in names:
+            if not n.startswith("_cache_"):
+                p = os.path.join(root, n)
+                files.append((os.path.relpath(p, data_dir), os.path.getsize(p)))
+    return hashlib.sha256(json.dumps(sorted(files)).encode()).hexdigest()[:12]
+
+
+def cached(step, key, compute, cache_dir):
+    """Run `compute()` once per `key` and reuse the saved result afterwards.
+
+    `key` must contain everything the result depends on: a version number for the code of this
+    step (bump it whenever you change that code), its settings, and the key of the step it builds
+    on, so that changing an earlier step also rebuilds every later one. Only cache per-recording
+    (stateless) steps and fixed feature extraction; never a transform fitted across recordings or
+    on labels (see `build_dataset`). Only load cache files you created yourself (they are pickles).
+    """
+    import hashlib, json, pickle
+    h = hashlib.sha256(json.dumps(key, sort_keys=True, default=str).encode()).hexdigest()[:12]
+    path = os.path.join(cache_dir, f"_cache_{step}_{h}.pkl")
+    if os.path.exists(path):
+        with open(path, "rb") as f:
+            out = pickle.load(f)
+        print(f"[cache] {step}: reused {os.path.basename(path)}")
+        return out
+    out = compute()
+    os.makedirs(cache_dir, exist_ok=True)
+    with open(path, "wb") as f:
+        pickle.dump(out, f, protocol=pickle.HIGHEST_PROTOCOL)
+    print(f"[cache] {step}: computed and saved {os.path.basename(path)}")
+    return out
+
+
 class TrackAdapter:
     meta: TrackMeta
 
@@ -1847,6 +1885,33 @@ class TrackAdapter:
         clf = clf or self._baseline(cfg)
         clf.fit(_transform(sel, X), y)
         return FittedModel(clf=clf, selector=sel, cfg=cfg)
+
+    #: bump when load()/Recording changes in a way that makes old caches wrong
+    CACHE_VERSION = 1
+
+    def load_cached(self, data_dir, cache_file=None, **load_kw):
+        """`load(data_dir)` once, then reuse a binary cache of the parsed recordings.
+
+        Parsing EDF/WFDB/MAT files is the slow part of every run; this saves the result next to the data
+        (or at `cache_file`) and loads it in seconds next time. The cache is rebuilt automatically when
+        the data files (names and sizes), the `load()` settings or `CACHE_VERSION` change. Only load
+        cache files you created yourself (they are pickles).
+        """
+        import hashlib, json, pickle
+        key = hashlib.sha256(json.dumps({"track": type(self).__name__, "version": self.CACHE_VERSION,
+                                         "load_kw": load_kw, "data": data_fingerprint(data_dir)},
+                                        sort_keys=True, default=str).encode()).hexdigest()[:12]
+        cache_file = cache_file or os.path.join(data_dir, f"_cache_{type(self).__name__}_{key}.pkl")
+        if os.path.exists(cache_file):
+            with open(cache_file, "rb") as f:
+                recs = pickle.load(f)
+            print(f"[{type(self).__name__}] loaded {len(recs)} recordings from cache {os.path.basename(cache_file)}")
+            return recs
+        recs = self.load(data_dir, **load_kw)
+        with open(cache_file, "wb") as f:
+            pickle.dump(recs, f, protocol=pickle.HIGHEST_PROTOCOL)
+        print(f"[{type(self).__name__}] parsed {len(recs)} recordings; cached to {os.path.basename(cache_file)}")
+        return recs
 
     def split_holdout(self, recs):
         """Split recordings into (train, holdout) using `meta.holdout_ids`.

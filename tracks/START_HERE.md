@@ -66,6 +66,58 @@ your lock file, and reproduce your reported numbers from the commands in your RE
 `RESULTS.md`, your pinned environment, and that README. You submit the report PDF, a
 `predictions.csv` written with `write_submission()` (never by hand), and the repository link.
 
+## Download once, parse once (Colab and local)
+
+Real data is slow to download and slow to parse, so do each **once** and keep the result.
+
+1. **One persistent data folder, outside your repository.** Locally, e.g. `~/cm2013_data`. In Colab
+   the disk is wiped when the session ends, so put the data on Google Drive:
+   ```python
+   from google.colab import drive
+   drive.mount("/content/drive")
+   DATA = "/content/drive/MyDrive/CM2013_data"      # survives between sessions
+   ```
+2. **Download into it.** Every track's `download()` skips files that are already there, so re-running
+   the cell costs nothing. Sleep-EDF now downloads from PhysioNet's official AWS mirror, which is much
+   faster than physionet.org; mne checks every file against PhysioNet's checksums either way.
+   ```python
+   trk.download(f"{DATA}/train", subset=range(0, 30))
+   ```
+3. **Parse once with `load_cached()`.** It runs `load()` the first time and saves the parsed recordings
+   as a binary cache next to the data; later runs load them in seconds. The cache is rebuilt
+   automatically when the files or the `load()` settings change.
+4. **Cache every slow step, with a version number.** Preprocessing and feature extraction are worth
+   caching too, so that changing the classifier doesn't recompute everything. `cached()` stores a
+   step's result under a key; put in the key everything the result depends on: a **version number
+   for that step's code** (bump it whenever you change the code), its settings, and the key of the
+   step before it. Changing preprocessing then rebuilds the features as well; changing only the
+   features reuses the preprocessing.
+   ```python
+   import numpy as np
+   from adapter import cached, data_fingerprint
+
+   PREPROCESS_VERSION = 1      # bump when you change your preprocessing code
+   FEATURE_VERSION = 1         # bump when you change your feature code
+   CACHE = f"{DATA}/cache"
+
+   recs = trk.load_cached(f"{DATA}/train")
+   pre_key = {"step": "preprocess", "version": PREPROCESS_VERSION, "cfg": cfg,
+              "data": data_fingerprint(f"{DATA}/train")}
+   clean = cached("preprocess", pre_key, lambda: [trk.preprocess(r, cfg) for r in recs], CACHE)
+   feat_key = {"step": "features", "version": FEATURE_VERSION, "cfg": cfg, "after": pre_key}
+   per_rec = cached("features", feat_key, lambda: [trk.extract_features(r, cfg) for r in clean], CACHE)
+   X = np.vstack([x for x, _, _ in per_rec])
+   y = np.concatenate([lab for _, lab, _ in per_rec])
+   groups = np.concatenate([[g] * len(lab) for _, lab, g in per_rec])
+   ```
+   Cache only steps that work on one recording at a time. Anything **fitted** across recordings or on
+   labels (scaling, feature selection, CSP, the model) belongs inside the cross-validation folds and
+   is not cached this way. If in doubt, delete the cache folder: correctness first, speed second.
+
+Keep data and cache files **out of git**. In Colab, Drive is slow with many small files (e.g. ECG
+records): if loading feels slow, copy the folder to the local disk once per session
+(`!cp -r "$DATA/train" /content/train`) and load from there.
+
 ## The seven modules (this is what "pipeline integrity" means)
 
 The adapter is not one `run_everything()` — it is the book's §16.2 pipeline with one method per

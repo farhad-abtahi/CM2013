@@ -237,7 +237,12 @@ class SleepEDFTrack(TrackAdapter):
                                 smote_k=int(cfg.get("smote_k", 5)))
 
     # ---- REAL data (Colab): Sleep-EDF via mne ----
-    def download(self, cache_dir, subset=None, include_holdout=False):
+    #: PhysioNet's official AWS mirror of Sleep-EDF: same files, usually far faster than physionet.org.
+    #: mne verifies every file against PhysioNet's SHA1 checksums, whichever server it comes from.
+    MIRROR_URL = "https://physionet-open.s3.amazonaws.com/sleep-edfx/1.0.0/sleep-cassette"
+    PHYSIONET_URL = "https://physionet.org/files/sleep-edfx/1.0.0/sleep-cassette"
+
+    def download(self, cache_dir, subset=None, include_holdout=False, base_url=None):
         """Fetch a subset of Sleep-Cassette PSG+Hypnogram EDFs into cache_dir.
 
         Needs network + `mne`. `subset` is an iterable of subject indices
@@ -245,6 +250,10 @@ class SleepEDFTrack(TrackAdapter):
         (0..3), both nights -> 8 nights. mne caches the EDFs in its own data
         dir; we link/copy each (PSG, Hypnogram) pair into `cache_dir` under its
         original PhysioNet name so `load()`'s glob finds them.
+
+        Files come from PhysioNet's AWS mirror by default (`MIRROR_URL`); pass
+        `base_url=SleepEDFTrack.PHYSIONET_URL` to use physionet.org instead. Files
+        already in `cache_dir` are not downloaded again.
         """
         import os
         import mne
@@ -263,13 +272,14 @@ class SleepEDFTrack(TrackAdapter):
         # `physionet-sleep-data/` subfolder; load() globs recursively for them.
         mne.datasets.sleep_physionet.age.fetch_data(
             subjects=subjects, recording=[1, 2], path=cache_dir,
+            base_url=base_url or self.MIRROR_URL,
             on_missing="warn", verbose="ERROR")
         return cache_dir
 
-    def download_holdout(self, cache_dir):
+    def download_holdout(self, cache_dir, base_url=None):
         """Fetch ONLY the hold-out subjects (both nights) into cache_dir. Use a separate folder from
         your training data, and only for the final prediction (see HOLDOUT_EVALUATION.md)."""
-        return self.download(cache_dir, subset=HOLDOUT_SUBJECTS, include_holdout=True)
+        return self.download(cache_dir, subset=HOLDOUT_SUBJECTS, include_holdout=True, base_url=base_url)
 
     def load(self, cache_dir, fs_target=100.0, epoch_s=30.0):
         """Read Sleep-EDF PSG + Hypnogram pairs into Recordings.
