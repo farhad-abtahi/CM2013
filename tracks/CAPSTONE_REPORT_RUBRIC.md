@@ -9,6 +9,8 @@ never a criterion invented ad hoc per report. This is a **raw point score** — 
 no letter-grade conversion; the 30-point total and its per-criterion breakdown *is* the
 grade record.
 
+**Report format** (length limit, structure): see [`REPORT_GUIDE.md`](REPORT_GUIDE.md).
+
 **The individual critical-comparison essay and teamwork component are graded
 separately, outside these 30 points.** They test each *student's* own understanding and
 engagement (catching free-riding, and making sure peer-learning isn't delegated to one
@@ -38,19 +40,9 @@ criterion (now an individual essay, see above) — signal-processing rigor and t
 report's defence of its own design decisions are the two places that extra weight
 does the most good.
 
-> **⚠️ Point rebalance — a deliberate judgement call, flagged for the instructor.**
-> Criterion **9 (Iteration & revision history, 3 pts)** was added because the course's
-> stated philosophy — *"mostly needing to revisit [design choices] based on results"* —
-> was previously required by `results_log_TEMPLATE.md` but worth **zero** rubric points,
-> and that template even said "nothing here is graded on its own". Rather than inflate
-> the sheet to 33, the 3 points were taken from the two criteria the new one partly
-> subsumes: **Criterion 7 (Improvement on the baseline) 6 → 4** and **Criterion 5 (Report
-> quality & defence) 4 → 3**. The rationale is the rubric's own stated intent — *"a team
-> with a modest metric but honest, well-diagnosed work should outscore a team with a
-> better number and sloppy execution"* — so weight moves from the *outcome* (the number
-> improved) toward the *process that makes an improvement trustworthy*. **The total stays
-> 30**, and Criterion 3's "~15/30" soft gate is unaffected. If you disagree with where the
-> 3 points came from, change *that* — not the existence of the criterion.
+Criterion **9 (Iteration & revision history, 3 pts)** grades how you got to your result, not
+only the result itself: a team with a modest metric but honest, well-diagnosed work should
+outscore a team with a better number and sloppy execution.
 
 | # | Criterion | Points | Instrument | Full marks | Partial | Minimal | Missing |
 |---|---|:---:|---|---|---|---|---|
@@ -177,21 +169,20 @@ The point value is unchanged at **4**, and the sheet still totals **30**.
 - **"Code" means the actual submitted repository/notebook, not the report's description
   of it.** Where code and report disagree (report claims fold-safe scaling, code shows
   otherwise), grade Criterion 3 from the code — it's the ground truth.
-- **Criterion 9 needs the log to exist *during* the project.** Say so at track assignment,
-  not at the deadline: `results_log_TEMPLATE.md` is copied into the team repo as `RESULTS.md`
-  in week 1 and committed as the work happens. A log reconstructed afterwards reads exactly
-  like one — every row an improvement, no dead ends, no reversals — and that pattern is the
-  "partial" row, because a project with no dead ends is a project with no investigation.
+- **Criterion 9 needs the log to exist *during* the project.** Copy
+  `results_log_TEMPLATE.md` into your team repo as `RESULTS.md` in week 1 and commit to it as
+  the work happens. A log reconstructed afterwards reads exactly like one — every row an
+  improvement, no dead ends, no reversals — and that pattern is the "partial" row, because a
+  project with no dead ends is a project with no investigation.
 - **The critical-comparison essay and teamwork are separate.** Both are graded
   individually, outside this 30-point sheet — see `INDIVIDUAL_ASSESSMENT.md`. The essay
   is what used to be Opposition; it's now personal, not delegated to one team member.
-- **Shadow pairing needs assigning once, early.** Pair each team with one other team on
-  a different track at track-assignment time (see the "Course PM" page on Canvas for
-  the schedule), not near the showcase — students need to have actually followed the
-  other project to write a real comparison, not a cold read on the day.
+- **Shadow pairing is assigned once, early.** Each team is paired with one team on a
+  different track at track assignment (see the "Course PM" page on Canvas). Follow their
+  project during the course, so your comparison essay is not a cold read on the day.
 - **Same rubric, four sheets.** Because criteria 1–6 and 9 and their point values are identical
   across tracks, a grader handling multiple tracks does not need to re-learn the scale
   per team — only criteria 7–8 change, and only in what counts as evidence, not in how
   many points they're worth.
 - **No letter-grade conversion.** The 30-point total and its criterion-by-criterion
-  breakdown is the grade record itself — report it to students exactly as scored.
+  breakdown is the grade record itself, reported to you exactly as scored.

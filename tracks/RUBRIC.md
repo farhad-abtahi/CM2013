@@ -33,5 +33,5 @@ relative to an easy one (HAR).
 - **Two modes where required** (BCI/EMG): report `new-subject` *and* `within-subject`; do not
   hide a weak cross-subject result behind a strong within-subject one.
 - **Synthetic vs real:** smoke/CI numbers are plumbing checks, never reported as results.
-- **Deliverables:** report (≤ N pages), a `predictions.csv` on the held-out split (per-track
+- **Deliverables:** report (≤ 20 pages excluding references and appendices — see [`REPORT_GUIDE.md`](REPORT_GUIDE.md)), a `predictions.csv` on the held-out split (per-track
   hold-out evaluation, optional), and a slot in the **cross-track showcase**.
