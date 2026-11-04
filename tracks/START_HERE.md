@@ -66,6 +66,58 @@ your lock file, and reproduce your reported numbers from the commands in your RE
 `RESULTS.md`, your pinned environment, and that README. You submit the report PDF, a
 `predictions.csv` written with `write_submission()` (never by hand), and the repository link.
 
+## Download once, parse once (Colab and local)
+
+Real data is slow to download and slow to parse, so do each **once** and keep the result.
+
+1. **One persistent data folder, outside your repository.** Locally, e.g. `~/cm2013_data`. In Colab
+   the disk is wiped when the session ends, so put the data on Google Drive:
+   ```python
+   from google.colab import drive
+   drive.mount("/content/drive")
+   DATA = "/content/drive/MyDrive/CM2013_data"      # survives between sessions
+   ```
+2. **Download into it.** Every track's `download()` skips files that are already there, so re-running
+   the cell costs nothing. Sleep-EDF now downloads from PhysioNet's official AWS mirror, which is much
+   faster than physionet.org; mne checks every file against PhysioNet's checksums either way.
+   ```python
+   trk.download(f"{DATA}/train", subset=range(0, 30))
+   ```
+3. **Parse once with `load_cached()`.** It runs `load()` the first time and saves the parsed recordings
+   as a binary cache next to the data; later runs load them in seconds. The cache is rebuilt
+   automatically when the files or the `load()` settings change.
+4. **Cache every slow step, with a version number.** Preprocessing and feature extraction are worth
+   caching too, so that changing the classifier doesn't recompute everything. `cached()` stores a
+   step's result under a key; put in the key everything the result depends on: a **version number
+   for that step's code** (bump it whenever you change the code), its settings, and the key of the
+   step before it. Changing preprocessing then rebuilds the features as well; changing only the
+   features reuses the preprocessing.
+   ```python
+   import numpy as np
+   from adapter import cached, data_fingerprint
+
+   PREPROCESS_VERSION = 1      # bump when you change your preprocessing code
+   FEATURE_VERSION = 1         # bump when you change your feature code
+   CACHE = f"{DATA}/cache"
+
+   recs = trk.load_cached(f"{DATA}/train")
+   pre_key = {"step": "preprocess", "version": PREPROCESS_VERSION, "cfg": cfg,
+              "data": data_fingerprint(f"{DATA}/train")}
+   clean = cached("preprocess", pre_key, lambda: [trk.preprocess(r, cfg) for r in recs], CACHE)
+   feat_key = {"step": "features", "version": FEATURE_VERSION, "cfg": cfg, "after": pre_key}
+   per_rec = cached("features", feat_key, lambda: [trk.extract_features(r, cfg) for r in clean], CACHE)
+   X = np.vstack([x for x, _, _ in per_rec])
+   y = np.concatenate([lab for _, lab, _ in per_rec])
+   groups = np.concatenate([[g] * len(lab) for _, lab, g in per_rec])
+   ```
+   Cache only steps that work on one recording at a time. Anything **fitted** across recordings or on
+   labels (scaling, feature selection, CSP, the model) belongs inside the cross-validation folds and
+   is not cached this way. If in doubt, delete the cache folder: correctness first, speed second.
+
+Keep data and cache files **out of git**. In Colab, Drive is slow with many small files (e.g. ECG
+records): if loading feels slow, copy the folder to the local disk once per session
+(`!cp -r "$DATA/train" /content/train`) and load from there.
+
 ## The seven modules (this is what "pipeline integrity" means)
 
 The adapter is not one `run_everything()` — it is the book's §16.2 pipeline with one method per
@@ -96,6 +148,44 @@ assessed part. The book's k-NN → SVM → random-forest → tuned-RF ladder is 
 history (its numbers are explicitly simulated), not a route you must walk: a team that keeps one
 learner and spends every iteration on features has an equally defensible story, provided each rung is
 measured under the same honest harness.
+
+## The code is a starting point, not a lab instruction
+
+The adapter, the track files and the menus give you a **working baseline and a set of common
+options**, not the boundary of the project. You are expected to develop the code further and to
+change or replace any part of it when you have a better idea: write your own preprocessing and
+feature functions, try other classifiers than the random forest, change the number of folds, cut
+recordings to the relevant period (e.g. the sleep period of a night), and so on. The menus in
+`DESIGN_MENUS.md` are shortcuts, not a list you must choose from. Feature extraction and the
+classifier have no menu at all — they are meant to be your own work.
+
+What is **not** open is the honesty of the evaluation: keep the declared split unit, fit every
+scaler/selector/model inside the training fold, report the full metric panel with its spread, and
+never tune on the hold-out set (`HOLDOUT_EVALUATION.md`).
+
+**Compare, don't just pick.** At each stage of the pipeline, try **two or three different
+approaches** — from the menu, from the literature, or your own — and keep the comparison in
+`RESULTS.md`. Change one thing at a time against your current best and work stage by stage; you do
+not need a full grid of every combination (roughly 10–15 runs, not hundreds).
+
+*One example of how a team could do this* — an illustration, not a checklist; your track and your
+literature review should decide what is worth comparing:
+
+| Stage | Example comparison |
+|---|---|
+| Preprocessing | baseline wander: high-pass vs detrend vs wavelet; powerline: notch vs adaptive; broadband noise: low-pass vs Savitzky–Golay vs wavelet denoising |
+| Spectral estimation | non-parametric (periodogram, Welch, multitaper) vs parametric (AR) |
+| Features | features from at least two domains, e.g. frequency band powers plus time-domain, wavelet (e.g. sub-band energies), Hilbert envelope (e.g. a QRS envelope in ECG), time–frequency or nonlinear features |
+| Classifier | two models, e.g. random forest vs logistic regression, SVM or gradient boosting |
+
+Not every noise type is present in every track: Sleep-EDF EEG is sampled at 100 Hz, so 50 Hz sits at
+the Nyquist frequency, and Ninapro DB1 ships a rectified, low-pass EMG envelope rather than raw EMG. Look at
+the spectrum first; if a noise is not there, show that and say so rather than filtering it.
+
+What earns the marks is not the winning option but the evidence: the alternatives you tried, their
+numbers with the spread across subjects/records, at least one idea that did not help (reported as
+such), and at least one earlier decision you went back and changed because of a later result
+(`CAPSTONE_REPORT_RUBRIC.md`, criteria 7 and 9). Also report how many configurations you compared.
 
 These seven modules are units of **work**, not a headcount: one person may own several, two people
 may share one, and ownership can rotate between iterations. Divide them however your team's size and

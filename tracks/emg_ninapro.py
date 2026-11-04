@@ -44,6 +44,11 @@ def _win_features(win, fs=FS):
     return feats
 
 
+
+#: Hold-out subjects (Ninapro DB1, 1-based). Never train, tune or select on them; predict them once
+#: at the end. See HOLDOUT_EVALUATION.md.
+HOLDOUT_SUBJECTS = (23, 24, 25, 26, 27)
+
 class EMGNinaproTrack(TrackAdapter):
     meta = TrackMeta(
         name="EMG gesture",
@@ -58,6 +63,7 @@ class EMGNinaproTrack(TrackAdapter):
         split_unit="subject",
         default_metrics=["macro_f1", "cohens_kappa"],
         smoke_test_records=["S1", "S2", "S3"],
+        holdout_ids=tuple(f"S{i}" for i in HOLDOUT_SUBJECTS),      # see HOLDOUT_EVALUATION.md
         expected_runtime="~3–6 min on a subject subset (Colab, CPU)",
         dsp_focus="windowing, MAV/RMS/waveform-length/variance + mean-frequency per channel",
         difficulty=3,
@@ -255,11 +261,18 @@ class EMGNinaproTrack(TrackAdapter):
     # ---- REAL data: Ninapro DB1 subject zips ----
     _BASE = "https://ninapro.hevs.ch/files/DB1/Preprocessed/"
 
-    def download(self, cache_dir, subset=range(1, 6)):
+    def download(self, cache_dir, subset=range(1, 6), include_holdout=False):
         """Download + extract Ninapro DB1 subject zips (s1.zip ...) into cache_dir.
         Needs network. ~20 MB/subject. `subset` is 1-based subject ids (1..27)."""
         import os, io, zipfile, urllib.request
         os.makedirs(cache_dir, exist_ok=True)
+        subset = list(subset)
+        if not include_holdout:
+            skipped = [s for s in subset if s in HOLDOUT_SUBJECTS]
+            subset = [s for s in subset if s not in HOLDOUT_SUBJECTS]
+            if skipped:
+                print(f"[emg_ninapro] skipping hold-out subjects {skipped}: fetch them only for the final "
+                      "prediction, with download_holdout() into a separate folder.")
         for s in subset:
             marker = os.path.join(cache_dir, f"S{s}_A1_E1.mat")
             if os.path.exists(marker):
@@ -269,6 +282,11 @@ class EMGNinaproTrack(TrackAdapter):
                 z.extractall(cache_dir)
         print(f"[emg_ninapro] ready in {cache_dir}")
         return cache_dir
+
+    def download_holdout(self, cache_dir):
+        """Fetch ONLY the hold-out subjects into cache_dir. Use a separate folder from your training
+        data, and only for the final prediction (see HOLDOUT_EVALUATION.md)."""
+        return self.download(cache_dir, subset=HOLDOUT_SUBJECTS, include_holdout=True)
 
     def load(self, cache_dir, exercise="E1"):
         """Read Ninapro DB1 `*_{exercise}.mat` files, window the sEMG within each

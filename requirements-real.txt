@@ -7,3 +7,4 @@
 # after any bump.
 mne==1.10.1          # Sleep-EDF PSG/hypnogram EDF reading
 wfdb==4.3.0          # PhysioNet WFDB records (ECG CinC-2017, CTG, BCI)
+pandas<3             # wfdb 4.3.0 fails to import with pandas 3 (pulled in unpinned otherwise)
