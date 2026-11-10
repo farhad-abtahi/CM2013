@@ -1,0 +1,483 @@
+{
+  "date": "2026-11-10",
+  "subjects": [
+    "S1",
+    "S2",
+    "S3",
+    "S4",
+    "S5",
+    "S6",
+    "S7",
+    "S8",
+    "S9",
+    "S10"
+  ],
+  "exercise": "E1",
+  "window_ms": 200,
+  "step_ms": 150,
+  "channel_normalisation": "rms",
+  "channel_order": "original",
+  "calibration_repetitions": [
+    1,
+    2
+  ],
+  "scoring_repetitions": [
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+  ],
+  "feature_count_both_settings": 50,
+  "relative_mav_formula": "MAV of each channel / sum of MAV across all 10 channels in the same window; all-zero window gives zero shares.",
+  "changed_columns_zero_based": [
+    0,
+    5,
+    10,
+    15,
+    20,
+    25,
+    30,
+    35,
+    40,
+    45
+  ],
+  "unchanged_features_per_channel": [
+    "RMS",
+    "WL",
+    "VAR",
+    "MNF"
+  ],
+  "results": [
+    {
+      "name": "Current features",
+      "cfg": {
+        "normalisation": "rms",
+        "mav_feature": "absolute",
+        "seed": 0,
+        "select": "none",
+        "imbalance": "balanced"
+      },
+      "fits": 60,
+      "seconds": 229.9838320419658,
+      "preprocess_sha256": "dee27581e6bdf60327688fc28eecbd3dc230d6a80d38392bd696e1b1f5e02a94",
+      "scoring_windows": 21802,
+      "calibration_windows": 5773,
+      "environment": {
+        "numpy": "2.5.3",
+        "scipy": "1.18.1",
+        "sklearn": "1.9.1"
+      },
+      "modes": {
+        "within_subject": {
+          "spread": {
+            "mean": 0.8124349276866644,
+            "std": 0.03808265233860772,
+            "min": 0.7617665723245127,
+            "max": 0.8691049440591962,
+            "n": 10
+          },
+          "per_subject": [
+            {
+              "group": "S1",
+              "n": 1883,
+              "accuracy": 0.8236856080722251,
+              "cohens_kappa": 0.8070574060048504,
+              "macro_f1": 0.8172962934894031,
+              "balanced_accuracy": 0.8160448752225187
+            },
+            {
+              "group": "S10",
+              "n": 2201,
+              "accuracy": 0.8359836437982735,
+              "cohens_kappa": 0.8207618334352209,
+              "macro_f1": 0.8335830997716424,
+              "balanced_accuracy": 0.8327481152591266
+            },
+            {
+              "group": "S2",
+              "n": 2085,
+              "accuracy": 0.7721822541966427,
+              "cohens_kappa": 0.7511890044068092,
+              "macro_f1": 0.7704605738864009,
+              "balanced_accuracy": 0.7700118126067292
+            },
+            {
+              "group": "S3",
+              "n": 1909,
+              "accuracy": 0.8674698795180723,
+              "cohens_kappa": 0.8550162416559074,
+              "macro_f1": 0.8691049440591962,
+              "balanced_accuracy": 0.8687021523441493
+            },
+            {
+              "group": "S4",
+              "n": 2282,
+              "accuracy": 0.7668711656441718,
+              "cohens_kappa": 0.7454573740736058,
+              "macro_f1": 0.7678766475741264,
+              "balanced_accuracy": 0.7679839357200685
+            },
+            {
+              "group": "S5",
+              "n": 2791,
+              "accuracy": 0.7613758509494805,
+              "cohens_kappa": 0.7392169181285746,
+              "macro_f1": 0.7617665723245127,
+              "balanced_accuracy": 0.7613578926200204
+            },
+            {
+              "group": "S6",
+              "n": 2442,
+              "accuracy": 0.7800982800982801,
+              "cohens_kappa": 0.7592383631159475,
+              "macro_f1": 0.7856933622513175,
+              "balanced_accuracy": 0.7851011703838354
+            },
+            {
+              "group": "S7",
+              "n": 2180,
+              "accuracy": 0.8504587155963302,
+              "cohens_kappa": 0.8363725110976037,
+              "macro_f1": 0.846643782159934,
+              "balanced_accuracy": 0.8481566771196848
+            },
+            {
+              "group": "S8",
+              "n": 1803,
+              "accuracy": 0.8380476982806434,
+              "cohens_kappa": 0.823015787106356,
+              "macro_f1": 0.8415858140997545,
+              "balanced_accuracy": 0.8431717407514232
+            },
+            {
+              "group": "S9",
+              "n": 2226,
+              "accuracy": 0.8315363881401617,
+              "cohens_kappa": 0.8158178437923498,
+              "macro_f1": 0.8303381872503565,
+              "balanced_accuracy": 0.8313125943873395
+            }
+          ],
+          "split_unit": "repetition (within subject)",
+          "n_folds": 50,
+          "summary": "mean macro_f1 0.812 (sd 0.038, range 0.762-0.869 across 10 subjects)"
+        },
+        "new_subject": {
+          "spread": {
+            "mean": 0.18794023094019588,
+            "std": 0.06779043032129141,
+            "min": 0.07434398793717595,
+            "max": 0.29334088205914993,
+            "n": 10
+          },
+          "per_subject": [
+            {
+              "group": "S1",
+              "n": 1883,
+              "accuracy": 0.3112055231014339,
+              "cohens_kappa": 0.2461518184332434,
+              "macro_f1": 0.29334088205914993,
+              "balanced_accuracy": 0.3171120746611214
+            },
+            {
+              "group": "S10",
+              "n": 2201,
+              "accuracy": 0.21308496138119037,
+              "cohens_kappa": 0.14204339192607962,
+              "macro_f1": 0.1864630184525002,
+              "balanced_accuracy": 0.21047018049232225
+            },
+            {
+              "group": "S2",
+              "n": 2085,
+              "accuracy": 0.08297362110311751,
+              "cohens_kappa": 0.002590524494892832,
+              "macro_f1": 0.07802505537867414,
+              "balanced_accuracy": 0.0813371610092906
+            },
+            {
+              "group": "S3",
+              "n": 1909,
+              "accuracy": 0.19905709795704557,
+              "cohens_kappa": 0.13162527980312322,
+              "macro_f1": 0.20056909202220966,
+              "balanced_accuracy": 0.20660046374000382
+            },
+            {
+              "group": "S4",
+              "n": 2282,
+              "accuracy": 0.2252410166520596,
+              "cohens_kappa": 0.1548914722625504,
+              "macro_f1": 0.21672214179499505,
+              "balanced_accuracy": 0.22866283487412295
+            },
+            {
+              "group": "S5",
+              "n": 2791,
+              "accuracy": 0.22250089573629522,
+              "cohens_kappa": 0.15136196115456257,
+              "macro_f1": 0.2033553433475228,
+              "balanced_accuracy": 0.22120422978468676
+            },
+            {
+              "group": "S6",
+              "n": 2442,
+              "accuracy": 0.19737919737919737,
+              "cohens_kappa": 0.12296649849736063,
+              "macro_f1": 0.16780600341676186,
+              "balanced_accuracy": 0.18509539328663002
+            },
+            {
+              "group": "S7",
+              "n": 2180,
+              "accuracy": 0.11146788990825689,
+              "cohens_kappa": 0.024514314320187913,
+              "macro_f1": 0.07434398793717595,
+              "balanced_accuracy": 0.09854031232918642
+            },
+            {
+              "group": "S8",
+              "n": 1803,
+              "accuracy": 0.27287853577371046,
+              "cohens_kappa": 0.20545267590000893,
+              "macro_f1": 0.2392916951321575,
+              "balanced_accuracy": 0.2707733174360473
+            },
+            {
+              "group": "S9",
+              "n": 2226,
+              "accuracy": 0.24348607367475292,
+              "cohens_kappa": 0.16776178783451967,
+              "macro_f1": 0.21948508986081186,
+              "balanced_accuracy": 0.2339871741975372
+            }
+          ],
+          "split_unit": "subject",
+          "n_folds": 10,
+          "summary": "mean macro_f1 0.188 (sd 0.068, range 0.074-0.293 across 10 subjects)"
+        }
+      }
+    },
+    {
+      "name": "Relative MAV",
+      "cfg": {
+        "normalisation": "rms",
+        "mav_feature": "relative",
+        "seed": 0,
+        "select": "none",
+        "imbalance": "balanced"
+      },
+      "fits": 60,
+      "seconds": 230.17219258402474,
+      "preprocess_sha256": "dee27581e6bdf60327688fc28eecbd3dc230d6a80d38392bd696e1b1f5e02a94",
+      "scoring_windows": 21802,
+      "calibration_windows": 5773,
+      "environment": {
+        "numpy": "2.5.3",
+        "scipy": "1.18.1",
+        "sklearn": "1.9.1"
+      },
+      "modes": {
+        "within_subject": {
+          "spread": {
+            "mean": 0.8258095620901059,
+            "std": 0.03478788475289647,
+            "min": 0.7743383060675834,
+            "max": 0.8674330692827762,
+            "n": 10
+          },
+          "per_subject": [
+            {
+              "group": "S1",
+              "n": 1883,
+              "accuracy": 0.8428040361125863,
+              "cohens_kappa": 0.8280106347000289,
+              "macro_f1": 0.8371499025786912,
+              "balanced_accuracy": 0.8363437292871095
+            },
+            {
+              "group": "S10",
+              "n": 2201,
+              "accuracy": 0.8405270331667424,
+              "cohens_kappa": 0.8257115069511138,
+              "macro_f1": 0.8379388423854678,
+              "balanced_accuracy": 0.8369751600708403
+            },
+            {
+              "group": "S2",
+              "n": 2085,
+              "accuracy": 0.7966426858513189,
+              "cohens_kappa": 0.7779121521524338,
+              "macro_f1": 0.7948549925338529,
+              "balanced_accuracy": 0.7948395199213952
+            },
+            {
+              "group": "S3",
+              "n": 1909,
+              "accuracy": 0.8653745416448402,
+              "cohens_kappa": 0.8527289155179867,
+              "macro_f1": 0.8674330692827762,
+              "balanced_accuracy": 0.8667180617501048
+            },
+            {
+              "group": "S4",
+              "n": 2282,
+              "accuracy": 0.773444347063979,
+              "cohens_kappa": 0.7526215684140715,
+              "macro_f1": 0.7743383060675834,
+              "balanced_accuracy": 0.7739932452852849
+            },
+            {
+              "group": "S5",
+              "n": 2791,
+              "accuracy": 0.7814403439627373,
+              "cohens_kappa": 0.7611179138904242,
+              "macro_f1": 0.7814558331229002,
+              "balanced_accuracy": 0.7800318549606827
+            },
+            {
+              "group": "S6",
+              "n": 2442,
+              "accuracy": 0.7956592956592956,
+              "cohens_kappa": 0.7763037146134736,
+              "macro_f1": 0.8010616786999294,
+              "balanced_accuracy": 0.8007612492026938
+            },
+            {
+              "group": "S7",
+              "n": 2180,
+              "accuracy": 0.8610091743119266,
+              "cohens_kappa": 0.847914645796125,
+              "macro_f1": 0.8583523176769873,
+              "balanced_accuracy": 0.8596526779196526
+            },
+            {
+              "group": "S8",
+              "n": 1803,
+              "accuracy": 0.8585690515806988,
+              "cohens_kappa": 0.8454218106995884,
+              "macro_f1": 0.862377342192961,
+              "balanced_accuracy": 0.8628186608628781
+            },
+            {
+              "group": "S9",
+              "n": 2226,
+              "accuracy": 0.8432165318957772,
+              "cohens_kappa": 0.8286250143938628,
+              "macro_f1": 0.8431333363599104,
+              "balanced_accuracy": 0.8446454422283267
+            }
+          ],
+          "split_unit": "repetition (within subject)",
+          "n_folds": 50,
+          "summary": "mean macro_f1 0.826 (sd 0.035, range 0.774-0.867 across 10 subjects)"
+        },
+        "new_subject": {
+          "spread": {
+            "mean": 0.1936964354929443,
+            "std": 0.06296887496694774,
+            "min": 0.08613322098497499,
+            "max": 0.3068495927996587,
+            "n": 10
+          },
+          "per_subject": [
+            {
+              "group": "S1",
+              "n": 1883,
+              "accuracy": 0.32129580456718004,
+              "cohens_kappa": 0.2580452016140967,
+              "macro_f1": 0.3068495927996587,
+              "balanced_accuracy": 0.3336438623624857
+            },
+            {
+              "group": "S10",
+              "n": 2201,
+              "accuracy": 0.22580645161290322,
+              "cohens_kappa": 0.15606587832060326,
+              "macro_f1": 0.19794487120970441,
+              "balanced_accuracy": 0.22411547495408843
+            },
+            {
+              "group": "S2",
+              "n": 2085,
+              "accuracy": 0.086810551558753,
+              "cohens_kappa": 0.007538263191960715,
+              "macro_f1": 0.08613322098497499,
+              "balanced_accuracy": 0.08548966825954181
+            },
+            {
+              "group": "S3",
+              "n": 1909,
+              "accuracy": 0.19172341540073337,
+              "cohens_kappa": 0.12425543098709302,
+              "macro_f1": 0.19024667637734258,
+              "balanced_accuracy": 0.20291102236164557
+            },
+            {
+              "group": "S4",
+              "n": 2282,
+              "accuracy": 0.22129710780017528,
+              "cohens_kappa": 0.15016417821614525,
+              "macro_f1": 0.21228963737738626,
+              "balanced_accuracy": 0.2242475457934052
+            },
+            {
+              "group": "S5",
+              "n": 2791,
+              "accuracy": 0.20745252597635255,
+              "cohens_kappa": 0.13429258612353512,
+              "macro_f1": 0.19164777777817213,
+              "balanced_accuracy": 0.20651977128257368
+            },
+            {
+              "group": "S6",
+              "n": 2442,
+              "accuracy": 0.19533169533169534,
+              "cohens_kappa": 0.12017119379471997,
+              "macro_f1": 0.1699500099714528,
+              "balanced_accuracy": 0.18093307221798838
+            },
+            {
+              "group": "S7",
+              "n": 2180,
+              "accuracy": 0.15,
+              "cohens_kappa": 0.0666822853454051,
+              "macro_f1": 0.11083495326857123,
+              "balanced_accuracy": 0.13194361262146942
+            },
+            {
+              "group": "S8",
+              "n": 1803,
+              "accuracy": 0.2701053799223516,
+              "cohens_kappa": 0.2031062342317168,
+              "macro_f1": 0.23646311941454878,
+              "balanced_accuracy": 0.26755980711618993
+            },
+            {
+              "group": "S9",
+              "n": 2226,
+              "accuracy": 0.2587601078167116,
+              "cohens_kappa": 0.18506731087965866,
+              "macro_f1": 0.2346044957476315,
+              "balanced_accuracy": 0.24900911863457087
+            }
+          ],
+          "split_unit": "subject",
+          "n_folds": 10,
+          "summary": "mean macro_f1 0.194 (sd 0.063, range 0.086-0.307 across 10 subjects)"
+        }
+      }
+    }
+  ],
+  "matched_labels_groups_folds": true,
+  "iteration_15_predictions_reproduced": true,
+  "real_data_feature_checks": {
+    "relative_shares_sum_to_one": true,
+    "other_40_columns_exactly_preserved": true,
+    "all_features_finite": true
+  }
+}
