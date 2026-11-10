@@ -288,11 +288,18 @@ class EMGNinaproTrack(TrackAdapter):
         data, and only for the final prediction (see HOLDOUT_EVALUATION.md)."""
         return self.download(cache_dir, subset=HOLDOUT_SUBJECTS, include_holdout=True)
 
-    def load(self, cache_dir, exercise="E1"):
+    def load(self, cache_dir, exercise="E1", window_ms=200):
         """Read Ninapro DB1 `*_{exercise}.mat` files, window the sEMG within each
-        (movement, repetition) segment, label by movement. Groups by SUBJECT."""
+        (movement, repetition) segment, label by movement. Groups by SUBJECT.
+
+        `window_ms` sets the window length; the step stays at 150 ms.
+        """
         import os, glob, re
         from scipy.io import loadmat
+        samples = window_ms * FS / 1000
+        if not float(samples).is_integer() or samples < 2:
+            raise ValueError("window_ms must give at least two whole samples at 100 Hz.")
+        win = int(samples)
         gest_set = {int(g[1:]) for g in self.meta.classes}
         recs = []
         mats = sorted(glob.glob(os.path.join(cache_dir, "**", f"*_{exercise}.mat"), recursive=True))
@@ -306,11 +313,11 @@ class EMGNinaproTrack(TrackAdapter):
             lab = np.asarray(d["restimulus"]).ravel()
             rep = np.asarray(d["rerepetition"]).ravel()
             wins, labs, reps = [], [], []
-            for s in range(0, len(emg) - WIN + 1, STEP):
-                wl = lab[s:s + WIN]; wr = rep[s:s + WIN]
+            for s in range(0, len(emg) - win + 1, STEP):
+                wl = lab[s:s + win]; wr = rep[s:s + win]
                 g = int(wl[0])
                 if g in gest_set and (wl == g).all() and (wr == wr[0]).all() and wr[0] > 0:
-                    wins.append(emg[s:s + WIN]); labs.append(f"g{g:02d}"); reps.append(int(wr[0]))
+                    wins.append(emg[s:s + win]); labs.append(f"g{g:02d}"); reps.append(int(wr[0]))
             if wins:
                 recs.append(Recording(group=subj, fs=FS,
                                       epochs={"emg": np.array(wins)},
