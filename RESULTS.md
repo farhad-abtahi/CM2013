@@ -31,6 +31,8 @@
 | 21 | 2026-11-10 | Replace ten MAV features with channel MAV / total MAV per window; keep the other 40 features and RMS preprocessing fixed; S1–S10, E1. | Within-subject (repetition split): mean 0.826 (SD 0.035, range 0.774–0.867); New-subject (10-fold LOSO; separate RMS calibration): mean 0.194 (SD 0.063, range 0.086–0.307). Across 10 subjects, 21,802 scoring windows. | Vs matched reference #20: within +0.013; new +0.006. | Selected for the next steps: both means rose, with the same 50 features and calibration. The new-subject gain is small (+0.006); retain the original feature set as the baseline. | Base `07c0148`; changes uncommitted |
 | 22 | 2026-11-10 | Matched baseline for the S1–S22 RMS check: no normalisation; original 50 features; repetitions 3–10 only; S1–S22, E1; 200 ms windows, 150 ms step. | Within-subject (repetition split): mean 0.812 (SD 0.049, range 0.705–0.899); New-subject (5-fold subject GroupKFold): mean 0.186 (SD 0.054, range 0.046–0.265). Across 22 subjects, 47,810 scoring windows. | Matched reference for iteration 23; not directly comparable with iteration 8 (all repetitions) or 14 (S1–S10, LOSO). | Reference only. | Base `07c0148`; changes uncommitted |
 | 23 | 2026-11-10 | Per-subject, per-channel RMS normalisation from separate repetitions 1–2 (as iteration 15), checked on all development subjects S1–S22, E1. | Within-subject (repetition split): mean 0.812 (SD 0.049, range 0.705–0.899); New-subject (5-fold subject GroupKFold; separate target calibration): mean 0.248 (SD 0.062, range 0.068–0.364). Across 22 subjects, 47,810 scoring windows. | Vs matched baseline #22: within +0.000 (identical per subject); new +0.062, improved 21 of 22 subjects (S8 fell 0.224 → 0.213). | Adopted: RMS normalisation becomes the default for the calibrated pipeline. Needs calibration from each new user. | Base `07c0148`; changes uncommitted |
+| 24 | 2026-11-13 | Matched baseline for the onset test: S1–S5, E1, all repetitions, no RMS; train and score on all windows. | Within-subject (repetition split): mean 0.786 (SD 0.054, range 0.739–0.879); New-subject (5-fold LOSO): mean 0.160 (SD 0.044, range 0.095–0.213). Across 5 subjects, 13,875 windows. | Matched reference for iteration 25; slightly different from iteration 1 (local `.venv`). | Reference only. | Base `6281bb3`; changes uncommitted |
+| 25 | 2026-11-13 | Drop the first 2 windows (~350 ms) of each repetition from training only; still score every window, including onsets; S1–S5, E1, no RMS. | Within-subject (repetition split): mean 0.777 (SD 0.051, range 0.732–0.865); New-subject (5-fold LOSO): mean 0.166 (SD 0.044, range 0.098–0.214). Across 5 subjects, 13,875 scored windows; 1,200 onset windows excluded from training. | Vs matched baseline #24: within -0.009 (all 5 subjects lower); new +0.007 (all 5 higher). Both smaller than the subject SD. | Not adopted: small new-subject gain traded against a within-subject loss; not tested on S1–S22 or with RMS. | Base `6281bb3`; changes uncommitted |
 
 ## Decision log — the choices behind the numbers
 
@@ -49,6 +51,7 @@
 | Channel alignment without RMS | Keep RMS normalisation with original channel order | No RMS/original order vs no RMS + g01-based alignment | Alignment without RMS lowered new-subject mean by 0.018; within-subject mean was almost unchanged. RMS alone still has the highest matched new-subject mean. | 18–19 | Follow-up complete; no benefit from this shift rule with or without RMS. |
 | Feature extraction: relative MAV | Use relative MAV for the next pipeline comparisons | Replace ten MAV features with per-window channel shares; other 40 features unchanged | Both means rose (+0.013 within-subject, +0.006 new-subject), with the same feature count and calibration. Keep it as a low-cost, interpretable choice while reporting the small new-subject gain. | 20–21 | Promising option → selected after reviewing iteration 21; no new experiment. |
 | Per-channel normalisation (S1–S22 check) | RMS normalisation from repetitions 1–2 is the default for the calibrated pipeline | No normalisation, same S1–S22 scoring windows and folds | New-subject mean rose by 0.062 (0.186 → 0.248) and 21 of 22 subjects improved; within-subject scores were identical. Meets the rule declared before running. | 22–23 | Option (iteration 15) → default after the 22-subject check. |
+| Onset transition windows | Keep all windows for training and scoring | Drop the first 2 windows (~350 ms) of each repetition from training only | Within-subject fell 0.009 and new-subject rose 0.007, both smaller than the subject SD; dropping onsets from scoring only looks better because the hardest windows are left out. | 24–25 | Tested on S1–S5 without RMS only. |
 
 **Reproduce:** restart the kernel after the loader change. Run setup and S1–S22 data loading, then the **Stage 2: window length** cells. The saved window test uses `window_subject_count = 22`; set it to 10 for a future quick test and rerun every length on the same ten subjects. The smoothing section is a separate earlier comparison.
 
@@ -231,6 +234,22 @@ Limitations:
 
 To reproduce: run setup, real-data loading, and the **normalisation definition** cell, then **Stage 2: normalisation check on S1–S22**. It needs about 47 minutes on one CPU core.
 
+## Onset transition windows — 2026-11-13
+
+- Compare training on all windows with training that drops the first 2 windows (~350 ms) of every repetition, where the muscles are still ramping up. Score every window in both cases, including onsets: a real-time controller must classify the start of a gesture, so dropping onsets from scoring would not test a real improvement.
+- Motivation: onset windows mix rest-like and active signal, so they may be poor training examples. Removing them may also remove information the model needs to recognise a gesture as it starts.
+- Fixed: real S1–S5, E1; all repetitions; original envelope (no RMS); 200 ms windows, 150 ms step; all 50 features; supplied random forest, seed 0, balanced weights; no feature selection. Onset position is counted within each (gesture, repetition) run of windows.
+- Use both supplied splits: five new-subject LOSO folds and five repetition folds within each subject. K = 2 was chosen before running; no other values were tested. As diagnostics, also score each model on steady windows only and the baseline on onset windows only. S23–S27 remain untouched.
+- Status: completed 60 model fits (30 per setting) in 5.1 min. The baseline (iteration 24) differs slightly from iteration 1 (0.786 vs 0.790 within-subject) because the local `.venv` has older NumPy/SciPy; both settings ran in the same environment.
+
+### Onset result and decision
+
+Training without onset windows gave within-subject 0.777 ± 0.051 and new-subject 0.166 ± 0.044, against 0.786 ± 0.054 and 0.160 ± 0.044 for the matched baseline (mean ± SD across five subjects). Within-subject fell for all five subjects (-0.009); new-subject rose for all five (+0.007). Both changes are smaller than the subject SD. Scoring only steady windows raised the baseline to 0.794 / 0.163, but only because the hardest windows were left out.
+
+**Decision: keep all windows.** The small new-subject gain comes with a within-subject loss, and the test does not use the current default pipeline (S1–S22, RMS). Onset windows were the hardest to classify: 0.687 ± 0.133 within-subject and 0.108 ± 0.039 new-subject, close to chance (0.083). The model is weakest exactly when a gesture starts; this goes into the failure analysis.
+
+To reproduce: run setup and real-data loading, then **Stage 2: drop onset transition windows**. `ONSET_SUBJECTS = range(1, 6)` selects S1–S5 and `K = 2` sets the number of dropped windows.
+
 ## Who did what
 
 | Iteration | Who | Modules / tasks owned | Reviewed by |
@@ -239,3 +258,4 @@ To reproduce: run setup, real-data loading, and the **normalisation definition**
 | 1 | Barnus | Recording-selection fix, evaluation and smoke-test checks | |
 | 1 | Haripriya | Baseline feature check (shape, finite values, stats, flat windows, redundancy, subject scale), feature documentation, fold-safe selection A/B | |
 | 22–23 | Haripriya | S1–S22 RMS normalisation check (plan, notebook cells, run, logging); local `.venv` setup | |
+| 24–25 | Haripriya | Onset transition-window test (plan, notebook cells, run, logging) | |
