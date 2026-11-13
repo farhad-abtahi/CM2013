@@ -2,7 +2,7 @@
 
 **Track:** `emg_ninapro` · **Split unit:** subject / repetition · **Primary metric:** macro-F1 · **Evaluation modes:** within-subject + new-subject
 
-**Current development pool:** S1–S22, E1. S23–S27 are reserved for final hold-out. Iterations 1–7 used S1–S5; 8–13 used S1–S22; 14–21 used S1–S10 with separate calibration repetitions.
+**Current development pool:** S1–S22, E1. S23–S27 are reserved for final hold-out. Iterations 1–7 used S1–S5; 8–13 used S1–S22; 14–21 used S1–S10 with separate calibration repetitions; 22–23 used S1–S22 with the same calibration protocol.
 
 ## Iteration log
 
@@ -29,6 +29,8 @@
 | 19 | 2026-11-10 | No RMS plus circular alignment from unscaled g01 calibration repetitions 1–2; shift channels 1–8 only; S1–S10, E1, repetitions 3–10 scored. | Within-subject (repetition split): mean 0.812 (SD 0.038, range 0.762–0.873); New-subject (10-fold LOSO; alignment uses separate calibration): mean 0.139 (SD 0.048, range 0.072–0.194). Across 10 subjects, 21,802 scoring windows. | Vs matched no-RMS reference #18: within approximately 0; new -0.018. | Not retained: new-subject mean fell by 0.018; keep RMS normalisation with the original channel order. | Base `07c0148`; changes uncommitted |
 | 20 | 2026-11-10 | Rerun the current 50 features with RMS normalisation, original channel order, S1–S10, E1, repetitions 3–10; reference for feature extraction. | Within-subject (repetition split): mean 0.812 (SD 0.038, range 0.762–0.869); New-subject (10-fold LOSO; separate RMS calibration): mean 0.188 (SD 0.068, range 0.074–0.293). Across 10 subjects, 21,802 scoring windows. | Reproduces iteration 15, including every prediction. | Matched reference for iteration 21. | Base `07c0148`; changes uncommitted |
 | 21 | 2026-11-10 | Replace ten MAV features with channel MAV / total MAV per window; keep the other 40 features and RMS preprocessing fixed; S1–S10, E1. | Within-subject (repetition split): mean 0.826 (SD 0.035, range 0.774–0.867); New-subject (10-fold LOSO; separate RMS calibration): mean 0.194 (SD 0.063, range 0.086–0.307). Across 10 subjects, 21,802 scoring windows. | Vs matched reference #20: within +0.013; new +0.006. | Selected for the next steps: both means rose, with the same 50 features and calibration. The new-subject gain is small (+0.006); retain the original feature set as the baseline. | Base `07c0148`; changes uncommitted |
+| 22 | 2026-11-10 | Matched baseline for the S1–S22 RMS check: no normalisation; original 50 features; repetitions 3–10 only; S1–S22, E1; 200 ms windows, 150 ms step. | Within-subject (repetition split): mean 0.812 (SD 0.049, range 0.705–0.899); New-subject (5-fold subject GroupKFold): mean 0.186 (SD 0.054, range 0.046–0.265). Across 22 subjects, 47,810 scoring windows. | Matched reference for iteration 23; not directly comparable with iteration 8 (all repetitions) or 14 (S1–S10, LOSO). | Reference only. | Base `07c0148`; changes uncommitted |
+| 23 | 2026-11-10 | Per-subject, per-channel RMS normalisation from separate repetitions 1–2 (as iteration 15), checked on all development subjects S1–S22, E1. | Within-subject (repetition split): mean 0.812 (SD 0.049, range 0.705–0.899); New-subject (5-fold subject GroupKFold; separate target calibration): mean 0.248 (SD 0.062, range 0.068–0.364). Across 22 subjects, 47,810 scoring windows. | Vs matched baseline #22: within +0.000 (identical per subject); new +0.062, improved 21 of 22 subjects (S8 fell 0.224 → 0.213). | Adopted: RMS normalisation becomes the default for the calibrated pipeline. Needs calibration from each new user. | Base `07c0148`; changes uncommitted |
 
 ## Decision log — the choices behind the numbers
 
@@ -46,6 +48,7 @@
 | Channel reordering / spatial normalisation | Keep original channel order after RMS | RMS only vs RMS + g01-based circular shift of channels 1–8 | Alignment lowered new-subject mean by 0.028; 7 of 10 subjects scored lower, and calibration peaks agreed between repetitions for only 5 of 10 subjects. | 16–17 | Reject this alignment rule; retain RMS normalisation. |
 | Channel alignment without RMS | Keep RMS normalisation with original channel order | No RMS/original order vs no RMS + g01-based alignment | Alignment without RMS lowered new-subject mean by 0.018; within-subject mean was almost unchanged. RMS alone still has the highest matched new-subject mean. | 18–19 | Follow-up complete; no benefit from this shift rule with or without RMS. |
 | Feature extraction: relative MAV | Use relative MAV for the next pipeline comparisons | Replace ten MAV features with per-window channel shares; other 40 features unchanged | Both means rose (+0.013 within-subject, +0.006 new-subject), with the same feature count and calibration. Keep it as a low-cost, interpretable choice while reporting the small new-subject gain. | 20–21 | Promising option → selected after reviewing iteration 21; no new experiment. |
+| Per-channel normalisation (S1–S22 check) | RMS normalisation from repetitions 1–2 is the default for the calibrated pipeline | No normalisation, same S1–S22 scoring windows and folds | New-subject mean rose by 0.062 (0.186 → 0.248) and 21 of 22 subjects improved; within-subject scores were identical. Meets the rule declared before running. | 22–23 | Option (iteration 15) → default after the 22-subject check. |
 
 **Reproduce:** restart the kernel after the loader change. Run setup and S1–S22 data loading, then the **Stage 2: window length** cells. The saved window test uses `window_subject_count = 22`; set it to 10 for a future quick test and rerun every length on the same ten subjects. The smoothing section is a separate earlier comparison.
 
@@ -203,6 +206,31 @@ Current features reproduced every prediction from iteration 15: within-subject m
 
 To reproduce: run setup, real-data loading, the **normalisation definition** cell, then **Stage 3: relative channel activity**. `RelativeMAVTrack.extract_features()` reads `mav_feature="absolute"` or `"relative"`; `feature_settings` contains both choices. Run the selected-settings cell: `chosen_feature_cfg` sets RMS normalisation and relative MAV as the `feature_track` defaults, with no feature selection yet. Keep this feature definition fixed in the next feature-selection comparison. The results are development results; no final hold-out subjects were used.
 
+## Per-channel normalisation check on S1–S22 — declared before running, 2026-11-10
+
+- **Question:** does the S1–S10 RMS gain (+0.032 new-subject, iteration 15) hold on all development subjects?
+- **Same protocol as iterations 14–15**, only the population changes: S1–S22, E1. Repetitions 1–2 are calibration only (one RMS per channel, no labels); repetitions 3–10 are used for training and scoring in both settings. Reuse `prepare_normalisation()`, `NormalisedEMGTrack` and `normalisation_settings` unchanged.
+- **Fixed:** 200 ms windows, 150 ms step, no extra smoothing, original 50 features (absolute MAV), supplied random forest, seed 0, balanced class weights.
+- **Folds:** with 22 subjects the supplied evaluator uses 5-fold GroupKFold by subject for new-subject (not LOSO as on S1–S10), and five repetition-grouped folds within each subject. Both settings get identical windows, labels and folds.
+- **Exactly two settings:** baseline (`normalisation="none"`) and channel RMS (`"rms"`). Log both, whatever the result. S23–S27 stay unused.
+- **Decision rule:** change the default to RMS only if the new-subject mean improves by more than a trivial amount, most subjects improve, and within-subject does not drop. Otherwise keep it as a calibrated-use option. Any change still requires new-user calibration (repetitions 1–2).
+- **Status:** completed all 230 fits (115 per setting: 5 new-subject folds plus 110 within-subject repetition folds). Labels and scoring windows matched across settings (checked in the notebook). Calibration: 12,372 windows; scoring pool: 47,810 windows (sum 60,182, as in iteration 8). No channel had zero calibration RMS. Normalisation, window, and teammates' spatial/relative-MAV tests passed.
+- **Environment:** Python 3.11.4, NumPy 2.4.6, SciPy 1.17.1, scikit-learn 1.9.1 (local `.venv`; older NumPy/SciPy than iterations 14–21). Both settings were run in this environment, so the pair is matched. Run time: 993 s baseline, 1,834 s RMS. Settings and per-subject results: `outputs/emg_inspection/channel_normalisation_s1_s22_results.json`.
+
+### S1–S22 normalisation result and decision
+
+Baseline: within-subject macro-F1 0.812 ± 0.049, new-subject 0.186 ± 0.054. Channel RMS: 0.812 ± 0.049 and 0.248 ± 0.062 (mean ± SD across 22 subjects). New-subject scores improved for 21 of 22 subjects (median change +0.072, largest +0.106). Only S8 fell (0.224 → 0.213); S8 also fell on S1–S10. Within-subject scores were identical for every subject, as expected: dividing a subject's channels by fixed scales does not change how a random forest splits within that subject.
+
+**Decision: make RMS normalisation the default for the calibrated pipeline.** The gain is about the size of the across-subject SD and consistent across subjects, so it meets the rule declared above.
+
+Limitations:
+- **Calibration required.** A new user must record calibration repetitions first. This is not a zero-shot result.
+- **Fold scheme differs from S1–S10.** With 22 subjects the new-subject split is 5-fold (about 17–18 training subjects per fold), not LOSO. On the S1–S10 subset within this run the mean gain was +0.061, larger than the +0.032 under 10-subject LOSO, so the gain size depends on the setup. Compare iteration 23 only with 22.
+- **Original features only.** This used absolute MAV. Relative MAV (iteration 21, selected for next steps) has not been tested on S1–S22.
+- **Reused development subjects.** S1–S10 were also used to choose RMS, so this is not an independent test. S23–S27 remain untouched.
+
+To reproduce: run setup, real-data loading, and the **normalisation definition** cell, then **Stage 2: normalisation check on S1–S22**. It needs about 47 minutes on one CPU core.
+
 ## Who did what
 
 | Iteration | Who | Modules / tasks owned | Reviewed by |
@@ -210,3 +238,4 @@ To reproduce: run setup, real-data loading, the **normalisation definition** cel
 | 1 | Marissa | Real-data setup, signal inspection, baseline validation | |
 | 1 | Barnus | Recording-selection fix, evaluation and smoke-test checks | |
 | 1 | Haripriya | Baseline feature check (shape, finite values, stats, flat windows, redundancy, subject scale), feature documentation, fold-safe selection A/B | |
+| 22–23 | Haripriya | S1–S22 RMS normalisation check (plan, notebook cells, run, logging); local `.venv` setup | |
